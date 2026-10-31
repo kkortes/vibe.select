@@ -1,100 +1,375 @@
 <script type="module">
   import component from '@ape-egg/vibe/component';
 
-  const titles = {
-    error: 'Ops, something went wrong!',
-    info: 'Did you know?',
-    success: 'Good news',
-    warning: 'Heads up',
-  };
+  const DURATION = 4000;
+  const GAP = 14;
+  const VISIBLE = 3;
+  const SCALE_STEP = 0.05;
+  const SWIPE = 60;
+  const SIDES = { right: [1, 0], left: [-1, 0], down: [0, 1], up: [0, -1] };
 
   let count = 0;
-  let animations = [];
+  let paused = false;
+  const timers = new Map();
+  const leaving = new Set();
+  const drags = new Map();
 
   const instance = Math.random().toString(36).slice(2);
+  const root = () => document.querySelector(`notifications-viewport[data-instance="${instance}"]`);
+  const cards = () => [...root().querySelectorAll('notification-card')];
+
+  const schedule = (key, ms) =>
+    timers.set(key, { handle: setTimeout(() => dismiss(key), ms), remaining: ms, startedAt: Date.now() });
+
+  const dismiss = (key) => {
+    if (leaving.has(key)) return;
+    leaving.add(key);
+    clearTimeout(timers.get(key)?.handle);
+    timers.delete(key);
+    $[id].notifications = $[id].notifications.map((n) => (n.id === key ? { ...n, leaving: true } : n));
+  };
+
+  const push = (type, title, { id: key = ++count, duration = type === 'loading' ? Infinity : DURATION, description, icon } = {}) => {
+    const text = title instanceof Error ? title.message : title;
+    if (!text) return;
+    const entry = { id: key, type, title: String(text), description, icon };
+    const { notifications } = $[id];
+    $[id].notifications = notifications.some((n) => n.id === key)
+      ? notifications.map((n) => (n.id === key ? entry : n))
+      : [...notifications, entry];
+
+    clearTimeout(timers.get(key)?.handle);
+    timers.delete(key);
+    leaving.delete(key);
+    if (duration === Infinity) return key;
+    if (paused) timers.set(key, { remaining: duration });
+    else schedule(key, duration);
+    return key;
+  };
+
+  const message = (value, result) => (typeof value === 'function' ? value(result) : value);
+
+  const notify = (title, options) => push('default', title, options);
+  ['success', 'error', 'warning', 'info', 'loading'].forEach((type) => (notify[type] = (title, options) => push(type, title, options)));
+  notify.dismiss = (key) => (key == null ? $[id].notifications.forEach((n) => dismiss(n.id)) : dismiss(key));
+  notify.promise = (promise, messages) => {
+    const key = push('loading', message(messages.loading));
+    Promise.resolve(promise).then(
+      (value) => push('success', message(messages.success, value), { id: key }),
+      (error) => push('error', message(messages.error, error), { id: key }),
+    );
+    return key;
+  };
+  window.notify = notify;
+
+  const notified = ({ detail: { type, title, description } }) => push(type || 'default', title, { description });
+
+  const layout = () => {
+    const viewport = root();
+    const hit = viewport.querySelector('notification-hit');
+    const stack = cards();
+    const heights = stack.map((card) => card.offsetHeight);
+    stack.forEach((card, i) => {
+      const front = stack.length - 1 - i;
+      card.style.setProperty('--col-y', `${front * GAP}px`);
+      card.style.setProperty('--col-scale', 1 - front * SCALE_STEP);
+      card.style.setProperty('--exp-y', `${heights.slice(i + 1).reduce((sum, height) => sum + height + GAP, 0)}px`);
+      card.style.setProperty('--z', 1000 - front);
+      card.toggleAttribute('hidden-stack', front >= VISIBLE);
+    });
+    const collapsed = (heights.at(-1) ?? 0) + Math.min(VISIBLE - 1, Math.max(0, stack.length - 1)) * GAP;
+    const expanded = heights.reduce((sum, height) => sum + height + GAP, -GAP);
+    hit.style.setProperty('--hit-h', `${viewport.hasAttribute('expanded') ? Math.max(collapsed, expanded) : collapsed}px`);
+  };
+
+  const resize = new ResizeObserver(layout);
+
+  const axis = (viewport) => SIDES[Object.keys(SIDES).find((side) => viewport.hasAttribute(side))] ?? [0, 0];
+
   const id = component({
     instance,
-    queue: [],
-    hover: (enter) => animations.forEach((animation) => animation[enter ? 'pause' : 'play']()),
+    notifications: [],
+    hover: (over) => {
+      paused = over;
+      timers.forEach((timer, key) => {
+        if (!over) return schedule(key, timer.remaining);
+        clearTimeout(timer.handle);
+        timer.remaining -= Date.now() - timer.startedAt;
+      });
+      root().toggleAttribute('expanded', over);
+      layout();
+    },
+    ended: (notification) => {
+      if (!leaving.delete(notification.id)) return;
+      $[id].notifications = $[id].notifications.filter((n) => n.id !== notification.id);
+    },
+    grab: (event) => {
+      if (event.button || event.target.closest('button, a, input, textarea, select')) return;
+      const card = event.currentTarget;
+      card.setPointerCapture(event.pointerId);
+      drags.set(card, { x: event.clientX, y: event.clientY, dx: 0, dy: 0 });
+      card.toggleAttribute('dragging', true);
+    },
+    drag: (event) => {
+      const card = event.currentTarget;
+      const start = drags.get(card);
+      if (!start) return;
+      start.dx = event.clientX - start.x;
+      start.dy = event.clientY - start.y;
+      const [ax, ay] = axis(root());
+      const free = !ax && !ay;
+      card.style.setProperty('--drag-x', `${free ? start.dx : ax * Math.max(0, ax * start.dx)}px`);
+      card.style.setProperty('--drag-y', `${free ? start.dy : ay * Math.max(0, ay * start.dy)}px`);
+    },
+    drop: (event, notification) => {
+      const card = event.currentTarget;
+      const start = drags.get(card);
+      if (!start) return;
+      drags.delete(card);
+      const [ax, ay] = axis(root());
+      const distance = !ax && !ay ? Math.hypot(start.dx, start.dy) : start.dx * ax + start.dy * ay;
+      if (distance > SWIPE) return dismiss(notification.id);
+      card.toggleAttribute('dragging', false);
+      card.style.removeProperty('--drag-x');
+      card.style.removeProperty('--drag-y');
+    },
   });
 
-  const stack = () => document.querySelector(`notifications-stack[data-instance="${instance}"]`);
-
-  const dismiss = () => {
-    const first = stack().firstElementChild;
-    if (!first || animations.length) return;
-
-    const timing = { delay: 3000, duration: 600, easing: 'ease' };
-    animations = [
-      stack().animate({ transform: `translateY(-${first.offsetHeight}px)` }, timing),
-      first.animate({ opacity: 0 }, timing),
-    ];
-    animations[0].onfinish = () => {
-      animations = [];
-      $[id].queue = $[id].queue.slice(1);
-    };
+  const update = () => {
+    layout();
+    resize.disconnect();
+    cards().forEach((card) => resize.observe(card));
   };
 
-  const notify = ({ detail: { type, message } }) => {
-    const text = message.replace('Error: ', '');
-    const capitalised = text[0].toUpperCase() + text.slice(1);
-    if ($[id].queue.some((notification) => notification.message === capitalised)) return;
-    $[id].queue = [...$[id].queue, { id: ++count, type, title: titles[type], message: capitalised }];
-  };
+  addEventListener('notify', notified);
+  $.on('afterUpdate', update);
 
-  addEventListener('notify', notify);
-  $.on('afterUpdate', dismiss);
-  $.on('unmount', () => removeEventListener('notify', notify));
+  $.on('unmount', () => {
+    removeEventListener('notify', notified);
+    timers.forEach((timer) => clearTimeout(timer.handle));
+    resize.disconnect();
+    delete window.notify;
+  });
 </script>
 
-<notifications-root role="status">
-  <notifications-stack data-instance="@[this.instance]" onmouseenter="this.hover(true)" onmouseleave="this.hover(false)">
-    <!-- each this.queue as notification -->
-    <notification-item pb-2>
+<notifications-viewport
+  data-instance="@[this.instance]"
+  role="status"
+  up="@[up]"
+  down="@[down]"
+  left="@[left]"
+  right="@[right]"
+  style="--offset-x: @[x || 0]px; --offset-y: @[y || 0]px"
+>
+  <notification-hit onmouseenter="this.hover(true)" onmouseleave="this.hover(false)">
+    <!-- each this.notifications as notification (notification.id) -->
+    <notification-card
+      leaving="@[notification.leaving]"
+      onanimationend="this.ended(notification)"
+      onpointerdown="this.grab(event)"
+      onpointermove="this.drag(event)"
+      onpointerup="this.drop(event, notification)"
+      onpointercancel="this.drop(event, notification)"
+    >
       <card p-3 pr-5>
         <crow left g-2>
           <!-- if notification.type === 'error' -->
-          <crow circle w-8 bg-red text-red><icon cross></icon></crow>
+          <crow circle w-8 bg-red text-red><icon @[notification.icon || 'cross']></icon></crow>
           <!-- else if notification.type === 'warning' -->
-          <crow circle w-8 bg-orange text-orange><icon triangle-alert></icon></crow>
+          <crow circle w-8 bg-orange text-orange><icon @[notification.icon || 'triangle-alert']></icon></crow>
           <!-- else if notification.type === 'success' -->
-          <crow circle w-8 bg-green text-green><icon checkmark></icon></crow>
-          <!-- else -->
-          <crow circle w-8 bg-blue text-blue><icon bell></icon></crow>
+          <crow circle w-8 bg-green text-green><icon @[notification.icon || 'checkmark']></icon></crow>
+          <!-- else if notification.type === 'info' -->
+          <crow circle w-8 bg-blue text-blue><icon @[notification.icon || 'bell']></icon></crow>
+          <!-- else if notification.type === 'loading' -->
+          <crow circle w-8 text-muted><icon spinner animate-spin></icon></crow>
+          <!-- else if notification.icon -->
+          <crow circle w-8 bg-blue text-blue><icon @[notification.icon]></icon></crow>
           <!-- /if -->
           <crow vertical left max-w-72>
             <b>@[notification.title]</b>
-            <span text-muted>@[notification.message]</span>
+            <!-- if notification.description -->
+            <span text-muted>@[notification.description]</span>
+            <!-- /if -->
           </crow>
         </crow>
       </card>
-    </notification-item>
+    </notification-card>
     <!-- /each -->
-  </notifications-stack>
-</notifications-root>
+  </notification-hit>
+</notifications-viewport>
 
 <style>
-  notifications-root {
+  notifications-viewport {
     position: fixed;
-    top: calc(var(--unit, 4px) * 8);
-    right: calc(var(--unit, 4px) * 2);
-    z-index: 1;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    --width: calc(var(--unit, 4px) * 89);
+    --margin-x: 0px;
+    --margin-y: 0px;
+    --left: 50%;
+    --right: auto;
+    --top: auto;
+    --bottom: 0px;
+    --tx: -50%;
+    --ty: 0px;
+    --sign: -1;
+    --enter-x: 0%;
+    --enter-y: 120%;
+    --leave-x: 0%;
+    --leave-y: 120%;
+    --transform-origin: center bottom;
+    --card-left: 50%;
+    --card-right: auto;
+    --card-tx: -50%;
+  }
+
+  @media (min-width: 769px) {
+    notifications-viewport {
+      --margin-x: var(--offset-x);
+      --margin-y: var(--offset-y);
+      --top: 50%;
+      --bottom: auto;
+      --ty: -50%;
+      --sign: 1;
+      --enter-y: 0%;
+      --leave-y: 0%;
+      --transform-origin: center center;
+    }
+
+    notifications-viewport[left]:not([right]) {
+      --left: var(--margin-x);
+      --tx: 0px;
+      --enter-x: -120%;
+      --leave-x: -120%;
+      --transform-origin: left center;
+      --card-left: 0;
+      --card-tx: 0px;
+    }
+
+    notifications-viewport[right]:not([left]) {
+      --left: auto;
+      --right: var(--margin-x);
+      --tx: 0px;
+      --enter-x: 120%;
+      --leave-x: 120%;
+      --transform-origin: right center;
+      --card-left: auto;
+      --card-right: 0;
+      --card-tx: 0px;
+    }
+
+    notifications-viewport[up]:not([down]) {
+      --top: var(--margin-y);
+      --ty: 0px;
+      --enter-y: -120%;
+      --leave-y: -120%;
+      --transform-origin: center top;
+    }
+
+    notifications-viewport[down]:not([up]) {
+      --top: auto;
+      --bottom: var(--margin-y);
+      --ty: 0px;
+      --sign: -1;
+      --enter-y: 120%;
+      --leave-y: 120%;
+      --transform-origin: center bottom;
+    }
+
+    notifications-viewport:is([left]:not([right]), [right]:not([left])) {
+      --enter-y: 0%;
+      --leave-y: 0%;
+    }
+
+    notifications-viewport[up][left] { --transform-origin: left top; }
+    notifications-viewport[up][right] { --transform-origin: right top; }
+    notifications-viewport[down][left] { --transform-origin: left bottom; }
+    notifications-viewport[down][right] { --transform-origin: right bottom; }
+  }
+
+  notification-hit {
+    position: absolute;
+    display: block;
+    left: var(--left);
+    right: var(--right);
+    top: var(--top);
+    bottom: var(--bottom);
+    width: var(--width);
+    max-width: calc(100vw - var(--margin-x) * 2);
+    height: var(--hit-h, 0px);
+    transform: translate(var(--tx), var(--ty));
+    pointer-events: auto;
+    transition: height 400ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  notification-card {
+    position: absolute;
+    top: 0;
+    left: var(--card-left);
+    right: var(--card-right);
+    width: max-content;
+    max-width: 100%;
+    touch-action: pan-y;
+    user-select: none;
+    cursor: grab;
+    transform-origin: var(--transform-origin);
+    transform: translate(
+        calc(var(--card-tx) + var(--drag-x, 0px)),
+        calc(var(--col-y, 0px) * var(--sign) + var(--drag-y, 0px))
+      )
+      scale(var(--col-scale, 1));
+    transition:
+      transform 400ms cubic-bezier(0.32, 0.72, 0, 1),
+      opacity 200ms ease;
+    z-index: var(--z, 1);
+    animation: notify-in 400ms cubic-bezier(0.21, 1.02, 0.73, 1) backwards;
+  }
+
+  notifications-viewport[down]:not([up]) notification-card {
+    top: auto;
+    bottom: 0;
+  }
+
+  notifications-viewport[expanded] notification-card {
+    transform: translate(
+        calc(var(--card-tx) + var(--drag-x, 0px)),
+        calc(var(--exp-y, 0px) * var(--sign) + var(--drag-y, 0px))
+      )
+      scale(1);
+  }
+
+  notification-card[dragging] {
+    transition: none;
+    cursor: grabbing;
+  }
+
+  notification-card[hidden-stack] {
+    opacity: 0;
     pointer-events: none;
   }
 
-  notifications-stack {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+  notifications-viewport[expanded] notification-card[hidden-stack] {
+    opacity: 1;
+    pointer-events: auto;
   }
 
-  notification-item {
-    pointer-events: auto;
-    transition: translate 300ms ease, opacity 300ms ease;
+  notification-card[leaving] {
+    animation: notify-out 280ms cubic-bezier(0.4, 0, 1, 1) forwards;
+  }
 
-    @starting-style {
-      translate: 50px;
+  @keyframes notify-in {
+    from {
       opacity: 0;
+      transform: translate(calc(var(--card-tx) + var(--enter-x)), var(--enter-y)) scale(0.94);
+    }
+  }
+
+  @keyframes notify-out {
+    to {
+      opacity: 0;
+      transform: translate(calc(var(--card-tx) + var(--leave-x)), var(--leave-y)) scale(0.9);
     }
   }
 </style>

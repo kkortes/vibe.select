@@ -14,13 +14,22 @@ export default await Promise.all(
   [
     {
       file: 'Notifications.html',
-      notes: 'Ported to Vibe.',
+      notes: 'Ported from the webdev-game-stack battleborn-brawlers notifications: window.notify with its types, promise and dismiss, a stack that fans out on hover and pauses its timers, and swipe to dismiss. Call notify(title, { description, icon, duration, id }) or notify.success, .error, .warning, .info or .loading with the same arguments; each returns the id, and a second call with that id replaces the notification in place. notify.promise(promise, { loading, success, error }) turns a loading one into the outcome, and notify.dismiss(id) dismisses one, or all without an id. The game\'s crystal icon and equipment link stay with the game.',
       slug: 'notifications',
       title: 'Notifications',
-      description: 'A top-right stack of notifications that fly in and fade out one by one. Post into it from anywhere with a notify event.',
+      description: 'A stack of notifications that fans out on hover and swipes away. Post into it from anywhere with window.notify or a notify event.',
       category: 'Feedback',
       icon: 'bell',
       styling: 'stylecheat',
+      events: { notify: { type: 'success', title: 'Saved', description: 'Your changes are live.' } },
+      props: [
+        { name: 'up', type: 'boolean', default: true, description: 'Pins the stack to the top edge, newest on top. Below 769px wide the stack always sits bottom centre.' },
+        { name: 'down', type: 'boolean', default: false, description: 'Pins the stack to the bottom edge, newest at the bottom. Neither up nor down centres it vertically.' },
+        { name: 'left', type: 'boolean', default: false, description: 'Pins the stack to the left edge. Neither left nor right centres it.' },
+        { name: 'right', type: 'boolean', default: true, description: 'Pins the stack to the right edge, and a card swipes away to the right.' },
+        { name: 'x', type: 'number', default: 16, description: 'Pixels between the stack and the side it is pinned to.' },
+        { name: 'y', type: 'number', default: 16, description: 'Pixels between the stack and the top or bottom it is pinned to.' },
+      ],
     },
     {
       file: 'Tooltip.html',
