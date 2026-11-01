@@ -375,7 +375,31 @@ usertags {
 }
 
 :is(autotags, usertags) > button {
+  position: relative;
   justify-content: start;
+}
+
+:is(autotags, usertags) > button[secondary]:not(:focus-visible) {
+  box-shadow: none;
+}
+
+:is(autotags, usertags) > button::before,
+:is(autotags, usertags) > button::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+
+:is(autotags > :nth-last-child(n + 4), usertags > :nth-last-child(n + 3))::before {
+  inset: auto 0 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border), transparent);
+}
+
+:is(autotags > :not(:nth-child(3n)), usertags > :not(:nth-child(2n)))::after {
+  inset: 0 0 0 auto;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--border), transparent);
 }
 
 tags {
