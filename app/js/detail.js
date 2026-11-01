@@ -69,10 +69,21 @@ const preview = (html) => {
 
 let usage;
 let markup;
+let include;
 
 // The tag under "Use it" is read-only and redrawn on every update, so it
 // follows the selected tab and every prop value as it is typed.
 const showUsage = () => (usage.code = window.$.snippet());
+
+// The script that resolves a pin reads the same on every version, but its row
+// is only there while a version is pinned, so a row drawn anew gets a new codie.
+const showInclude = () => {
+  const el = document.querySelector('codie[include]');
+  if (!el || include?.el === el) return;
+
+  include = codie(el);
+  include.code = window.$.include();
+};
 
 // The markup between the tags is edited in a codie of its own. Its row is only
 // there while the component in view has a slot, so a row drawn anew gets a new
@@ -128,9 +139,11 @@ const attach = (html) => {
     window.$.on('afterUpdate', () => children() !== mounted && mount());
     window.$.on('afterUpdate', showMarkup);
     window.$.on('afterUpdate', showJson);
+    window.$.on('afterUpdate', showInclude);
   }
   showUsage();
   showMarkup();
+  showInclude();
   showJson();
 };
 
