@@ -417,11 +417,6 @@ section[preview] > crow {
   width: 100%;
 }
 
-container crow[preview] {
-  aspect-ratio: 5 / 3;
-  box-shadow: var(--ring-inset);
-}
-
 section[use] {
   grid-row: span 2;
 }
@@ -545,20 +540,10 @@ container {
   margin-inline: round(down, (100% - var(--frame)) / 2, var(--cell)) auto;
 }
 
-:is(catalogue, section[about]) badge,
-card[paper] component button[secondary] {
+:is(catalogue, section[about]) badge {
   background-color: var(--input);
   color: var(--primary);
   box-shadow: inset 0 0 0 1px var(--border);
-}
-
-card[paper] component button[secondary] {
-  width: calc(var(--unit) * 12);
-  padding-inline: 0;
-}
-
-card[paper] component button[secondary]:hover {
-  background-color: var(--secondary);
 }
 
 :where(codie, [codie]) {
