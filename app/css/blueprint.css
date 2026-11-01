@@ -486,13 +486,19 @@ functions {
 
 functions {
   width: 100%;
+  margin-top: auto;
 }
 
 props {
   align-self: stretch;
+  margin-top: auto;
   margin-inline: calc(var(--pad) * -1);
   padding-inline: var(--pad);
   border-top: var(--hairline) solid var(--border);
+}
+
+functions + props {
+  margin-top: 0;
 }
 
 props > button {
