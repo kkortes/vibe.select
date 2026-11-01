@@ -420,6 +420,7 @@ section[preview] > crow {
 
 container crow[preview] {
   aspect-ratio: 5 / 3;
+  min-height: min-content;
   box-shadow: var(--ring-inset);
 }
 
