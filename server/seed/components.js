@@ -295,6 +295,7 @@ export default await Promise.all(
       description: 'A round frame with an inset ring and drop shadow that crops an image to whatever point you aim it at, zoomed in.',
       category: 'Presentation',
       icon: 'user',
+      styling: 'stylecheat',
       props: [
         {
           name: 'image',
