@@ -50,8 +50,8 @@
         <!-- /if -->
       </versions>
 
-      <dialog namespace>
-        <card w="120" g-4 p-6>
+      <component src="/overlay.html" open="@[composing]">
+        <card g-4 p-6>
           <h6>New namespace</h6>
           <p>
             Your account is limited to @[$.limit()]. Components under this namespace will be accessible via
@@ -74,7 +74,7 @@
             <button primary onclick="$.create()">Create</button>
           </crow>
         </card>
-      </dialog>
+      </component>
 
       <dialog removal>
         <card w="120" g-4 p-6>

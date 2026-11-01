@@ -9,6 +9,8 @@ export const state = {
   owned: [],
   // The selected tab: a namespace slug, or '' for All.
   namespace: '',
+  // The New namespace overlay is open.
+  composing: false,
   slug: '',
   unlisted: false,
   failure: '',
@@ -20,7 +22,7 @@ export const state = {
     this.slug = '';
     this.unlisted = false;
     this.failure = '';
-    document.querySelector('dialog[namespace]').showModal();
+    this.composing = true;
   },
 
   limit() {
@@ -34,6 +36,7 @@ export const state = {
   },
 
   dismiss() {
+    this.composing = false;
     document.querySelectorAll('dialog').forEach((dialog) => dialog.close());
   },
 
