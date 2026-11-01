@@ -46,7 +46,7 @@
 
   const view = (data, openPaths, localStorageID) => {
     last = data;
-    storage = localStorageID && `dataInspector:${localStorageID}`;
+    storage = localStorageID && `dataDisplay:${localStorageID}`;
     openPaths ??= read();
     const rows = [];
     const ancestors = new Set();
@@ -71,7 +71,7 @@
 
     roots(data).forEach(([key, value]) => walk(value, 0, key, key, true));
 
-    return { rows, label: expandable && allOpen ? 'Close all' : 'Open all' };
+    return { rows, label: expandable && (allOpen ? 'Close all' : 'Open all') };
   };
 
   const persist = (openPaths) => {
@@ -108,28 +108,30 @@
   });
 </script>
 
-<card inspector w="120" max-w-full overflow-hidden>
+<card w="120" max-w-full overflow-hidden>
   <crow justify-between w-full g="6">
     <h6 text-muted>Data</h6>
+    <!-- if this.view(data, this.openPaths, localStorageID).label -->
     <button tertiary sm onclick="this.toggleAll()">@[this.view(data, this.openPaths, localStorageID).label]</button>
+    <!-- /if -->
   </crow>
   <hr my="4" />
-  <data-inspector-lines vertical left up f-1 mx="-6" overflow-auto>
+  <data-display-lines vertical left up f-1 mx="-6" overflow-auto>
     <!-- each this.view(data, this.openPaths, localStorageID).rows as row (row.path) -->
     <accordion open="@[row.shown]">
       <accordion-content>
-        <data-inspector-row flex w-full g="3" py="0.75" px="6" hover="@[row.expandable]" onclick="this.toggle(event, row)">
-          <data-inspector-key f-0 pl="@[row.depth]ch">@[row.key]</data-inspector-key>
-          <data-inspector-value flex right f-1 overflow-hidden text-blue="@[row.expandable && !row.list]" text-purple="@[row.list]">@[row.summary]</data-inspector-value>
-        </data-inspector-row>
+        <data-display-row flex w-full g="3" py="0.75" px="6" hover="@[row.expandable]" onclick="this.toggle(event, row)">
+          <data-display-key f-0 pl="@[row.depth]ch">@[row.key]</data-display-key>
+          <data-display-value flex right f-1 overflow-hidden text-blue="@[row.expandable && !row.list]" text-purple="@[row.list]">@[row.summary]</data-display-value>
+        </data-display-row>
       </accordion-content>
     </accordion>
     <!-- /each -->
-  </data-inspector-lines>
+  </data-display-lines>
 </card>
 
 <style>
-  data-inspector-key::first-letter {
+  data-display-key::first-letter {
     text-transform: uppercase;
   }
 </style>
