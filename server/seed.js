@@ -21,10 +21,10 @@ const checked = (components) =>
 const seeded = checked(catalogue);
 
 // Each seeded namespace is replaced whole: its components are written as listed
-// and nothing else is left under it. A component names its namespace, or is vibe's.
+// and nothing else is left under it. A component names its namespace, or is the root namespace's.
 const NAMESPACES = [
   { slug: 'vibe', title: 'Vibe', official: 1 },
-  { slug: 'webdev', title: 'Webdev', official: 0 },
+  { slug: 'kortes', title: 'Kortes', official: 0 },
 ].map((ns) => ({ ...ns, components: seeded.filter(({ namespace = 'vibe' }) => namespace === ns.slug) }));
 
 const literal = (value) => (value == null ? 'NULL' : `'${String(value).replaceAll("'", "''")}'`);

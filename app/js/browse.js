@@ -2,10 +2,10 @@ import codie from '/modules/codie/codie.js';
 
 import { SOURCE_URL } from '/js/env.js';
 import { get } from '/js/localStorage.js';
-import { address, pin } from '/js/pin.js';
+import { ROOT, address, pin } from '/js/pin.js';
 import { call } from '/js/ws.js';
 
-const tag = { src: address(SOURCE_URL, 'vibe', 'counter', 3), label: 'Items', step: '1' };
+const tag = { src: address(SOURCE_URL, ROOT, 'counter', 3), label: 'Items', step: '1' };
 
 export const state = {
   // The hero renders the very tag it prints, pin and all, and keeps rendering
@@ -19,7 +19,7 @@ export const state = {
   // A visitor who has scrolled past the hero before opens on the catalogue;
   // the wordmark in the topbar brings the hero back.
   hero: !get('mkp-browsed'),
-  // Off shows the vibe namespace only.
+  // Off shows the root namespace only.
   all: false,
   query: '',
   loading: true,
@@ -38,7 +38,7 @@ export const state = {
     this.matches = this.components.filter(
       (c) =>
         (this.tag === 'All' || c.category === this.tag || c.tags.includes(this.tag)) &&
-        (this.all || c.namespace === 'vibe') &&
+        (this.all || c.namespace === ROOT) &&
         (!needle ||
           `${c.namespace}/${c.slug} ${c.title} ${c.description}`.toLowerCase().includes(needle)),
     );

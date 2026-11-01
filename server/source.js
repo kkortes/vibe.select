@@ -1,6 +1,8 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 
+import { ROOT } from '../app/js/pin.js';
+
 // Over HTTP the Worker serves the component source itself, because that is what
 // `<component src>` fetches. Everything the marketplace knows about a component
 // travels over the websocket instead.
@@ -47,10 +49,16 @@ const revision = async (c, namespace, slug, version) => {
 // bare /tag is the frontpage with nothing picked.
 app.get('/tag/:name?', (c) => c.env.ASSETS.fetch(new URL('/', c.req.url)));
 
-// A bare namespace is the website's page listing what is published under it.
-// Pages compiled from app/ answer their own paths first, which is why
-// "component", "components" and "namespace" are reserved namespaces.
-app.get('/:namespace{[a-z0-9-]+}', (c) => c.env.ASSETS.fetch(new URL('/namespace', c.req.url)));
+// A bare name is a root namespace component's page, or else the page listing
+// what a namespace publishes. Neither may take the other's name, nor that of a
+// page compiled from app/, which answers its own path first (server/names.js).
+app.get('/:name{[a-z0-9-]+}', async (c) => {
+  const component = await c.env.DB.prepare('SELECT 1 FROM components WHERE namespace = ? AND slug = ?')
+    .bind(ROOT, c.req.param('name'))
+    .first();
+
+  return c.env.ASSETS.fetch(new URL(component ? '/component' : '/namespace', c.req.url));
+});
 
 // The same inside a namespace: its page with that tag picked, which is why no
 // component is slugged "tag".
@@ -70,8 +78,16 @@ app.get('/:namespace/:slug{[a-z0-9-]+}', (c) =>
   c.req.param('namespace') === 'cdn-cgi' ? c.notFound() : c.env.ASSETS.fetch(new URL('/component', c.req.url)),
 );
 
+// A root namespace component pinned to a version. No slug reads like v3, so
+// this never shadows a component in a namespace.
+app.get('/:slug/:pin{v\\d+\\.html}', (c) =>
+  revision(c, ROOT, c.req.param('slug'), Number(c.req.param('pin').match(PINNED)[1])),
+);
+
 app.get('/:namespace/:file{.+\\.html}', (c) =>
   revision(c, c.req.param('namespace'), c.req.param('file').replace('.html', '')),
 );
+
+app.get('/:file{[a-z0-9-]+\\.html}', (c) => revision(c, ROOT, c.req.param('file').replace('.html', '')));
 
 export default app;

@@ -1,13 +1,17 @@
 import { namespace as decode, now } from '../../../db.js';
+import { RESERVED } from '../../../names.js';
 import { slug as slugPattern } from '../../../user.js';
-
-const RESERVED = ['vibe', 'stylecheat', 'codie', 'api', 'docs', 'admin', 'modules', 'js', 'css', 'images', 'component', 'components', 'namespace', 'tag'];
+import { ROOT } from '../../../../app/js/pin.js';
 
 export default async ({ slug, title, unlisted = false }, { db, identity }) => {
   if (!slugPattern.test(String(slug))) throw Error('A namespace is lowercase words joined by dashes');
   if (RESERVED.includes(slug)) throw Error(`${slug} is reserved`);
 
-  const taken = await db.prepare('SELECT 1 FROM namespaces WHERE slug = ?').bind(slug).first();
+  // A root namespace component sits at the same top-level address.
+  const taken = await db
+    .prepare('SELECT 1 FROM namespaces WHERE slug = ?1 UNION SELECT 1 FROM components WHERE namespace = ?2 AND slug = ?1')
+    .bind(slug, ROOT)
+    .first();
   if (taken) throw Error(`${slug} is taken`);
 
   // The cap is read in the same statement as the insert, so two creates at once

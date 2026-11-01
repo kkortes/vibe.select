@@ -1,4 +1,5 @@
 import { now } from '../../../db.js';
+import { claim } from '../../../names.js';
 import { slug as slugPattern } from '../../../user.js';
 import { lettered, slugify } from '../../../../app/js/naming.js';
 import { CATEGORIES } from '../../../../app/js/tags.js';
@@ -11,7 +12,7 @@ export default async ({ namespace, title = '', description }, { db, identity }) 
 
   if (!lettered(title)) throw Error('A name needs at least 3 letters');
   if (!slugPattern.test(slug)) throw Error('A name needs letters or digits a slug can be read off');
-  if (slug === 'tag') throw Error('tag is reserved for /<namespace>/tag/<name>');
+  await claim(db, namespace, slug);
 
   const owner = await db.prepare('SELECT ownerId FROM namespaces WHERE slug = ?').bind(namespace).first();
 

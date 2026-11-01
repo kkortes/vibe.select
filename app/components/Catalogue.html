@@ -1,13 +1,13 @@
 <catalogue w-full>
   <!-- each items as comp (comp.namespace + '/' + comp.slug) -->
-  <card p-5 g-4 hover paper style="view-transition-name: c-@[comp.namespace]-@[comp.slug]">
+  <card p-5 g-4 hover paper style="view-transition-name: c-@[comp.path.replace('/', '-')]">
     <crow up left g-4 f-1>
       <crow vertical left up g="1.5" f-1>
         <crow justify-between g-3 wrap w-full>
-          <h5><a href="/@[comp.namespace]/@[comp.slug]" secondary>@[comp.title]</a></h5>
+          <h5><a href="/@[comp.path]" secondary>@[comp.title]</a></h5>
           <badge secondary>v@[comp.latest]</badge>
         </crow>
-        <code>@[comp.namespace]/@[comp.slug]</code>
+        <code>@[comp.path]</code>
         <p text-muted>@[comp.description]</p>
       </crow>
     </crow>

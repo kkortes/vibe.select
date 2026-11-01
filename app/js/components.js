@@ -1,4 +1,5 @@
 import { lettered, slugify } from '/js/naming.js';
+import { path } from '/js/pin.js';
 import { call } from '/js/ws.js';
 
 export const state = {
@@ -77,7 +78,7 @@ export const state = {
     try {
       const { namespace, slug } = await call('auth/components/create', { namespace: this.namespace, ...this.draft });
 
-      location.assign(`/${namespace}/${slug}`);
+      location.assign(`/${path(namespace, slug)}`);
     } catch ({ message }) {
       this.failure = message;
     }

@@ -1,4 +1,5 @@
 import { now } from '../../../db.js';
+import { claim } from '../../../names.js';
 import { defaults, validate } from '../../../props.js';
 import { slug as slugPattern } from '../../../user.js';
 import { CATEGORIES, autoTags } from '../../../../app/js/tags.js';
@@ -10,7 +11,7 @@ export default async (
   { db, identity },
 ) => {
   if (!slugPattern.test(String(slug))) throw Error('A slug is lowercase words joined by dashes');
-  if (slug === 'tag') throw Error('tag is reserved for /<namespace>/tag/<name>');
+  await claim(db, namespace, slug);
   if (!String(title).trim()) throw Error('A component needs a title');
   if (!String(html).trim()) throw Error('A component needs markup');
   if (!CATEGORIES.includes(category)) throw Error(`Category must be one of ${CATEGORIES.join(', ')}`);

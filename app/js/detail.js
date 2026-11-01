@@ -1,14 +1,16 @@
 import codie from '/modules/codie/codie.js';
 
 import { SOURCE_URL } from '/js/env.js';
-import { address, source } from '/js/pin.js';
+import { ROOT, address, source } from '/js/pin.js';
 import { guard, take, state as publishing } from '/js/publishing.js';
 import { KEYBOARD, autoTags, listeners, stylingTags } from '/js/tags.js';
 import { call } from '/js/ws.js';
 
-// The Worker serves this page at the component's own address, /<namespace>/<slug>.
+// The Worker serves this page at the component's own address, /<namespace>/<slug>,
+// or /<slug> in the root namespace.
 const params = new URLSearchParams(location.search);
-const [namespace, slug] = location.pathname.slice(1).split('/');
+const segments = location.pathname.slice(1).split('/');
+const [namespace, slug] = segments.length === 1 ? [ROOT, ...segments] : segments;
 
 const readable = (value) => JSON.stringify(value, null, 2);
 
@@ -136,6 +138,7 @@ export const state = {
   ...publishing,
   namespace,
   slug,
+  root: namespace === ROOT,
   component: null,
   revision: null,
   props: [],

@@ -21,9 +21,10 @@ Vibe and Stylecheat and nothing else.
 - One origin serves all of it, so `ORIGIN` in `app/js/env.js` is the page's own
   origin, and that is the site, the socket (`wss://…/ws`) and the component
   source alike. Production, a pull request preview and `bun dev` each read the
-  D1 their own Worker binds. A namespace named like a
-  top-level asset folder or page would be shadowed by it, which is why `modules`,
-  `js`, `css`, `images`, `component`, `components`, `namespace` and `tag` are reserved —
+  D1 their own Worker binds. A namespace or a root namespace component named
+  like a top-level asset folder, page or route would be shadowed by it, which is
+  why `SITE` in `server/names.js` (`modules`, `js`, `css`, `images`, `component`,
+  `components`, `namespace`, `tag`, `ws` and the rest) is reserved for both —
   `tag` because `/tag/<name>` is the frontpage filtered by that tag.
 - It is deployed with `bunx wrangler deploy` from the root, after
   `bun run build`, to the developer's own Cloudflare account. There is no
@@ -98,7 +99,7 @@ component, ported to Vibe from other projects, read at seed time by
 `server/seed/catalogue.js`, the one catalogue of the whole seed, and written into `revisions.html` like
 any other publish. They are not served from disk. An entry there names the
 namespace it is seeded under when that is not `vibe`; `server/seed.js` replaces
-each seeded namespace whole, `vibe` and `webdev`, both owned by the developer's
+each seeded namespace whole, `vibe` and `kortes`, both owned by the developer's
 account, so a component left out of the seed is gone from it after the next run.
 What a seeded component fetches by prop, such as the card's art, lives in
 `app/images/` and is served as an asset.
@@ -110,8 +111,16 @@ What a seeded component fetches by prop, such as the card's art, lives in
 - `GET /<namespace>/<slug>.html` — the latest revision. Short cache; it moves.
 - `GET /<namespace>/<slug>/vN.html` — revision N. Immutable cache; it cannot move.
 
+`vibe` is the root namespace (`ROOT` in `app/js/pin.js`): its components sit at
+the top level, `/<slug>.html` and `/<slug>/vN.html`, with no namespace segment.
+`path` in `app/js/pin.js` builds every address, and every decoded component
+carries it as `path`. A bare name is therefore a root namespace component or a
+namespace, and `server/names.js` keeps either from taking the other's name.
+No slug reads like `v3`, so `/<slug>/v3.html` is never a component in a
+namespace.
+
 Without `.html` the same addresses are the website's pages: `/<namespace>/<slug>`
-is the component page, `/<namespace>` lists every component under it. Every list
+and `/<slug>` are the component page, `/<namespace>` lists every component under it. Every list
 of components — the frontpage, `/<namespace>` and the namespace tabs on
 `/components`, which `auth/components/mine` fills with every published
 component in the caller's own namespaces, unlisted ones included — is
@@ -183,7 +192,7 @@ devDependency; the local D1 it simulates lives in `.wrangler/` (gitignored).
 
 ```
 cd server && bun run migrate          # schema into the local D1
-cd server && bun run seed             # writes the vibe and webdev namespaces and webdev/card
+cd server && bun run seed             # writes the vibe and kortes namespaces and kortes/card
 bun dev                               # compiler watch + the Worker on $PORT
 ```
 

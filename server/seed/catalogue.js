@@ -1,6 +1,6 @@
 // The whole seeded catalogue. Each component's code lives in ./remote, published
 // byte for byte; only the catalogue entry around it is written here, with the
-// namespace it is seeded under when that is not vibe.
+// namespace it is seeded under when that is not vibe, the root namespace.
 
 const read = (name) => Bun.file(`${import.meta.dir}/remote/${name}`).text();
 
@@ -55,7 +55,7 @@ export default await Promise.all(
             `  <button onmouseenter="showTooltip(event.currentTarget, { direction: 'left', lock: true })">Left</button>`,
             `  <button onmouseenter="showTooltip(event.currentTarget, { direction: 'right', lock: true })">Right</button>`,
             `  <button onmouseenter="showTooltip(event.currentTarget, { direction: 'up' })">Follow</button>`,
-            '  <component src="https://viberary.local.korte.kim/vibe/tooltip.html"><card>A tooltip</card></component>',
+            '  <component src="/tooltip.html"><card>A tooltip</card></component>',
             `  <badge onmouseenter="showTooltip(this, { direction: 'up', lock: true, from: this.previousElementSibling })">Hover me</badge>`,
             '</crow>',
           ].join('\n'),
@@ -230,7 +230,7 @@ export default await Promise.all(
     // icons and paper grain are inlined; the art is the one thing it fetches by prop.
     {
       file: 'Card.html',
-      namespace: 'webdev',
+      namespace: 'kortes',
       notes: 'Ported to Vibe and rewritten from Tailwind into plain CSS.',
       slug: 'card',
       title: 'Card',
@@ -314,11 +314,11 @@ export default await Promise.all(
       ],
     },
     // Its cards are whatever sits between its tags; the default holds two
-    // webdev/card, Erat Herba and Steel Sword as ws-card-game's CARDS.ts has them.
+    // kortes/card, Erat Herba and Steel Sword as ws-card-game's CARDS.ts has them.
     {
       file: 'CardHand.html',
-      namespace: 'webdev',
-      notes: 'Its cards are whatever sits between the component tags, any HTML or another <component src> such as webdev/card.',
+      namespace: 'kortes',
+      notes: 'Its cards are whatever sits between the component tags, any HTML or another <component src> such as kortes/card.',
       slug: 'card-hand',
       title: 'Card Hand',
       description: 'Fans out the cards between its tags in an arc, each one overlapping the last, and lifts the one under the cursor.',
@@ -331,7 +331,7 @@ export default await Promise.all(
           type: 'html',
           default: [
             '<component',
-            '  src="/webdev/card.html"',
+            '  src="/kortes/card.html"',
             '  name="Erat Herba"',
             '  image="/images/card/erat-herba.jpg"',
             '  type="fullart"',
@@ -350,7 +350,7 @@ export default await Promise.all(
             `  artist="@['']"`,
             '></component>',
             '<component',
-            '  src="/webdev/card.html"',
+            '  src="/kortes/card.html"',
             '  name="Steel Sword"',
             '  image="/images/card/steel-sword.png"',
             '  type="framed-centered"',
@@ -369,7 +369,7 @@ export default await Promise.all(
             `  artist="@['']"`,
             '></component>',
           ].join('\n'),
-          description: 'The markup between the tags: one element per card, such as a <component src> of webdev/card.',
+          description: 'The markup between the tags: one element per card, such as a <component src> of kortes/card.',
         },
         { name: 'fan', type: 'number', default: 6, description: 'Degrees each card turns from the one beside it. 0 lays them flat in a row.' },
         { name: 'overlap', type: 'number', default: 96, description: 'Pixels each card tucks under the one before it.' },

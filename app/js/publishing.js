@@ -1,3 +1,4 @@
+import { path } from '/js/pin.js';
 import { call } from '/js/ws.js';
 
 // An edit carried from a component page into a namespace of the visitor's own
@@ -57,7 +58,7 @@ export const state = {
       const { namespace, slug } = await call('auth/components/publish', this.unpublished);
 
       this.unpublished = null;
-      location.assign(`/${namespace}/${slug}`);
+      location.assign(`/${path(namespace, slug)}`);
     } catch ({ message }) {
       this.failure = message;
     }
@@ -68,7 +69,7 @@ export const state = {
 
     sessionStorage.setItem(CARRIED, JSON.stringify({ ...this.unpublished, namespace }));
     this.unpublished = null;
-    location.assign(`/${namespace}/${slug}`);
+    location.assign(`/${path(namespace, slug)}`);
   },
 };
 
