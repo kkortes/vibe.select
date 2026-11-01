@@ -171,7 +171,7 @@ sheet sticky {
   order: 0;
   align-self: stretch;
   margin-inline: calc((var(--grid-size) + var(--inset)) * -1) calc((var(--gutter) + var(--inset)) * -1);
-  padding: calc(var(--pad) / 2) calc(var(--gutter) + var(--inset)) var(--pad) calc(var(--grid-size) + var(--inset));
+  padding: 0 calc(var(--gutter) + var(--inset)) var(--pad) calc(var(--grid-size) + var(--inset));
   height: calc-size(auto, round(up, size, var(--cell)));
 }
 
@@ -352,12 +352,17 @@ owner a {
   font-weight: 600;
 }
 
-autotags {
+autotags,
+usertags {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 }
 
-autotags > button {
+usertags {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+:is(autotags, usertags) > button {
   justify-content: start;
 }
 

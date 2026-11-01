@@ -89,16 +89,18 @@
         </label>
 
         <crow wrap>
-          <span text-muted>Auto tags</span>
+          <span text-muted px-4>Auto tags</span>
           <autotags>
             <!-- each filters.auto as name -->
             <button tertiary active="@[tag === name]" onclick="$.pick('@[name]')"><icon data-tag="@[name]"></icon>@[name]</button>
             <!-- /each -->
           </autotags>
-          <span text-muted>User tags</span>
-          <!-- each filters.user as name -->
-          <button tertiary active="@[tag === name]" onclick="$.pick('@[name]')">@[name]</button>
-          <!-- /each -->
+          <span text-muted px-4>User tags</span>
+          <usertags>
+            <!-- each filters.user as name -->
+            <button tertiary active="@[tag === name]" onclick="$.pick('@[name]')">@[name]</button>
+            <!-- /each -->
+          </usertags>
         </crow>
 
         <label flex g-2>
