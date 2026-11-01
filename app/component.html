@@ -135,7 +135,9 @@
                 <!-- else -->
                 <crow left g-2 wrap>
                   <span sm text-muted>User tags</span>
-                  <a href="/tag/@[(unpublished?.category ?? component?.category)?.toLowerCase()]"><badge secondary>@[unpublished?.category ?? component?.category]</badge></a>
+                  <!-- each $.labels() as label -->
+                  <a href="/tag/@[label.toLowerCase()]"><badge secondary>@[label]</badge></a>
+                  <!-- /each -->
                 </crow>
                 <!-- /if -->
               </tags>

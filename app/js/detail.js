@@ -216,6 +216,11 @@ export const state = {
     return (this.unpublished?.dependencies ?? this.revision?.dependencies ?? []).map((name) => ({ name, path: name && path(...place(name)) }));
   },
 
+  // The User tags, one badge each once the field is left.
+  labels() {
+    return (this.unpublished?.category ?? this.component?.category ?? '').split(', ').filter(Boolean);
+  },
+
   // The bytes behind the selected tab. A tab opened on the #v<n> form would
   // show the latest, since the fragment never reaches the server.
   url() {
