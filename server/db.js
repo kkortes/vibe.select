@@ -28,7 +28,8 @@ export const published = (where) =>
    WHERE components.latest > 0 AND (${where})
    ORDER BY components.namespace, components.slug`;
 
-export const revision = (row) => row && { ...row, props: JSON.parse(row.props), events: JSON.parse(row.events) };
+export const revision = (row) =>
+  row && { ...row, props: JSON.parse(row.props), events: JSON.parse(row.events), dependencies: JSON.parse(row.dependencies) };
 
 export const namespace = (row) => ({ ...row, official: !!row.official, unlisted: !!row.unlisted });
 

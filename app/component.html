@@ -97,6 +97,25 @@
                   <a href="https://stylecheat.korte.kim" target="_blank" title="This component assumes you have Stylecheat installed in the place where it is being used" primary sm>stylecheat.korte.kim</a>
                   <!-- /if -->
                 </crow>
+                <!-- if user && coding -->
+                <crow left g-2 w-full>
+                  <span sm text-muted>Dependencies</span>
+                  <label sm f-1>
+                    <input type="text" w-full placeholder="namespace/component, namespace/component" value="@[(unpublished?.dependencies ?? revision?.dependencies)?.filter(Boolean).join(', ')]" onchange="$.depend(this.value)" />
+                  </label>
+                </crow>
+                <!-- else if $.dependencies().length -->
+                <crow left g-2 wrap>
+                  <span sm text-muted>Dependencies</span>
+                  <!-- each $.dependencies() as dependency -->
+                  <!-- if dependency.path -->
+                  <a href="/@[dependency.path]" primary sm><code>@[dependency.name]</code></a>
+                  <!-- else -->
+                  <span sm text-red title="This component no longer exists">Removed component</span>
+                  <!-- /if -->
+                  <!-- /each -->
+                </crow>
+                <!-- /if -->
                 <crow left g-2 wrap>
                   <span sm text-muted>Auto tags</span>
                   <!-- each tags as tag -->

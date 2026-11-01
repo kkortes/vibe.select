@@ -1,9 +1,9 @@
 const read = (name) => Bun.file(`${import.meta.dir}/remote/${name}`).text();
 
-const one = async ({ file, namespace = 'vibe', notes, props = [], events = {}, ...rest }) => ({
+const one = async ({ file, namespace = 'vibe', notes, props = [], events = {}, dependencies = [], ...rest }) => ({
   ...rest,
   namespace,
-  versions: [{ html: await read(file), props, events, notes }],
+  versions: [{ html: await read(file), props, events, dependencies, notes }],
 });
 
 export default await Promise.all(
@@ -176,6 +176,7 @@ export default await Promise.all(
       category: 'Interactive',
       icon: 'desktop',
       events: { keydown: { code: 'Digit1' }, keyup: { code: 'Digit1' } },
+      dependencies: ['data-inspector'],
       props: [
         {
           name: 'keys',
@@ -193,7 +194,7 @@ export default await Promise.all(
           name: 'debug',
           type: 'boolean',
           default: true,
-          description: 'Shows the whole key map, every tracked key true or false, in a fixed corner at the bottom right.',
+          description: 'Shows the whole key map, every tracked key true or false, in a Data Inspector fixed in the bottom right corner.',
         },
       ],
     },

@@ -1,7 +1,7 @@
 import codie from '/modules/codie/codie.js';
 
 import { SOURCE_URL } from '/js/env.js';
-import { ROOT, address, source } from '/js/pin.js';
+import { ROOT, address, path, place, source } from '/js/pin.js';
 import { guard, take, state as publishing } from '/js/publishing.js';
 import { KEYBOARD, autoTags, listeners, stylingTags } from '/js/tags.js';
 import { call } from '/js/ws.js';
@@ -9,14 +9,13 @@ import { call } from '/js/ws.js';
 // The Worker serves this page at the component's own address, /<namespace>/<slug>,
 // or /<slug> in the root namespace.
 const params = new URLSearchParams(location.search);
-const segments = location.pathname.slice(1).split('/');
-const [namespace, slug] = segments.length === 1 ? [ROOT, ...segments] : segments;
+const [namespace, slug] = place(location.pathname.slice(1));
 
 const readable = (value) => JSON.stringify(value, null, 2);
 
 // What a created component holds before its first publish: no markup, which
 // the starter in the editor already differs from.
-const UNPUBLISHED = { version: 0, html: '', props: [], events: {} };
+const UNPUBLISHED = { version: 0, html: '', props: [], events: {}, dependencies: [] };
 
 const STARTER = '<p>Hello from vibe.select</p>\n';
 
@@ -192,6 +191,12 @@ export const state = {
     return this.component && this.showing() < this.component.latest;
   },
 
+  // As the edit or the revision in view names them; a name gone null is a
+  // component removed since, which has no page to link to.
+  dependencies() {
+    return (this.unpublished?.dependencies ?? this.revision?.dependencies ?? []).map((name) => ({ name, path: name && path(...place(name)) }));
+  },
+
   // The bytes behind the selected tab. A tab opened on the #v<n> form would
   // show the latest, since the fragment never reaches the server.
   url() {
@@ -245,11 +250,16 @@ export const state = {
   // edited is published as the revision in view carries it. Editing back to
   // what was there leaves nothing to publish, unless nothing is published here yet.
   edit(key, value) {
-    const { component: { title, description, category, icon, latest }, revision: { html, props, events } } = this;
-    const original = { namespace, slug, title, description, category, icon, html, props, events };
+    const { component: { title, description, category, icon, latest }, revision: { html, props, events, dependencies } } = this;
+    const original = { namespace, slug, title, description, category, icon, html, props, events, dependencies: dependencies.filter(Boolean) };
     const edited = { ...original, ...this.unpublished, [key]: value };
 
-    this.unpublished = !latest || ['html', 'title', 'description'].some((k) => edited[k] !== original[k]) ? edited : null;
+    this.unpublished = !latest || ['html', 'title', 'description', 'dependencies'].some((k) => String(edited[k]) !== String(original[k])) ? edited : null;
+  },
+
+  // Typed as a comma separated list of `namespace/component`.
+  depend(list) {
+    this.edit('dependencies', list.split(',').map((name) => name.trim()).filter(Boolean));
   },
 
   // Its owner saves the pick on the component; anyone else only tries it out,
@@ -367,7 +377,7 @@ export const state = {
   // open in the editor it was made in.
   async clone(carried) {
     await this.show(0);
-    this.missing && this.render({ ...carried, latest: 0, styling: 'inline' }, { version: 1, html: carried.html, props: carried.props, events: carried.events }, 0);
+    this.missing && this.render({ ...carried, latest: 0, styling: 'inline' }, { version: 1, html: carried.html, props: carried.props, events: carried.events, dependencies: carried.dependencies }, 0);
 
     await window.$.ready;
     preview(carried.html);

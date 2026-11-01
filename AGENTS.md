@@ -45,7 +45,7 @@ tables hold the components; `users` and `sessions` hold Google sign-ins for
 | Table        | Holds | Mutable |
 |---|---|---|
 | `namespaces` | `slug`, `title`, `official`, `unlisted`, `ownerId` | yes |
-| `components` | metadata per `namespace` + `slug`: `title`, `description`, `category`, `icon`, `styling`, `latest`, `defaults`, `ownerId` | yes |
+| `components` | metadata per `namespace` + `slug`: `id`, `title`, `description`, `category`, `icon`, `styling`, `latest`, `defaults`, `ownerId` | yes |
 | `revisions`  | one row per published version | **never** |
 | `tags`       | the auto tags (`app/js/tags.js`) of each component's latest revision, one row per tag, replaced on every publish so a component list reads them in the same query as the components | yes |
 
@@ -61,14 +61,24 @@ the revision row, holding the component's markup exactly as published.
 There is no file per component, no object store, no CDN bucket. `server/source.js` reads
 that field and answers with it as `text/html`; that response *is* the component.
 
-A revision row is `{ namespace, slug, version, html, props, events, notes,
-authorId, authorName, createdAt }`. The Functions section of the component page
+A revision row is `{ namespace, slug, version, html, props, events,
+dependencies, notes, authorId, authorName, createdAt }`. The Functions section of the component page
 has a button per event the component listens for on the window or document,
 sending an example: the detail of a custom event, or the key and code of a
 keyboard event. `listeners` in `app/js/tags.js` derives it from what the handler
 reads off its event, each field valued by a literal the markup compares it
 with. `events` holds an author's own example by event name, and wins where
-the code alone cannot know a working value. Revisions are insert-only. `revisions` has its primary
+the code alone cannot know a working value.
+
+`dependencies` lists the vibe.select components a revision renders inside it,
+which its author types in Edit mode as `namespace/component`, comma separated.
+It holds their `components.id`, never their names: an id stays with a
+component wherever it lives, so `server/dependencies.js` reads it back as
+wherever each one is now, and a component that moves namespace never breaks the
+links on the component page. One that no longer exists reads as null and shows
+as removed. The seed upserts its components rather than replacing them, so a
+reseed keeps every id. A revision with any dependency carries the Dependencies
+auto tag. Revisions are insert-only. `revisions` has its primary
 key on `(namespace, slug, version)`, so a second write to a version that exists
 is an error rather than an edit — that key is what makes "frozen" a fact rather
 than a convention. Publishing bumps `components.latest` and inserts the new
@@ -77,7 +87,7 @@ revision in one D1 batch, which is one transaction; it never updates an old one.
 D1 binds parameters by position only (`?` or `?NNN`), never by name.
 
 SQLite has no booleans or nested values: `components.defaults` and
-`revisions.props` and `revisions.events` are JSON text and `namespaces.official` and `namespaces.unlisted` are `0`/`1`. The
+`revisions.props`, `revisions.events` and `revisions.dependencies` are JSON text and `namespaces.official` and `namespaces.unlisted` are `0`/`1`. The
 decoders in `server/db.js` turn rows back into the shapes the client receives.
 
 `users.namespaceCount` caps how many namespaces a user may own; it starts at 1

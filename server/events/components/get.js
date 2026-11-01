@@ -1,4 +1,5 @@
 import { component as decodeComponent, revision as decodeRevision } from '../../db.js';
+import { named } from '../../dependencies.js';
 
 // Public: anyone may read and render any published component, at latest or at
 // a pinned version. Only the version *history* asks for a session.
@@ -20,7 +21,7 @@ export default async ({ namespace, slug, version }, { db }) => {
   const revision = decodeRevision(
     await db
       .prepare(
-        'SELECT version, html, props, events, notes, authorId, authorName, createdAt FROM revisions WHERE namespace = ? AND slug = ? AND version = ?',
+        `SELECT version, html, props, events, ${named}, notes, authorId, authorName, createdAt FROM revisions WHERE namespace = ? AND slug = ? AND version = ?`,
       )
       .bind(namespace, slug, version || component.latest)
       .first(),

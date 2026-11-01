@@ -145,18 +145,22 @@ export const listeners = (html) => {
 
 const styled = (html) => /<style[\s>]|\sstyle=/.test(html);
 
-export const TAGS = ['Props', 'State', 'JS', 'Functions', 'CSS', 'Stylecheat'];
+export const TAGS = ['Props', 'State', 'JS', 'Functions', 'CSS', 'Dependencies', 'Stylecheat'];
 
 // User tags: the category an author files a component under.
 export const CATEGORIES = ['Interactive', 'Forms', 'Layout', 'Navigation', 'Feedback', 'Presentation', 'Game'];
 
-export const autoTags = ({ html, props }) =>
+// Dependencies are named by the author rather than read off the markup: a
+// `<component src>` may point anywhere, and only the author knows which of them
+// are vibe.select components.
+export const autoTags = ({ html, props, dependencies }) =>
   [
     props?.length && 'Props',
     state(html) && 'State',
     js(html) && 'JS',
     listeners(html).length && 'Functions',
     styled(html) && 'CSS',
+    dependencies?.length && 'Dependencies',
   ].filter(Boolean);
 
 // Stylecheat is a promise about the page a component lands in, not something

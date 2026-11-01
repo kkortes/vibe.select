@@ -14,6 +14,13 @@ export const ROOT = 'vibe';
 // Where a component sits under the origin, both as a page and as its source.
 export const path = (namespace, slug) => (namespace === ROOT ? slug : `${namespace}/${slug}`);
 
+// The other way round: a path, or a `namespace/slug` name, back into its
+// namespace and slug.
+export const place = (name) => {
+  const segments = name.split('/');
+  return segments.length === 1 ? [ROOT, ...segments] : segments;
+};
+
 // The address a visitor copies.
 export const address = (origin, namespace, slug, version) =>
   `${origin}/${path(namespace, slug)}.html${version ? `#v${version}` : ''}`;

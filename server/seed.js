@@ -1,6 +1,8 @@
 import components from './seed/components.js';
 import { now } from './db.js';
+import { ID } from './dependencies.js';
 import { defaults, validate } from './props.js';
+import { place } from '../app/js/pin.js';
 import { autoTags } from '../app/js/tags.js';
 
 // `bun run seed` seeds the local D1 that `wrangler dev` reads; `bun run seed
@@ -11,17 +13,26 @@ const database = preview ? 'vibe-select-preview' : 'vibe-select';
 const target = preview || process.argv.includes('--remote') ? '--remote' : '--local';
 
 // Seeded props go through the same validation a published revision does, so the
-// seed can never hold a schema the publish event would have refused.
+// seed can never hold a schema the publish event would have refused, and a
+// dependency names a seeded component, the only kind sure to exist.
+const known = (components) => (name) => {
+  const [namespace, slug] = place(name);
+  if (!components.some((component) => component.namespace === namespace && component.slug === slug)) throw Error(`No seeded component ${name}`);
+  return [namespace, slug];
+};
+
 const checked = (components) =>
   components.map((component) => ({
     ...component,
-    versions: component.versions.map((version) => ({ ...version, props: validate(version.props) })),
+    versions: component.versions.map((version) => ({ ...version, props: validate(version.props), dependencies: version.dependencies.map(known(components)) })),
   }));
 
 const seeded = checked(components);
 
 // Each seeded namespace is replaced whole: its components are written as listed
 // and nothing else is left under it. A component names its namespace, or is the root namespace's.
+// A listed component keeps the id it was seeded with before, so a revision that
+// depends on it, seeded or published, still finds it.
 const NAMESPACES = [
   { slug: 'vibe', title: 'Vibe', official: 1 },
   { slug: 'kortes', title: 'Kortes', official: 0 },
@@ -41,6 +52,10 @@ const OWNER = { googleId: '113094163908909945020', email: 'me@korte.kim', name: 
 
 const owner = `(SELECT id FROM users WHERE googleId = ${literal(OWNER.googleId)})`;
 
+// A dependency is stored by id, looked up once every seeded component is written.
+const ids = (dependencies) =>
+  `json_array(${dependencies.map(([namespace, slug]) => `(SELECT id FROM components WHERE namespace = ${literal(namespace)} AND slug = ${literal(slug)})`).join(', ')})`;
+
 const sql = [
   `INSERT INTO users (id, googleId, email, name, namespaceCount, createdAt, updatedAt)
    VALUES ${values(crypto.randomUUID(), OWNER.googleId, OWNER.email, OWNER.name, OWNER.namespaceCount, now(), now())}
@@ -49,18 +64,26 @@ const sql = [
     `INSERT INTO namespaces (slug, title, official, ownerId, createdAt) VALUES (${row(namespace, author, official)}, ${owner}, ${literal(now())})
      ON CONFLICT (slug) DO UPDATE SET title = excluded.title, official = excluded.official, ownerId = excluded.ownerId;`,
     `DELETE FROM revisions WHERE namespace = ${literal(namespace)};`,
-    `DELETE FROM components WHERE namespace = ${literal(namespace)};`,
-    ...components.flatMap(({ slug, title, description, category, icon, styling = 'inline', versions }) => [
-      `INSERT INTO components (namespace, slug, title, description, category, icon, styling, latest, defaults, createdAt, updatedAt, ownerId)
-       VALUES (${row(namespace, slug, title, description, category, icon, styling, versions.length, JSON.stringify(defaults(versions.at(-1).props)), now(), now())}, ${owner});`,
+    `DELETE FROM tags WHERE namespace = ${literal(namespace)};`,
+    `DELETE FROM components WHERE namespace = ${literal(namespace)} AND slug NOT IN (${row(...components.map(({ slug }) => slug))});`,
+    ...components.map(
+      ({ slug, title, description, category, icon, styling = 'inline', versions }) =>
+        `INSERT INTO components (id, namespace, slug, title, description, category, icon, styling, latest, defaults, createdAt, updatedAt, ownerId)
+         VALUES (${ID}, ${row(namespace, slug, title, description, category, icon, styling, versions.length, JSON.stringify(defaults(versions.at(-1).props)), now(), now())}, ${owner})
+         ON CONFLICT (namespace, slug) DO UPDATE SET title = excluded.title, description = excluded.description, category = excluded.category,
+           icon = excluded.icon, styling = excluded.styling, latest = excluded.latest, defaults = excluded.defaults, updatedAt = excluded.updatedAt, ownerId = excluded.ownerId;`,
+    ),
+  ]),
+  ...NAMESPACES.flatMap(({ slug: namespace, title: author, components }) =>
+    components.flatMap(({ slug, versions }) => [
       ...versions.map(
-        ({ html, props, events, notes }, i) =>
-          `INSERT INTO revisions (namespace, slug, version, html, props, events, notes, authorId, authorName, createdAt)
-           VALUES ${values(namespace, slug, i + 1, html, JSON.stringify(props), JSON.stringify(events), notes, null, author, now())};`,
+        ({ html, props, events, dependencies, notes }, i) =>
+          `INSERT INTO revisions (namespace, slug, version, html, props, events, dependencies, notes, authorId, authorName, createdAt)
+           VALUES (${row(namespace, slug, i + 1, html, JSON.stringify(props), JSON.stringify(events))}, ${ids(dependencies)}, ${row(notes, null, author, now())});`,
       ),
       ...autoTags(versions.at(-1)).map((tag) => `INSERT INTO tags (namespace, slug, tag) VALUES ${values(namespace, slug, tag)};`),
     ]),
-  ]),
+  ),
 ].join('\n');
 
 const file = `${import.meta.dir}/../.wrangler/seed.sql`;

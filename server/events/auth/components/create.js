@@ -1,4 +1,5 @@
 import { now } from '../../../db.js';
+import { ID } from '../../../dependencies.js';
 import { claim } from '../../../names.js';
 import { slug as slugPattern } from '../../../user.js';
 import { lettered, slugify } from '../../../../app/js/naming.js';
@@ -24,8 +25,8 @@ export default async ({ namespace, title = '', description }, { db, identity }) 
 
   await db
     .prepare(
-      `INSERT INTO components (namespace, slug, title, description, category, icon, latest, defaults, ownerId, createdAt, updatedAt)
-       VALUES (?1, ?2, ?3, ?4, ?5, NULL, 0, '{}', ?6, ?7, ?7)`,
+      `INSERT INTO components (id, namespace, slug, title, description, category, icon, latest, defaults, ownerId, createdAt, updatedAt)
+       VALUES (${ID}, ?1, ?2, ?3, ?4, ?5, NULL, 0, '{}', ?6, ?7, ?7)`,
     )
     .bind(namespace, slug, title.trim(), description?.trim() || null, CATEGORIES[0], identity.id, now())
     .run();

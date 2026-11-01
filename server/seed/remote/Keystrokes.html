@@ -35,7 +35,9 @@
 
 <keystrokes-root data-instance="@[this.instance]" data-keys="@[JSON.stringify(keys)]" disabled="@[disabled]" onchange="$.keys = event.detail">
   <!-- if debug -->
-  <keystrokes-debug>@[JSON.stringify(keys, null, 2)]</keystrokes-debug>
+  <keystrokes-debug>
+    <component src="/data-inspector.html" data="@[keys]"></component>
+  </keystrokes-debug>
   <!-- /if -->
 </keystrokes-root>
 
@@ -45,11 +47,5 @@
     right: 0;
     bottom: 0;
     z-index: 1;
-    padding: 32px;
-    background: #fff;
-    color: #1f2937;
-    font: 12px monospace;
-    white-space: pre;
-    pointer-events: none;
   }
 </style>
