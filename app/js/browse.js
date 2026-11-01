@@ -13,13 +13,16 @@ const tag = {
   type: 'god',
   element: 'lightning',
   text: 'I always start the game.',
-  subtypes: ['lightning'],
 };
+
+// The card's subtypes are its element, so the tag leaves them out and picking
+// an element sets both.
+const render = (attributes) => ({ ...attributes, src: pin(attributes.src), subtypes: [attributes.element] });
 
 export const state = {
   // The hero renders the very tag it prints, pin and all, and keeps rendering
   // it as the tag is edited.
-  demo: { ...tag, src: pin(tag.src) },
+  demo: render(tag),
   components: [],
   matches: [],
   // The four most common of each kind, counted by the server.
@@ -54,11 +57,9 @@ export const state = {
   },
 };
 
-// An array has no literal form an attribute can hold, so it is shown bound,
-// as the component page shows it, and the edited tag leaves it as it was.
 const print = (attributes) =>
   `<component\n${Object.entries(attributes)
-    .map(([name, value]) => `  ${name}="${Array.isArray(value) ? `@[${name}]` : value}"`)
+    .map(([name, value]) => `  ${name}="${value}"`)
     .join('\n')}\n></component>`;
 
 // A template parses the edited tag without running anything in it.
@@ -75,13 +76,9 @@ export const edit = () => {
   editor.onEdit = ({ raw }) => {
     const component = read(raw);
     if (!component) return;
-    const attributes = Object.fromEntries(
-      Object.keys(tag)
-        .filter((name) => !Array.isArray(tag[name]))
-        .map((name) => [name, component.getAttribute(name) || '']),
+    window.$.demo = render(
+      Object.fromEntries(Object.keys(tag).map((name) => [name, component.getAttribute(name) || ''])),
     );
-    // The demo card's subtypes are its element, so picking one sets the other.
-    window.$.demo = { ...tag, ...attributes, src: pin(attributes.src), subtypes: [attributes.element] };
   };
 };
 
