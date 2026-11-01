@@ -495,6 +495,7 @@ container crow[preview] {
 
 section[use] {
   grid-row: span 2;
+  padding-bottom: 0;
 }
 
 props,
@@ -515,6 +516,7 @@ props {
   margin-top: auto;
   margin-inline: calc(var(--pad) * -1);
   padding-inline: var(--pad);
+  padding-bottom: var(--pad);
   border-top: var(--hairline) solid var(--border);
 }
 
