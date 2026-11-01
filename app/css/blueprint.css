@@ -102,12 +102,11 @@ blueprint:has(box[hero])::before {
   content: '';
   position: absolute;
   top: round(nearest, anchor(--hero center) - var(--grid-size) * 10, var(--grid-size));
-  left: round(nearest, (100% - var(--grid-size) * 39) / 2, var(--grid-size));
+  inset-inline: 0;
   z-index: -1;
-  width: calc(var(--grid-size) * 39);
   height: calc(var(--grid-size) * 20);
   background: var(--background);
-  mask: url(fade.svg) 0 0 / 100% 100%;
+  mask: url(fade.svg) round(nearest, (100cqw - var(--grid-size) * 39) / 2, var(--grid-size)) 0 / calc(var(--grid-size) * 39) 100% no-repeat;
 }
 
 blueprint::after,
