@@ -5,6 +5,7 @@
 
   let id;
   let last = {};
+  let anyOpen = false;
   let storage;
 
   const isObject = (value) => value !== null && typeof value === 'object';
@@ -51,7 +52,7 @@
     const rows = [];
     const ancestors = new Set();
     let expandable = false;
-    let allOpen = true;
+    anyOpen = false;
 
     const walk = (value, depth, path, key, shown) => {
       const open = isObject(value) && !!openPaths[path];
@@ -59,7 +60,7 @@
       if (!isObject(value)) return;
 
       expandable = true;
-      allOpen &&= open;
+      anyOpen ||= open;
       if (ancestors.has(value)) return;
       ancestors.add(value);
       const entries = Array.isArray(value)
@@ -71,7 +72,7 @@
 
     roots(data).forEach(([key, value]) => walk(value, 0, key, key, true));
 
-    return { rows, label: expandable && (allOpen ? 'Close all' : 'Open all') };
+    return { rows, label: expandable && (anyOpen ? 'Close all' : 'Open all') };
   };
 
   const persist = (openPaths) => {
@@ -91,13 +92,7 @@
   };
 
   const toggleAll = () => {
-    const paths = expandablePaths(last);
-    const openPaths = opened();
-    persist(
-      paths.length && paths.every((path) => openPaths[path])
-        ? {}
-        : { ...openPaths, ...Object.fromEntries(paths.map((path) => [path, true])) },
-    );
+    persist(anyOpen ? {} : { ...opened(), ...Object.fromEntries(expandablePaths(last).map((path) => [path, true])) });
   };
 
   id = component({
