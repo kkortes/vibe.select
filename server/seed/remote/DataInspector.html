@@ -55,7 +55,7 @@
 
     const walk = (value, depth, path, key, shown) => {
       const open = isObject(value) && !!openPaths[path];
-      rows.push({ path, key, depth, shown, expandable: isObject(value), summary: summarize(value) });
+      rows.push({ path, key, depth, shown, expandable: isObject(value), list: Array.isArray(value), summary: summarize(value) });
       if (!isObject(value)) return;
 
       expandable = true;
@@ -120,7 +120,7 @@
       <accordion-content>
         <data-inspector-row flex w-full g="3" py="0.75" px="6" hover="@[row.expandable]" onclick="this.toggle(event, row)">
           <data-inspector-key f-0 pl="@[row.depth]ch">@[row.key]</data-inspector-key>
-          <data-inspector-value flex right f-1 overflow-hidden text-blue="@[row.expandable]">@[row.summary]</data-inspector-value>
+          <data-inspector-value flex right f-1 overflow-hidden text-blue="@[row.expandable && !row.list]" text-purple="@[row.list]">@[row.summary]</data-inspector-value>
         </data-inspector-row>
       </accordion-content>
     </accordion>
