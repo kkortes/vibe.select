@@ -65,7 +65,7 @@ export default await Promise.all(
       slug: 'overlay',
       title: 'Overlay',
       description: 'Shows whatever sits between its tags over a dimmed, blurred backdrop that fades and scales in, and closes on Escape or a click outside it.',
-      category: 'Layout',
+      category: 'Fundamental',
       icon: 'layout',
       styling: 'stylecheat',
       props: [
