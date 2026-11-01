@@ -29,7 +29,7 @@ export default await Promise.all(
     },
     {
       file: 'Tooltip.html',
-      notes: 'Ported from the battleborn-brawlers global tooltip. The first element between its tags is the tooltip itself, whatever markup it is; the rest renders in place.',
+      notes: 'Ported from the battleborn-brawlers global tooltip. The markup between its tags is the tooltip, and its vibe variables are the props showTooltip passes.',
       slug: 'tooltip',
       title: 'Tooltip',
       description: 'One tooltip for the whole page, shown from anywhere with showTooltip, pointing at its anchor from any side.',
@@ -42,18 +42,20 @@ export default await Promise.all(
           type: 'html',
           default: [
             '<card p-3 text-sm>',
-            '  <strong>Tooltip</strong>',
-            '  <p mb-0 text-muted>Any markup: the first element between the tags.</p>',
+            '  @[title]',
             '</card>',
           ].join('\n'),
-          after: `<card onmouseenter="showTooltip(this, {
+          after: `
+<card onmouseenter="showTooltip(this, {
   direction: 'up',
   lock: true,
-  from: this.parentElement
+  props: {
+    title: 'Hello from props'
+  }
 })">
   Hover me
 </card>`,
-          description: 'The markup between the tags. Its first element is the tooltip, drawn as it is written; the rest renders in place, and mounted once in a layout it can be the tooltip alone. Call showTooltip(anchor, { direction, lock, persist, from }) from anywhere: anchor is an element, a mouse event or { x, y }, direction is up, down, left, right or none, lock pins it to the anchor instead of the cursor, persist keeps it past mouseleave until hideTooltip() runs, and from, an element holding another tooltip, shows that one instead of the first mounted.',
+          description: 'The markup between the tags is the tooltip, and its vibe variables are the props showTooltip passes, so its bindings, if and each read them. Call showTooltip(anchor, { direction, lock, persist, props }) from anywhere: anchor is an element, a mouse event or { x, y }, direction is up, down, left, right or none, lock pins it to the anchor instead of the cursor, persist keeps it past mouseleave until hideTooltip() runs, and props holds the values the template reads.',
         },
       ],
     },
