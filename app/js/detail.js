@@ -318,7 +318,7 @@ export const state = {
 
   copy() {
     navigator.clipboard.writeText(this.snippet());
-    this.notice = 'Snippet copied';
+    window.notify.success('Snippet copied');
   },
 
   // A json prop is edited as text and only committed once it parses, so a

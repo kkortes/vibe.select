@@ -71,7 +71,7 @@ export const state = {
       this.mine = this.mine.filter((ns) => ns.slug !== slug);
       this.namespace = '';
       this.dismiss();
-      this.notice = `${slug} is deleted.`;
+      window.notify.success(`${slug} is deleted.`);
     } catch ({ message }) {
       this.failure = message;
     }
@@ -83,7 +83,7 @@ export const state = {
 
       this.mine = [...this.mine, created];
       this.dismiss();
-      this.notice = `${created.slug} is yours and has its own tab now.`;
+      window.notify.success(`${created.slug} is yours and has its own tab now.`);
     } catch ({ message }) {
       this.failure = message;
     }

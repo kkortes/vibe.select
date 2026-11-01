@@ -31,7 +31,7 @@ export const initWs = (onOpen) => {
     try {
       await onOpen?.();
     } catch ({ message }) {
-      window.$.notice = message;
+      window.notify.error(message);
     }
   });
 

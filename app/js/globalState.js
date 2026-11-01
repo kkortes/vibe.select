@@ -13,7 +13,6 @@ export default {
   // Set once the frontpage search bar has stuck; the wordmark clears it.
   browsed: get('mkp-browsed') ?? false,
   path: location.pathname,
-  notice: '',
   // The tag picked in a component list. The frontpage and /<namespace> filter in place;
   // picking one anywhere else opens the frontpage filtered by it. `tagged` is
   // the address a tag link points at, so /<namespace> keeps its own.

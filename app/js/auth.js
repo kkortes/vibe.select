@@ -16,7 +16,7 @@ const startSession = async (event, payload) => {
     // replays it. `aaw/resume` is the event that binds a token to a connection.
     await call('aaw/resume', { token });
   } catch ({ message }) {
-    window.$.notice = message;
+    window.notify.error(message);
   }
 };
 
