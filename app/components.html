@@ -111,8 +111,9 @@
             <h1>Components</h1>
             <!-- if user -->
             <p lead max-w-160>
-              The namespaces your account owns and the components in them. A namespace is the first part of every address,
-              <code>your-namespace/your-component.html</code>.
+              Currently showing your components under the namespace <code>@[namespace]</code>.
+              Your components here are set to <b>unlisted</b> meaning they can't be found through search, but accessible for
+              anyone to use.
             </p>
             <!-- if $.deletable() -->
             <card w-full g-4 p-6>
@@ -139,7 +140,6 @@
 
         <!-- if user -->
         <crow vertical left g-4 w-full>
-          <h6>Your components</h6>
           <!-- if $.listed().length -->
           <component src="/components/Catalogue.html" items="@[$.listed()]"></component>
           <!-- else -->
