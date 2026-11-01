@@ -101,7 +101,10 @@
                 <crow left g-2 w-full>
                   <span sm text-muted>Dependencies</span>
                   <label sm f-1>
-                    <input type="text" w-full placeholder="namespace/component, namespace/component" value="@[(unpublished?.dependencies ?? revision?.dependencies)?.filter(Boolean).join(', ')]" onchange="$.depend(this.value)" />
+                    <input type="text" w-full placeholder="namespace/component, namespace/component" value="@[(unpublished?.dependencies ?? revision?.dependencies)?.filter(Boolean).join(', ')]" onchange="$.depend(this)" />
+                    <!-- if malformed.dependencies -->
+                    <p text-red>Dependencies hold lowercase letters, digits, - and / only, separated by commas.</p>
+                    <!-- /if -->
                   </label>
                 </crow>
                 <!-- else if $.dependencies().length -->
@@ -127,7 +130,7 @@
                   <span sm text-muted>User tags</span>
                   <label sm f-1>
                     <input type="text" w-full placeholder="tag, tag" value="@[unpublished?.category ?? component?.category]" onchange="$.tag(this)" />
-                    <!-- if mistagged -->
+                    <!-- if malformed.tags -->
                     <p text-red>Tags hold letters only, separated by commas.</p>
                     <!-- /if -->
                   </label>

@@ -18,14 +18,12 @@ const readable = (value) => JSON.stringify(value, null, 2);
 // the starter in the editor already differs from.
 const UNPUBLISHED = { version: 0, html: '', props: [], events: {}, dependencies: [] };
 
-// Each tag trimmed and capitalised, kept apart by a comma and one space.
-const tidy = (list) =>
+// A comma separated field, each entry trimmed.
+const listed = (list) =>
   list
     .split(',')
-    .map((tag) => tag.trim())
-    .filter(Boolean)
-    .map((tag) => tag[0].toUpperCase() + tag.slice(1))
-    .join(', ');
+    .map((entry) => entry.trim())
+    .filter(Boolean);
 
 const STARTER = '<p>Hello from vibe.select</p>\n';
 
@@ -194,8 +192,9 @@ export const state = {
   // whatever was published last and carries no hash.
   tab: 0,
   tags: [],
-  // Whether the User tags field holds anything but letters between its commas.
-  mistagged: false,
+  // Whether the User tags field holds anything but letters between its commas,
+  // and Dependencies anything a namespace/slug cannot.
+  malformed: { tags: false, dependencies: false },
   styling: 'inline',
   // What the debug button beside the version badge hands the Data Display,
   // and whether its overlay is open.
@@ -282,15 +281,20 @@ export const state = {
   },
 
   // Typed as a comma separated list of `namespace/component`.
-  depend(list) {
-    this.edit('dependencies', list.split(',').map((name) => name.trim()).filter(Boolean));
+  // Tidied as the field is left, and kept as the edit only when every name could be one.
+  depend(input) {
+    const names = listed(input.value);
+    input.value = names.join(', ');
+    this.malformed.dependencies = names.some((name) => /[^a-z0-9/-]/.test(name));
+    this.malformed.dependencies || this.edit('dependencies', names);
   },
 
   // Tidied as the field is left, and only an all-letters list is kept as the edit.
   tag(input) {
-    input.value = tidy(input.value);
-    this.mistagged = !/^\p{L}*(, \p{L}+)*$/u.test(input.value);
-    this.mistagged || this.edit('category', input.value);
+    const tags = listed(input.value).map((tag) => tag[0].toUpperCase() + tag.slice(1));
+    input.value = tags.join(', ');
+    this.malformed.tags = tags.some((tag) => /\P{L}/u.test(tag));
+    this.malformed.tags || this.edit('category', input.value);
   },
 
   // Its owner saves the pick on the component; anyone else only tries it out,
@@ -370,7 +374,7 @@ export const state = {
     this.listeners = listeners(revision.html).map((listener) => ({ ...listener, example: JSON.stringify(revision.events[listener.event] ?? listener.example) ?? '' }));
     this.styling = component.styling;
     this.tags = tagged(revision, this.styling);
-    this.mistagged = false;
+    this.malformed = { tags: false, dependencies: false };
     this.previewSource = source(SOURCE_URL, namespace, slug, revision.version);
     this.reset();
     this.missing = '';
