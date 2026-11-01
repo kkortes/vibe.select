@@ -40,11 +40,7 @@ export default await Promise.all(
         {
           name: 'html',
           type: 'html',
-          default: [
-            '<card p-3 text-sm>',
-            '  @[title]',
-            '</card>',
-          ].join('\n'),
+          default: '@[title]',
           after: `
 <card onmouseenter="showTooltip(this, {
   direction: 'up',
@@ -55,7 +51,7 @@ export default await Promise.all(
 })">
   Hover me
 </card>`,
-          description: 'The markup between the tags is the tooltip, and its vibe variables are the props showTooltip passes, so its bindings, if and each read them. Call showTooltip(anchor, { direction, lock, persist, props }) from anywhere: anchor is an element, a mouse event or { x, y }, direction is up, down, left, right or none, lock pins it to the anchor instead of the cursor, persist keeps it past mouseleave until hideTooltip() runs, and props holds the values the template reads.',
+          description: 'The markup between the tags is what the tooltip holds, drawn inside stylecheat\'s <tooltip>, and its vibe variables are the props showTooltip passes, so its bindings, if and each read them. Call showTooltip(anchor, { direction, lock, persist, props }) from anywhere: anchor is an element, a mouse event or { x, y }, direction is up, down, left, right or none, lock pins it to the anchor instead of the cursor, persist keeps it past mouseleave until hideTooltip() runs, and props holds the values the template reads.',
         },
       ],
     },
