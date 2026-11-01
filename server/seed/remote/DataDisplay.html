@@ -116,7 +116,7 @@
     <!-- /if -->
   </crow>
   <hr my="4" />
-  <data-display-lines vertical left up f-1 mx="-6" overflow-auto>
+  <data-display-lines vertical left up f-1 mx="-6">
     <!-- each this.view(data, this.openPaths, localStorageID).rows as row (row.path) -->
     <accordion open="@[row.shown]">
       <accordion-content>
@@ -131,6 +131,10 @@
 </card>
 
 <style>
+  data-display-lines {
+    overflow-y: scroll;
+  }
+
   data-display-key::first-letter {
     text-transform: uppercase;
   }
