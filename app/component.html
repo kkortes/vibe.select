@@ -126,7 +126,7 @@
                 <crow left g-2 w-full>
                   <span sm text-muted>User tags</span>
                   <label sm f-1>
-                    <input type="text" w-full placeholder="Category" value="@[unpublished?.category ?? component?.category]" onchange="$.tag(this)" />
+                    <input type="text" w-full placeholder="tag, tag" value="@[unpublished?.category ?? component?.category]" onchange="$.tag(this)" />
                     <!-- if mistagged -->
                     <p text-red>Tags hold letters only, separated by commas.</p>
                     <!-- /if -->
