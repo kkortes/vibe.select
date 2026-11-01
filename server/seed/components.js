@@ -76,7 +76,16 @@ export default await Promise.all(
         {
           name: 'html',
           type: 'html',
-          default: '<card p-6>\n  <p>Escape, a click outside or the button closes me.</p>\n  <button close>Close</button>\n</card>',
+          default: [
+            '<card g-4 p-6>',
+            '  <h6>Overlay</h6>',
+            '  <p>Escape, a click outside or either button closes me.</p>',
+            '  <crow right g-2 w-full>',
+            '    <button tertiary close>Cancel</button>',
+            '    <button primary close>Confirm</button>',
+            '  </crow>',
+            '</card>',
+          ].join('\n'),
           description: 'The markup between the tags: any HTML or another <component src>, shown while open.',
         },
         {
