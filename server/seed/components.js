@@ -49,7 +49,7 @@ export default await Promise.all(
           after: `<card onmouseenter="showTooltip(this, {
   direction: 'up',
   lock: true,
-  from: this.previousElementSibling
+  from: this.parentElement
 })">
   Hover me
 </card>`,
