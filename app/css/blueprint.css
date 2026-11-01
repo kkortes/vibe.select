@@ -805,7 +805,7 @@ code {
   border-radius: 0;
 }
 
-:is(badge, select, textarea, .button, button:not(user-menu > button), input:not([type='checkbox'], [type='radio'], [type='range'], [type='file'])) {
+:is(badge, select, textarea, .button, button:not(user-menu > button, :is(autotags, usertags) > button), input:not([type='checkbox'], [type='radio'], [type='range'], [type='file'])) {
   border-radius: var(--unit);
 }
 
