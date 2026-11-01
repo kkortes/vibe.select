@@ -11,7 +11,8 @@ const page = ({ tag, values, stylecheat, dark }) => `<!DOCTYPE html>
   <base href="${ORIGIN}/" />
   ${stylecheat ? '<link rel="stylesheet" href="/css/stylecheat.css" />' : ''}
   <style>
-    body { box-sizing: border-box; min-height: 100vh; margin: 0; padding: 12vmin; display: grid; place-items: center; background: none; }
+    html { height: 100%; display: grid; align-content: center; }
+    body { margin: 0; padding: 8vw; display: grid; place-items: center; background: none; }
   </style>
   <script type="module">
     import vibe from '/modules/vibe/index.js';
@@ -29,6 +30,8 @@ ${tag}
 // `values` in the frame's own state. `read` hands over the values and the theme
 // as they are now; the returned sync pushes them into the frame, each value
 // only once it changed, so an unchanged json prop never remounts the component.
+// A frame has no height of its own content, so it takes its body's as its
+// minimum and grows its preview box to fit, as the component inline did.
 export default (host, { src, attributes, children = '', after = '', styling, read }) => {
   const attrs = attributes.map((name) => `${name}="@[values.${name}]"`).join(' ');
   const frame = document.createElement('iframe');
@@ -53,6 +56,7 @@ export default (host, { src, attributes, children = '', after = '', styling, rea
   frame.addEventListener('ready', () => {
     URL.revokeObjectURL(frame.src);
     view = frame.contentWindow;
+    new view.ResizeObserver(() => (frame.style.minHeight = `${view.document.body.offsetHeight}px`)).observe(view.document.body);
     sync();
   }, { once: true });
   host.replaceChildren(frame);
