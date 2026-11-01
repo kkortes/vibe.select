@@ -68,7 +68,10 @@
                     <span>Managed by</span>
                     <a href="/@[namespace]" primary><icon users></icon><!-- if root -->Vibe official<!-- else -->@[namespace]<!-- /if --></a>
                   </owner>
-                  <badge secondary>v@[$.showing()]</badge>
+                  <crow g-2>
+                    <badge secondary>v@[$.showing()]</badge>
+                    <button secondary sm title="@[component ? 'Show data' : 'No data to display']" disabled="@[!component]" onclick="$.inspect()"><icon code></icon></button>
+                  </crow>
                 </crow>
                 <!-- if user -->
                 <h1><textarea rows="1" spellcheck="false" value="@[unpublished?.title ?? component?.title]" oninput="$.edit('title', this.value)"></textarea></h1>
@@ -218,6 +221,12 @@
         </pane>
       </slider>
     </box>
+
+    <dialog inspector w="120" h="120" overflow-hidden onclick="event.target === this && this.close()" onclose="$.inspected = null">
+      <!-- if inspected -->
+      <component src="/data-inspector.html" data="@[inspected]"></component>
+      <!-- /if -->
+    </dialog>
 
     <divider></divider>
 
