@@ -847,7 +847,7 @@ card[warning] {
   --card: oklch(0.232 0.013 58);
 }
 
-:is(section[about], card[draft]) textarea {
+section[about] textarea {
   display: block;
   width: 100%;
   min-width: 0;

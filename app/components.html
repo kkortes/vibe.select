@@ -91,15 +91,15 @@
       </component>
 
       <component src="/overlay.html" open="@[drafting]">
-        <card draft g-4 p-6>
+        <card g-4 p-6>
           <h6>Add component to @[namespace]</h6>
           <crow vertical left g="1.5" w-full>
             <span sm text-muted>Name</span>
-            <p lead w-full><textarea rows="1" placeholder="At least 3 letters" value="@[draft.title]" oninput="$.draft.title = this.value"></textarea></p>
+            <input type="text" w-full placeholder="At least 3 letters" value="@[draft.title]" oninput="$.draft.title = this.value" />
           </crow>
           <crow vertical left g="1.5" w-full>
             <span sm text-muted>Description <span text-muted>Optional</span></span>
-            <p lead w-full><textarea rows="1" placeholder="What it does" value="@[draft.description]" oninput="$.draft.description = this.value"></textarea></p>
+            <input type="text" w-full placeholder="What it does" value="@[draft.description]" oninput="$.draft.description = this.value" />
           </crow>
           <crow vertical left g="1.5" w-full>
             <span sm text-muted>Slug</span>
