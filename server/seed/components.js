@@ -17,7 +17,7 @@ export default await Promise.all(
       category: 'Feedback',
       icon: 'bell',
       styling: 'stylecheat',
-      events: { notify: { type: 'success', title: 'Saved', description: 'Your changes are live.' } },
+      events: { notify: { type: 'success', title: 'Saved', description: 'Your changes are live' } },
       props: [
         { name: 'up', type: 'boolean', default: true, description: 'Pins the stack to the top edge, newest on top. Below 769px wide the stack always sits bottom centre.' },
         { name: 'down', type: 'boolean', default: false, description: 'Pins the stack to the bottom edge, newest at the bottom. Neither up nor down centres it vertically.' },
