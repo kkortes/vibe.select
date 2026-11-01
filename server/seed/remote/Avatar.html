@@ -1,22 +1,3 @@
-<avatar-disc circle w-32 overflow-hidden bg-card style="--x: @[x]; --y: @[y]; --zoom: @[zoom || 3]">
-  <img src="@[image]" alt="@[alt || '']" />
-</avatar-disc>
-
-<style>
-  avatar-disc {
-    position: relative;
-    box-shadow:
-      inset 0 0 0 calc(var(--unit) * 0.75) rgb(255 255 255 / 0.25),
-      inset 0 0 0 1px rgb(0 0 0 / 0.5);
-    filter: drop-shadow(1px 1px 1px oklch(from var(--shadow-color) l c h / .1));
-  }
-
-  avatar-disc img {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: calc(100% * var(--zoom));
-    transform: translate(calc(var(--x, 47) * -1%), calc(var(--y, 15) * -1%));
-    pointer-events: none;
-  }
-</style>
+<circle class="crow" w-32 overflow-hidden bg-card style="--x: @[x]%; --y: @[y]%; --zoom: @[zoom || 3]; filter: drop-shadow(1px 1px 1px oklch(from var(--shadow-color) l c h / .1))">
+  <img f-0 src="@[image]" alt="@[alt || '']" style="width: calc(100% * var(--zoom)); translate: calc(50% - var(--x, 50%)) calc(50% - var(--y, 50%))" />
+</circle>

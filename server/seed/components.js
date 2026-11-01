@@ -299,7 +299,7 @@ export default await Promise.all(
       notes: 'Ported to Vibe from the battleborn-brawlers CardDisc and the Mugshot crop inside it. The image is a whole URL rather than a path under the game’s own races folder.',
       slug: 'avatar',
       title: 'Avatar',
-      description: 'A round frame with an inset ring and drop shadow that crops an image to whatever point you aim it at, zoomed in.',
+      description: 'A round frame with a drop shadow that crops an image to whatever point you aim it at, zoomed in.',
       category: 'Presentation',
       icon: 'user',
       styling: 'stylecheat',
