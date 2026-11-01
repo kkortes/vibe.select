@@ -11,7 +11,7 @@
     {
       "binding": "DB",
       "database_name": "vibe-select",
-      "database_id": "7807d82a-59b0-4ea1-9276-98f9901a0d18",
+      "database_id": "40d1438e-30ab-4859-ac34-f95ff994e08c",
       "migrations_dir": "./server/migrations"
     }
   ],
@@ -23,7 +23,7 @@
       {
         "binding": "DB",
         "database_name": "vibe-select-preview",
-        "database_id": "b5fdfc6c-05d4-4c88-9571-22f4c83092a4",
+        "database_id": "e85d0d26-103a-4409-87b3-7681cfe6e4ff",
         "migrations_dir": "./server/migrations"
       }
     ],
