@@ -84,7 +84,7 @@
               <!-- if user && coding -->
               <p lead max-w-160><textarea rows="1" value="@[unpublished?.description ?? component?.description]" oninput="$.edit('description', this.value)"></textarea></p>
               <!-- else -->
-              <p lead max-w-160>@[component?.description]</p>
+              <p lead max-w-160>@[$.unsafe(component?.description)]</p>
               <!-- /if -->
               <tags>
                 <!-- if user && coding -->
