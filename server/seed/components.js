@@ -318,13 +318,13 @@ export default await Promise.all(
       notes: 'Its cards are whatever sits between the component tags, any HTML or another <component src> such as kortes/card.',
       slug: 'card-hand',
       title: 'Card Hand',
-      description: 'Fans out the cards between its tags in an arc, each one overlapping the last, and lifts the one under the cursor.',
+      description: 'Fans out the cards between its tags along an arc around a point below them, dealt face up or face down.',
       category: 'Game',
       icon: 'images',
       styling: 'inline',
       props: [
         {
-          name: 'cards',
+          name: 'html',
           type: 'html',
           default: [
             '<component',
@@ -350,8 +350,10 @@ export default await Promise.all(
           ].join('\n'),
           description: 'The markup between the tags: one element per card, such as a <component src> of kortes/card.',
         },
-        { name: 'fan', type: 'number', default: 6, description: 'Degrees each card turns from the one beside it. 0 lays them flat in a row.' },
-        { name: 'overlap', type: 'number', default: 96, description: 'Pixels each card tucks under the one before it.' },
+        { name: 'spread', type: 'number', default: 0.09, description: 'Share of a full circle the hand fans across, split evenly between its cards. 0 stacks them all in one place.' },
+        { name: 'distance', type: 'number', default: 800, description: 'Pixels from the centre of the cards down to the point they fan around. Lower bends the arc tighter.' },
+        { name: 'flipped', type: 'boolean', default: true, description: 'Shows the cards face up. Unset, each one turns over to its back.' },
+        { name: 'locked', type: 'boolean', default: false, description: 'Greys out the card backs and ignores clicks on the cards.' },
       ],
     },
   ].map(one),
