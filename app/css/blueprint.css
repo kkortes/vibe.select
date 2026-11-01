@@ -168,7 +168,7 @@ sheet sticky {
   order: 0;
   align-self: stretch;
   margin-inline: calc((var(--grid-size) + var(--inset)) * -1) calc((var(--gutter) + var(--inset)) * -1);
-  padding-inline: calc(var(--grid-size) + var(--inset)) calc(var(--gutter) + var(--inset));
+  padding-inline: calc(var(--grid-size) + var(--inset)) var(--gutter);
 }
 
 sheet sticky > divider {
