@@ -98,6 +98,10 @@ box[hero] {
   anchor-name: --hero;
 }
 
+:root:has(box[hero]) {
+  overflow-anchor: none;
+}
+
 blueprint:has(box[hero])::before {
   content: '';
   position: absolute;
