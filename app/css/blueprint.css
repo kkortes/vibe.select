@@ -369,7 +369,7 @@ usertags {
 tags {
   display: flex;
   flex-wrap: wrap;
-  gap: calc(var(--unit) * 6);
+  column-gap: calc(var(--unit) * 6);
   margin-top: auto;
 }
 
