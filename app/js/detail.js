@@ -37,6 +37,10 @@ const slotted = ({ html, props = [] }) =>
 // What sits between the tags, as the values in the docs have it.
 const children = () => window.$.values[window.$.slot?.name] ?? '';
 
+// What the example puts after the closing tag, such as an element outside the
+// component that calls into it.
+const after = () => window.$.slot?.after ?? '';
+
 // Which props a component takes is the thing being documented, so the attribute
 // *names* on the tag are data. That is the one place the page writes markup
 // instead of templating it — every value on it stays bound to `values`, so
@@ -52,7 +56,7 @@ const mount = () => {
 
   mounted = children();
   document.querySelector('preview-host').innerHTML =
-    `<component src="${window.$.previewSource}" ${attrs}>${mounted}</component>`;
+    `<component src="${window.$.previewSource}" ${attrs}>${mounted}</component>${after()}`;
 };
 
 let editor;
@@ -216,6 +220,7 @@ export const state = {
       `  src="${address(SOURCE_URL, this.namespace, this.slug, this.tab)}"`,
       ...attrs.map((attr) => `  ${attr}`),
       ...(inner ? ['>', ...inner.split('\n').map((line) => `  ${line}`), '</component>'] : ['></component>']),
+      ...(after() ? after().split('\n') : []),
     ].join('\n');
   },
 

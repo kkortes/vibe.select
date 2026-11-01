@@ -2,6 +2,8 @@
 // object. It is passed by binding rather than as a literal, which is what the
 // docs and the copyable snippet both show. `html` is no attribute at all: it is
 // the markup between the tags, which the component renders through its <slot>.
+// Its `after` is example markup that sits after the closing tag, such as an
+// element outside the component that calls into it.
 const TYPES = ['text', 'number', 'boolean', 'select', 'json', 'html'];
 
 // The frozen truth about props lives on the revision. `defaults` is the copy
@@ -16,7 +18,7 @@ export const validate = (props) => {
   if (props.filter(({ type }) => type === 'html').length > 1)
     throw Error('Only one prop can be html: a tag has one place between its tags');
 
-  return props.map(({ name, type, default: value, description = '', options = [] }) => {
+  return props.map(({ name, type, default: value, description = '', options = [], after }) => {
     // An attribute name is lowercased by the HTML parser, and vibe matches prop
     // names case-insensitively, so camelCase is a real and common way to write
     // one. What an attribute genuinely cannot carry is whitespace.
@@ -34,6 +36,9 @@ export const validate = (props) => {
     if (type === 'html' && typeof value !== 'string')
       throw Error(`Prop "${name}" is html and needs markup as its default`);
 
-    return { name, type, default: value, description, ...(type === 'select' && { options }) };
+    if (after !== undefined && (type !== 'html' || typeof after !== 'string'))
+      throw Error(`Prop "${name}" can only carry markup after the tag as an html prop`);
+
+    return { name, type, default: value, description, ...(type === 'select' && { options }), ...(after && { after }) };
   });
 };
