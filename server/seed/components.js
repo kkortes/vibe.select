@@ -236,7 +236,7 @@ export default await Promise.all(
       description: 'A trading card, full art or framed, in the colour of its element.',
       category: 'Game',
       icon: 'image',
-      styling: 'stylecheat',
+      styling: 'inline',
       props: [
         { name: 'name', type: 'text', default: 'Oskar', description: 'Card name. Trusted HTML.' },
         {
