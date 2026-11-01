@@ -8,7 +8,7 @@ import { call } from '/js/ws.js';
 const tag = {
   src: address(SOURCE_URL, 'kortes', 'card', 1),
   name: 'Oskar',
-  image: `${SOURCE_URL}/images/card/oskar.jpg`,
+  image: 'https://www.worldseed.eu/creature/lightning/oskar-god-of-lightning.jpg',
   type: 'fullart',
   kind: 'god',
   color: 'yellow',
