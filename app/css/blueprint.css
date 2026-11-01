@@ -127,8 +127,6 @@ sticky {
 }
 
 sticky[grid][locked] {
-  --major: oklch(from var(--border) l c h / 0.11);
-  --minor: oklch(from var(--border) l c h / 0.04);
   background-image: none;
 }
 
@@ -151,9 +149,6 @@ sticky:not(sheet sticky) {
 
 @container scroll-state(stuck: top) {
   sticky::after {
-    background-image: var(--lines);
-    background-position: inherit;
-    background-size: inherit;
     backdrop-filter: blur(16px) saturate(1.5);
   }
 }
@@ -171,8 +166,7 @@ sheet sticky {
   order: 0;
   align-self: stretch;
   margin-inline: calc((var(--grid-size) + var(--inset)) * -1) calc((var(--gutter) + var(--inset)) * -1);
-  padding: 0 calc(var(--gutter) + var(--inset)) var(--pad) calc(var(--grid-size) + var(--inset));
-  height: calc-size(auto, round(up, size, var(--cell)));
+  padding-inline: calc(var(--grid-size) + var(--inset)) calc(var(--gutter) + var(--inset));
 }
 
 sheet sticky > divider {
