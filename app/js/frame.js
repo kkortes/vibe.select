@@ -16,7 +16,8 @@ const page = ({ tag, values, stylecheat, dark }) => `<!DOCTYPE html>
   <script type="module">
     import vibe from '/modules/vibe/index.js';
 
-    window.$ = vibe({ values: ${JSON.stringify(values).replaceAll('<', '\\u003c')} }, { noCache: true });
+    await vibe({ values: ${JSON.stringify(values).replaceAll('<', '\\u003c')} }, { noCache: true }).ready;
+    frameElement.dispatchEvent(new Event('ready'));
   </script>
 </head>
 <body${stylecheat ? ' stylecheat' : ''}${dark ? ' class="dark"' : ''} vibe-fouc>
@@ -33,8 +34,10 @@ export default (host, { src, attributes, children = '', after = '', styling, rea
   const frame = document.createElement('iframe');
   let view;
 
-  // Until the frame has loaded there is no state in it to push to; loading
-  // pushes whatever changed while it did.
+  // Until the frame's Vibe is ready there is no state in it to push to; ready
+  // pushes whatever changed meanwhile. It is the frame's own ready, not its
+  // load: Vibe's modules await at the top level, so load can fire before the
+  // frame's module has even run.
   const sync = () => {
     if (!view) return;
     const { values, dark } = read();
@@ -47,7 +50,7 @@ export default (host, { src, attributes, children = '', after = '', styling, rea
   frame.src = URL.createObjectURL(
     new Blob([page({ tag: `<component src="${src}" ${attrs}>${children}</component>${after}`, stylecheat: styling === 'stylecheat', ...read() })], { type: 'text/html' }),
   );
-  frame.addEventListener('load', () => {
+  frame.addEventListener('ready', () => {
     URL.revokeObjectURL(frame.src);
     view = frame.contentWindow;
     sync();
