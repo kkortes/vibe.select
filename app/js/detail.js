@@ -4,7 +4,7 @@ import { SOURCE_URL } from '/js/env.js';
 import frame from '/js/frame.js';
 import { ROOT, address, path, place, source } from '/js/pin.js';
 import { guard, take, state as publishing } from '/js/publishing.js';
-import { CATEGORIES, KEYBOARD, autoTags, listeners, stylingTags } from '/js/tags.js';
+import { KEYBOARD, autoTags, listeners, stylingTags } from '/js/tags.js';
 import { call } from '/js/ws.js';
 
 // The Worker serves this page at the component's own address, /<namespace>/<slug>,
@@ -17,6 +17,15 @@ const readable = (value) => JSON.stringify(value, null, 2);
 // What a created component holds before its first publish: no markup, which
 // the starter in the editor already differs from.
 const UNPUBLISHED = { version: 0, html: '', props: [], events: {}, dependencies: [] };
+
+// Each tag trimmed and capitalised, kept apart by a comma and one space.
+const tidy = (list) =>
+  list
+    .split(',')
+    .map((tag) => tag.trim())
+    .filter(Boolean)
+    .map((tag) => tag[0].toUpperCase() + tag.slice(1))
+    .join(', ');
 
 const STARTER = '<p>Hello from vibe.select</p>\n';
 
@@ -185,8 +194,8 @@ export const state = {
   // whatever was published last and carries no hash.
   tab: 0,
   tags: [],
-  // What the User tags field suggests; publishing takes no other.
-  categories: CATEGORIES,
+  // Whether the User tags field holds anything but letters between its commas.
+  mistagged: false,
   styling: 'inline',
   // What the debug button beside the version badge hands the Data Display,
   // and whether its overlay is open.
@@ -272,6 +281,13 @@ export const state = {
     this.edit('dependencies', list.split(',').map((name) => name.trim()).filter(Boolean));
   },
 
+  // Tidied as the field is left, and only an all-letters list is kept as the edit.
+  tag(input) {
+    input.value = tidy(input.value);
+    this.mistagged = !/^\p{L}*(, \p{L}+)*$/u.test(input.value);
+    this.mistagged || this.edit('category', input.value);
+  },
+
   // Its owner saves the pick on the component; anyone else only tries it out,
   // so the tags follow only a saved pick.
   async style(styling) {
@@ -349,6 +365,7 @@ export const state = {
     this.listeners = listeners(revision.html).map((listener) => ({ ...listener, example: JSON.stringify(revision.events[listener.event] ?? listener.example) ?? '' }));
     this.styling = component.styling;
     this.tags = tagged(revision, this.styling);
+    this.mistagged = false;
     this.previewSource = source(SOURCE_URL, namespace, slug, revision.version);
     this.reset();
     this.missing = '';
