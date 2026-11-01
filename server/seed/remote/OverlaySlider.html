@@ -34,9 +34,8 @@
     display: grid;
     grid-template-rows: 80px 1fr 80px;
     place-items: center;
-    background: linear-gradient(in oklab, oklch(from var(--background) l c h / 0.4), oklch(from var(--shadow-color) l c h / 0.6));
-    box-shadow: inset 0 0 10vw rgb(0 0 0 / 0.5);
-    backdrop-filter: blur(1px);
+    background: radial-gradient(in oklab, oklch(from var(--background) l c h / 0.45), oklch(from var(--background) l c h / 0.8));
+    backdrop-filter: blur(12px) saturate(1.4);
     opacity: 0;
     scale: 1.2;
     pointer-events: none;
@@ -64,7 +63,7 @@
     align-items: center;
     justify-content: center;
     scroll-snap-align: center;
-    filter: drop-shadow(0 calc(var(--unit) * 4) calc(var(--unit) * 8) oklch(from var(--shadow-color) l c h / 0.35));
+    filter: drop-shadow(0 2px 4px oklch(from var(--shadow-color) l c h / 0.25));
   }
 
   @media (max-width: 768px) {
