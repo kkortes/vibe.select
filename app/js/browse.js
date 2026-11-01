@@ -13,6 +13,7 @@ const tag = {
   kind: 'god',
   element: 'lightning',
   text: 'I always start the game.',
+  subtypes: ['lightning'],
 };
 
 export const state = {
@@ -79,7 +80,8 @@ export const edit = () => {
         .filter((name) => !Array.isArray(tag[name]))
         .map((name) => [name, component.getAttribute(name) || '']),
     );
-    window.$.demo = { ...tag, ...attributes, src: pin(attributes.src) };
+    // The demo card's subtypes are its element, so picking one sets the other.
+    window.$.demo = { ...tag, ...attributes, src: pin(attributes.src), subtypes: [attributes.element] };
   };
 };
 
