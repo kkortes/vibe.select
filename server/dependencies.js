@@ -31,3 +31,17 @@ export const resolve = async (db, names, namespace, slug) => {
 // component is now, and null for one that no longer exists.
 export const named = `(SELECT json_group_array(components.namespace || '/' || components.slug)
    FROM json_each(revisions.dependencies) LEFT JOIN components ON components.id = json_each.value) AS dependencies`;
+
+// Whether any component a revision renders, or any it renders in turn at its
+// latest, assumes Stylecheat on the page, so a frame holding the revision
+// loads Stylecheat for them even when the revision carries its own styles.
+export const stylecheat = `WITH RECURSIVE tree(id) AS (
+     SELECT json_each.value FROM revisions, json_each(revisions.dependencies)
+     WHERE revisions.namespace = ?1 AND revisions.slug = ?2 AND revisions.version = ?3
+     UNION
+     SELECT json_each.value FROM tree
+     JOIN components ON components.id = tree.id
+     JOIN revisions ON revisions.namespace = components.namespace AND revisions.slug = components.slug AND revisions.version = components.latest,
+     json_each(revisions.dependencies)
+   )
+   SELECT EXISTS (SELECT 1 FROM tree JOIN components ON components.id = tree.id WHERE components.styling = 'stylecheat') AS stylecheat`;

@@ -98,7 +98,7 @@ export const preview = () => {
   const sync = frame(document.querySelector('preview-host'), {
     src,
     attributes: Object.keys(props(window.$.demo)),
-    styling: 'stylecheat',
+    stylecheat: true,
     read: () => ({ values: props(window.$.demo), dark: window.$.darkMode }),
   });
   const off = window.$.on('afterUpdate', () => {

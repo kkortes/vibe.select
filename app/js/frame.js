@@ -1,9 +1,10 @@
 import { ORIGIN } from '/js/env.js';
 
 // A preview is the page a consumer would have: a document of its own, holding
-// Vibe, Stylecheat when the component is styled by it, and nothing of this
-// site's. In this page's own document every stylesheet here, and the <style>
-// of every other component mounted on it, would reach the preview too.
+// Vibe, Stylecheat when the component or one it renders is styled by it, and
+// nothing of this site's. In this page's own document every stylesheet here,
+// and the <style> of every other component mounted on it, would reach the
+// preview too.
 const page = ({ tag, values, stylecheat, dark }) => `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +36,7 @@ ${tag}
 // viewport is whole pixels, so that height is rounded up: offsetHeight rounds
 // to nearest, and a body a fraction taller than its frame scrolls it whenever
 // the frame sits between pixels, as it does while the hero shrinks.
-export default (host, { src, attributes, children = '', after = '', styling, read }) => {
+export default (host, { src, attributes, children = '', after = '', stylecheat, read }) => {
   const attrs = attributes.map((name) => `${name}="@[values.${name}]"`).join(' ');
   const frame = document.createElement('iframe');
   let view;
@@ -54,7 +55,7 @@ export default (host, { src, attributes, children = '', after = '', styling, rea
   };
 
   frame.src = URL.createObjectURL(
-    new Blob([page({ tag: `<component src="${src}" ${attrs}>${children}</component>${after}`, stylecheat: styling === 'stylecheat', ...read() })], { type: 'text/html' }),
+    new Blob([page({ tag: `<component src="${src}" ${attrs}>${children}</component>${after}`, stylecheat, ...read() })], { type: 'text/html' }),
   );
   frame.addEventListener('ready', () => {
     URL.revokeObjectURL(frame.src);

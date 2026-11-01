@@ -46,7 +46,8 @@ const after = () => window.$.slot?.after ?? '';
 // preview's frame. Editing a prop in the docs pushes it there and re-renders
 // the component and nothing else. The markup between the tags is read once when
 // the component mounts, and the styling decides what the frame loads, so a
-// change to either mounts the component again.
+// change to either mounts the component again. A dependency styled by
+// Stylecheat makes the frame load it whatever the component's own styling.
 let mounted;
 let sync;
 
@@ -57,7 +58,7 @@ const mount = () => {
     attributes: window.$.attributes.map(({ name }) => name),
     children: mounted.children,
     after: after(),
-    styling: mounted.styling,
+    stylecheat: mounted.styling === 'stylecheat' || window.$.revision.stylecheat,
     read: () => ({ values: window.$.values, dark: window.$.darkMode }),
   });
 };

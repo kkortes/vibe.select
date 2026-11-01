@@ -1,5 +1,5 @@
 import { component as decodeComponent, revision as decodeRevision } from '../../db.js';
-import { named } from '../../dependencies.js';
+import { named, stylecheat } from '../../dependencies.js';
 
 // Public: anyone may read and render any published component, at latest or at
 // a pinned version. Only the version *history* asks for a session.
@@ -29,5 +29,7 @@ export default async ({ namespace, slug, version }, { db }) => {
 
   if (!revision) throw Error(`No version ${version} of ${namespace}/${slug}`);
 
-  return { ...component, revision };
+  const dependencies = await db.prepare(stylecheat).bind(namespace, slug, revision.version).first();
+
+  return { ...component, revision: { ...revision, stylecheat: !!dependencies.stylecheat } };
 };
