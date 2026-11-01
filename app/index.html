@@ -92,7 +92,7 @@
           <span text-muted>Auto tags</span>
           <autotags>
             <!-- each filters.auto as name -->
-            <button tertiary active="@[tag === name]" onclick="$.pick('@[name]')"><icon tag="@[name]"></icon>@[name]</button>
+            <button tertiary active="@[tag === name]" onclick="$.pick('@[name]')"><icon data-tag="@[name]"></icon>@[name]</button>
             <!-- /each -->
           </autotags>
           <span text-muted>User tags</span>

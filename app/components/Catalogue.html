@@ -17,7 +17,7 @@
       <crow left g-2 wrap>
         <span sm text-muted>Auto tags</span>
         <!-- each comp.tags as name -->
-        <a href="@[$.tagged(name)]" onclick="event.preventDefault(); $.pick('@[name]')"><badge secondary active="@[tag === name]"><icon tag="@[name]"></icon>@[name]</badge></a>
+        <a href="@[$.tagged(name)]" onclick="event.preventDefault(); $.pick('@[name]')"><badge secondary active="@[tag === name]"><icon data-tag="@[name]"></icon>@[name]</badge></a>
         <!-- /each -->
       </crow>
       <crow left g-2 wrap>

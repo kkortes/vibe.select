@@ -171,7 +171,7 @@ sheet sticky {
   order: 0;
   align-self: stretch;
   margin-inline: calc((var(--grid-size) + var(--inset)) * -1) calc((var(--gutter) + var(--inset)) * -1);
-  padding: var(--pad) calc(var(--gutter) + var(--inset)) var(--pad) calc(var(--grid-size) + var(--inset));
+  padding: calc(var(--pad) / 2) calc(var(--gutter) + var(--inset)) var(--pad) calc(var(--grid-size) + var(--inset));
   height: calc-size(auto, round(up, size, var(--cell)));
 }
 
@@ -354,7 +354,11 @@ owner a {
 
 autotags {
   display: grid;
-  grid-template-columns: repeat(3, auto);
+  grid-template-columns: repeat(3, 1fr);
+}
+
+autotags > button {
+  justify-content: start;
 }
 
 tags {
@@ -638,27 +642,27 @@ icon[fork] {
   --icon: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2218%22%20r%3D%223%22%2F%3E%3Ccircle%20cx%3D%226%22%20cy%3D%226%22%20r%3D%223%22%2F%3E%3Ccircle%20cx%3D%2218%22%20cy%3D%226%22%20r%3D%223%22%2F%3E%3Cpath%20d%3D%22M18%209v2c0%20.6-.4%201-1%201H7c-.6%200-1-.4-1-1V9%22%2F%3E%3Cpath%20d%3D%22M12%2012v3%22%2F%3E%3C%2Fsvg%3E');
 }
 
-icon[tag='Props'] {
+icon[data-tag='Props'] {
   --icon: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M21%204h-7%22%2F%3E%3Cpath%20d%3D%22M10%204H3%22%2F%3E%3Cpath%20d%3D%22M21%2012h-9%22%2F%3E%3Cpath%20d%3D%22M8%2012H3%22%2F%3E%3Cpath%20d%3D%22M21%2020h-5%22%2F%3E%3Cpath%20d%3D%22M12%2020H3%22%2F%3E%3Cpath%20d%3D%22M14%202v4%22%2F%3E%3Cpath%20d%3D%22M8%2010v4%22%2F%3E%3Cpath%20d%3D%22M16%2018v4%22%2F%3E%3C%2Fsvg%3E');
 }
 
-icon[tag='State'] {
+icon[data-tag='State'] {
   --icon: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cellipse%20cx%3D%2212%22%20cy%3D%225%22%20rx%3D%229%22%20ry%3D%223%22%2F%3E%3Cpath%20d%3D%22M3%205v14a9%203%200%200%200%2018%200V5%22%2F%3E%3Cpath%20d%3D%22M3%2012a9%203%200%200%200%2018%200%22%2F%3E%3C%2Fsvg%3E');
 }
 
-icon[tag='Functions'] {
+icon[data-tag='Functions'] {
   --icon: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20width%3D%2218%22%20height%3D%2218%22%20x%3D%223%22%20y%3D%223%22%20rx%3D%222%22%2F%3E%3Cpath%20d%3D%22M9%2017c2%200%202.8-1%202.8-2.8V10c0-2%201-3.3%203.2-3%22%2F%3E%3Cpath%20d%3D%22M9%2011.2h5.7%22%2F%3E%3C%2Fsvg%3E');
 }
 
-icon[tag='JS'] {
+icon[data-tag='JS'] {
   --icon: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M20%204l-2%2014.5l-6%202l-6%20-2l-2%20-14.5l16%200%22%2F%3E%3Cpath%20d%3D%22M7.5%208h3v8l-2%20-1%22%2F%3E%3Cpath%20d%3D%22M16.5%208h-2.5a.5%20.5%200%200%200%20-.5%20.5v3a.5%20.5%200%200%200%20.5%20.5h1.423a.5%20.5%200%200%201%20.495%20.57l-.418%202.93l-2%20.5%22%2F%3E%3C%2Fsvg%3E');
 }
 
-icon[tag='CSS'] {
+icon[data-tag='CSS'] {
   --icon: var(--icon-css-3);
 }
 
-icon[tag='Stylecheat'] {
+icon[data-tag='Stylecheat'] {
   --icon: var(--icon-logo-stylecheat);
   height: 1.09375em;
 }
