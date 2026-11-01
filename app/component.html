@@ -222,12 +222,10 @@
       </slider>
     </box>
 
-    <dialog inspector onclick="event.target === this && this.close()" onclose="$.inspected = null">
-      <card w="120" h="120" p-0 overflow-hidden>
-        <!-- if inspected -->
-        <component src="/data-inspector.html" data="@[inspected]"></component>
-        <!-- /if -->
-      </card>
+    <dialog inspector w="120" h="120" overflow-hidden onclick="event.target === this && this.close()" onclose="$.inspected = null">
+      <!-- if inspected -->
+      <component src="/data-inspector.html" data="@[inspected]"></component>
+      <!-- /if -->
     </dialog>
 
     <divider></divider>

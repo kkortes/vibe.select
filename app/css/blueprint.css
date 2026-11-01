@@ -243,6 +243,11 @@ dialog {
   color: inherit;
 }
 
+dialog[inspector][open] {
+  display: flex;
+  border-radius: var(--unit);
+}
+
 [stylecheat]:not(.dark) dialog::backdrop {
   background-color: oklch(1 0 0 / 0.4);
 }
