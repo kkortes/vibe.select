@@ -69,7 +69,9 @@
                     <a href="/@[namespace]" primary><icon users></icon><!-- if root -->Vibe official<!-- else -->@[namespace]<!-- /if --></a>
                   </owner>
                   <crow g-2>
+                    <!-- if $.showing() -->
                     <badge secondary>v@[$.showing()]</badge>
+                    <!-- /if -->
                     <button secondary sm title="@[component ? 'Show data' : 'No data to display']" disabled="@[!component]" onclick="$.inspect()"><icon code></icon></button>
                   </crow>
                 </crow>
