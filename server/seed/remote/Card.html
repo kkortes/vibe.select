@@ -1,4 +1,4 @@
-<game-card data-type="@[type]" data-color="@[({ fire: 'red', lightning: 'yellow', nature: 'lime', frost: 'sky', void: 'violet', earth: 'brown', light: 'amber', dark: 'gray', physical: 'beige', metal: 'steel' })[element]]" data-icon="@[element]" data-rarity="@[rarity]">
+<game-card data-layout="@[layout]" data-color="@[({ fire: 'red', lightning: 'yellow', nature: 'lime', frost: 'sky', void: 'violet', earth: 'brown', light: 'amber', dark: 'gray', physical: 'beige', metal: 'steel' })[element]]" data-icon="@[element]" data-rarity="@[rarity]">
   <card-blend>
     <card-stack>
       <card-frame>
@@ -6,7 +6,7 @@
           <interior>
             <inner-plate>
               <inner-frame>
-                <!-- if element || type !== 'fullart' -->
+                <!-- if element || layout !== 'fullart' -->
                 <big-circle-border></big-circle-border>
                 <!-- /if -->
               </inner-frame>
@@ -14,16 +14,16 @@
 
             <card-content>
               <card-art>
-                <!-- if type !== 'fullart' -->
+                <!-- if layout !== 'fullart' -->
                 <big-circle-mask></big-circle-mask>
                 <!-- /if -->
                 <card-image style="background-image: url('@[image]')">
-                  <!-- if type === 'fullart' -->
+                  <!-- if layout === 'fullart' -->
                   <card-shade>
                     <card-caption>
                       <card-text-box>
                         <card-pills>
-                          <card-pill type><pill-text>@[kind]</pill-text></card-pill>
+                          <card-pill type><pill-text>@[type]</pill-text></card-pill>
                           <!-- each subtypes as subtype -->
                           <card-pill subtype><pill-text>@[subtype]</pill-text></card-pill>
                           <!-- /each -->
@@ -52,7 +52,7 @@
                     </card-caption>
                   </card-shade>
                   <!-- /if -->
-                  <!-- if type !== 'fullart' && (damage || health) -->
+                  <!-- if layout !== 'fullart' && (damage || health) -->
                   <card-stats>
                     <stats-plate>
                       <span>@[[damage, health].filter(Boolean).join('/')]</span>
@@ -60,17 +60,17 @@
                   </card-stats>
                   <!-- /if -->
                 </card-image>
-                <!-- if type !== 'fullart' -->
+                <!-- if layout !== 'fullart' -->
                 <stripe top></stripe>
                 <stripe left></stripe>
                 <stripe right></stripe>
                 <!-- /if -->
               </card-art>
 
-              <!-- if type !== 'fullart' -->
+              <!-- if layout !== 'fullart' -->
               <card-text-box>
                 <card-pills>
-                  <card-pill type><pill-text>@[kind]</pill-text></card-pill>
+                  <card-pill type><pill-text>@[type]</pill-text></card-pill>
                   <!-- each subtypes as subtype -->
                   <card-pill subtype><pill-text>@[subtype]</pill-text></card-pill>
                   <!-- /each -->
@@ -101,7 +101,7 @@
 
             <inner-plate>
               <inner-frame clear>
-                <!-- if type !== 'fullart' -->
+                <!-- if layout !== 'fullart' -->
                 <circle-border top right></circle-border>
                 <circle-border top left></circle-border>
                 <circle-border bottom left></circle-border>
@@ -113,7 +113,7 @@
               </inner-frame>
             </inner-plate>
 
-            <!-- if type !== 'fullart' -->
+            <!-- if layout !== 'fullart' -->
             <circle-mask top right></circle-mask>
             <circle-mask top left></circle-mask>
             <circle-mask bottom left></circle-mask>
@@ -121,11 +121,11 @@
             <!-- /if -->
           </interior>
 
-          <!-- if type !== 'fullart' -->
+          <!-- if layout !== 'fullart' -->
           <big-circle-border></big-circle-border>
           <!-- /if -->
 
-          <!-- if type !== 'fullart' -->
+          <!-- if layout !== 'fullart' -->
           <corner-circle top right></corner-circle>
           <corner-circle top left></corner-circle>
           <corner-circle bottom left></corner-circle>
@@ -134,11 +134,11 @@
         </interior-frame>
       </card-frame>
 
-      <!-- if type !== 'fullart' -->
+      <!-- if layout !== 'fullart' -->
       <big-circle-mask></big-circle-mask>
       <!-- /if -->
 
-      <!-- if type !== 'fullart' -->
+      <!-- if layout !== 'fullart' -->
       <circle-mask top right></circle-mask>
       <circle-mask top left></circle-mask>
       <circle-mask bottom left></circle-mask>
@@ -152,7 +152,7 @@
       <!-- /if -->
 
       <card-rarity>
-        <!-- if type !== 'fullart' -->
+        <!-- if layout !== 'fullart' -->
         <rarity-wrap>
           <rarity-wrap>
             <rarity-silhouette>
@@ -170,7 +170,7 @@
         <!-- /if -->
       </card-rarity>
 
-      <!-- if element || type !== 'fullart' -->
+      <!-- if element || layout !== 'fullart' -->
       <circle-mana>
         <!-- if cost -->
         <span>@[cost]</span>
@@ -615,7 +615,7 @@
       background-color: var(--c-600);
     }
 
-    &[data-type='framed-centered'] card-pill[subtype] pill-text {
+    &[data-layout='framed-centered'] card-pill[subtype] pill-text {
       background-color: var(--c-700);
     }
 
@@ -870,7 +870,7 @@
       }
     }
 
-    &[data-type='fullart'] {
+    &[data-layout='fullart'] {
       card-content {
         top: -1px;
         height: calc(100% + 2px);
@@ -939,7 +939,7 @@
       }
     }
 
-    &[data-type='framed-centered'] card-image {
+    &[data-layout='framed-centered'] card-image {
       background-size: auto 80%;
       background-position: center calc(50% - 10px);
     }
