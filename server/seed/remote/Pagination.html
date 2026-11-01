@@ -1,5 +1,5 @@
 <crow pagination justify-between align-center g="2" w="full">
-  <button tertiary sm disabled="@[page === 0]" onclick="@[prev]">Previous</button>
+  <button tertiary sm title="Previous" disabled="@[page === 0]" onclick="$.page--"><icon chevron-left></icon></button>
   <span text-sm text-muted>Page @[page + 1] of @[pageCount]</span>
-  <button tertiary sm disabled="@[page >= pageCount - 1]" onclick="@[next]">Next</button>
+  <button tertiary sm title="Next" disabled="@[page >= pageCount - 1]" onclick="$.page++"><icon chevron-right></icon></button>
 </crow>

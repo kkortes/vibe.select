@@ -159,25 +159,18 @@ export default await Promise.all(
       notes: 'Ported from the webdev-game-stack battleborn-brawlers release notes and teamplay list.',
       slug: 'pagination',
       title: 'Pagination',
-      description: 'Previous and Next buttons around a Page x of y label, each button disabled at its end.',
+      description: 'Previous and next chevrons around a Page x of y label, each disabled at its end.',
       category: 'Navigation',
       icon: 'chevron-right',
       styling: 'stylecheat',
       props: [
-        { name: 'page', type: 'number', default: 0, description: 'The page in view, counted from 0; the label shows it from 1.' },
+        {
+          name: 'page',
+          type: 'number',
+          default: 0,
+          description: 'The page in view, counted from 0; the label shows it from 1. Bind it to state of your own: the chevrons move it one page back or forward.',
+        },
         { name: 'pageCount', type: 'number', default: 5, description: 'How many pages there are.' },
-        {
-          name: 'prev',
-          type: 'text',
-          default: '',
-          description: 'What a click on Previous runs, such as releaseNotesPrev(). It moves page itself: the component only calls it.',
-        },
-        {
-          name: 'next',
-          type: 'text',
-          default: '',
-          description: 'What a click on Next runs, such as releaseNotesNext(). It moves page itself: the component only calls it.',
-        },
       ],
     },
     {
