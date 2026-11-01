@@ -82,23 +82,26 @@
 
     <sticky grid locked auto-shadow>
       <divider></divider>
-      <crow left g-6 wrap w-full>
+      <crow filters left up wrap w-full>
         <label f-1>
           <input type="search" placeholder="Search components" value="@[query]"
             oninput="$.query = this.value; $.filter()" />
         </label>
 
-        <crow wrap>
-          <span text-muted px-4>Auto tags</span>
+        <crow up>
+          <span px-4>Auto tags</span>
           <autotags>
             <!-- each filters.auto as name -->
-            <button tertiary active="@[tag === name]" onclick="$.pick('@[name]')"><icon data-tag="@[name]"></icon>@[name]</button>
+            <button secondary="@[tag !== name]" primary="@[tag === name]" onclick="$.pick('@[name]')"><icon data-tag="@[name]"></icon>@[name]</button>
             <!-- /each -->
           </autotags>
-          <span text-muted px-4>User tags</span>
+        </crow>
+
+        <crow up>
+          <span px-4>User tags</span>
           <usertags>
             <!-- each filters.user as name -->
-            <button tertiary active="@[tag === name]" onclick="$.pick('@[name]')">@[name]</button>
+            <button secondary="@[tag !== name]" primary="@[tag === name]" onclick="$.pick('@[name]')">@[name]</button>
             <!-- /each -->
           </usertags>
         </crow>

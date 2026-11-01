@@ -348,6 +348,22 @@ owner a {
   font-weight: 600;
 }
 
+crow[filters] {
+  gap: var(--cell);
+}
+
+crow[filters] :is(span, button, label:has([role='switch'])) {
+  min-width: calc-size(max-content, round(up, size, var(--cell)));
+  min-height: calc(var(--unit) * 12);
+}
+
+crow[filters] span {
+  font-weight: 600;
+  line-height: calc(var(--unit) * 12);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
 autotags,
 usertags {
   display: grid;
