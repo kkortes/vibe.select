@@ -6,9 +6,7 @@
           <interior>
             <inner-plate>
               <inner-frame>
-                <!-- if element || layout !== 'fullart' -->
                 <big-circle-border></big-circle-border>
-                <!-- /if -->
               </inner-frame>
             </inner-plate>
 
@@ -170,7 +168,7 @@
         <!-- /if -->
       </card-rarity>
 
-      <!-- if element || layout !== 'fullart' -->
+      <!-- if ['fire', 'lightning', 'nature', 'frost', 'void', 'earth', 'light', 'dark', 'physical', 'metal'].includes(element) -->
       <circle-mana>
         <!-- if cost -->
         <span>@[cost]</span>
@@ -657,6 +655,10 @@
       text-align: center;
       text-transform: capitalize;
       color: #fff;
+    }
+
+    &:not(:has(circle-mana)) :is(big-circle-border, big-circle-mask) {
+      display: none;
     }
 
     &:has(circle-mana) card-name {

@@ -259,7 +259,7 @@ export default await Promise.all(
           type: 'select',
           options: ['fire', 'lightning', 'nature', 'frost', 'void', 'earth', 'light', 'dark', 'physical', 'metal', ''],
           default: 'lightning',
-          description: 'Frame palette and the icon in the mana circle when there is no cost: fire red, lightning yellow, nature lime, frost sky, void violet, earth brown, light amber, dark gray, physical beige, metal steel. Without one the frame is gray, and a fullart card has no mana circle.',
+          description: 'Frame palette and the icon in the mana circle when there is no cost: fire red, lightning yellow, nature lime, frost sky, void violet, earth brown, light amber, dark gray, physical beige, metal steel. Without one of these, omitted, empty or unknown, the frame is gray and there is no element circle or icon.',
         },
         { name: 'cost', type: 'number', default: 0, description: 'Mana cost. 0 shows the element icon instead.' },
         { name: 'rarity', type: 'number', default: 3, description: 'From 1 to 4; picks the colour and order of the rarity shapes.' },
