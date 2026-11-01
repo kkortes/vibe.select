@@ -5,7 +5,7 @@ export default async (_, { db }) =>
   (
     await db
       .prepare(
-        'SELECT category AS tag FROM components JOIN namespaces ON namespaces.slug = components.namespace WHERE latest > 0 AND unlisted = 0 AND category != '' GROUP BY category ORDER BY COUNT(*) DESC, category LIMIT 4',
+        `SELECT category AS tag FROM components JOIN namespaces ON namespaces.slug = components.namespace WHERE latest > 0 AND unlisted = 0 AND category != '' GROUP BY category ORDER BY COUNT(*) DESC, category LIMIT 4`,
       )
       .all()
   ).results.map(({ tag }) => tag);
