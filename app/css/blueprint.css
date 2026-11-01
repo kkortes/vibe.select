@@ -836,7 +836,7 @@ card[warning] {
 }
 
 :is(overlay-box > slot, inspector > component) > card:not([preview] *) {
-  --card: oklch(0.984 0.006 85);
+  --card: oklch(1 0 0);
 }
 
 [stylecheat].dark :is(overlay-box > slot, inspector > component) > card:not([preview] *) {
