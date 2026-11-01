@@ -497,10 +497,6 @@ section[use] {
   grid-row: span 2;
 }
 
-section:has(> props) {
-  padding-bottom: 0;
-}
-
 props,
 functions {
   display: flex;
@@ -516,7 +512,6 @@ functions {
 
 props {
   align-self: stretch;
-  max-height: 312px;
   margin-top: auto;
   margin-inline: calc(var(--pad) * -1);
   padding-inline: var(--pad);
@@ -527,23 +522,9 @@ functions + props {
   margin-top: 0;
 }
 
-fields {
-  align-self: stretch;
-  margin-inline: calc(var(--pad) * -1);
-  padding-inline: var(--pad) calc(var(--pad) - var(--unit) * 2);
-  overflow: hidden auto;
-  scrollbar-gutter: stable;
-}
-
-fields > :is(heading, foot) {
-  z-index: 1;
-  margin-inline: calc(var(--pad) * -1);
-  padding-inline: var(--pad);
-}
-
-heading > button {
+props > button {
   top: 0;
-  right: calc(var(--unit) * 2);
+  right: 0;
 }
 
 row > label {
@@ -653,6 +634,47 @@ container {
 
 [stylecheat]:not(.dark) :is(codie, [codie]):not([dark]) {
   --codie-bg: var(--input);
+}
+
+codie[markup] {
+  --edge: calc(var(--unit) * 4);
+  max-height: 312px;
+  container-type: scroll-state;
+}
+
+codie[markup]::before,
+codie[markup]::after {
+  content: '';
+  position: sticky;
+  grid-area: 1/1;
+  height: var(--edge);
+  pointer-events: none;
+  transition: box-shadow 150ms;
+}
+
+codie[markup]::before {
+  align-self: start;
+  top: calc(var(--edge) * -1);
+  margin-top: calc(var(--edge) * -1);
+}
+
+codie[markup]::after {
+  align-self: end;
+  bottom: calc(var(--edge) * -1);
+}
+
+@container scroll-state(scrollable: top) {
+  codie[markup]::before {
+    box-shadow: 0 calc(var(--unit) * 1.5) calc(var(--unit) * 1.5) calc(var(--unit) * -1.5)
+      oklch(from var(--shadow-color) l c h / 0.12);
+  }
+}
+
+@container scroll-state(scrollable: bottom) {
+  codie[markup]::after {
+    box-shadow: 0 calc(var(--unit) * -1.5) calc(var(--unit) * 1.5) calc(var(--unit) * -1.5)
+      oklch(from var(--shadow-color) l c h / 0.12);
+  }
 }
 
 :is(container [codie], codie[usage], codie[include]) {
