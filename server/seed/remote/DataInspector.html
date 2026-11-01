@@ -44,14 +44,13 @@
     last = data;
     const rows = [];
     const ancestors = new Set();
-    let total = 0;
     let expandable = false;
     let allOpen = true;
 
     const walk = (value, depth, path, key, shown) => {
       const open = isObject(value) && !!openPaths[path];
       rows.push({ path, key, depth, shown, expandable: isObject(value), summary: summarize(value) });
-      if (!isObject(value)) return total++;
+      if (!isObject(value)) return;
 
       expandable = true;
       allOpen &&= open;
@@ -64,10 +63,9 @@
       ancestors.delete(value);
     };
 
-    const top = roots(data);
-    top.forEach(([key, value]) => walk(value, 0, key, key, true));
+    roots(data).forEach(([key, value]) => walk(value, 0, key, key, true));
 
-    return { rows, shallow: top.length, total, label: expandable && allOpen ? 'Close all' : 'Open all' };
+    return { rows, label: expandable && allOpen ? 'Close all' : 'Open all' };
   };
 
   const persist = (openPaths) => {
@@ -105,7 +103,7 @@
 
 <card inspector w="120" max-w-full overflow-hidden>
   <crow justify-between w-full g="6">
-    <h6 text-muted>Data (@[this.view(data, this.openPaths).shallow] | @[this.view(data, this.openPaths).total])</h6>
+    <h6 text-muted>Data</h6>
     <button tertiary sm onclick="this.toggleAll()">@[this.view(data, this.openPaths).label]</button>
   </crow>
   <hr my="4" />
