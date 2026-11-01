@@ -109,7 +109,7 @@
     <button tertiary sm onclick="this.toggleAll()">@[this.view(data, this.openPaths).label]</button>
   </crow>
   <hr />
-  <data-inspector-lines vertical left up f-1 w-full overflow-auto>
+  <data-inspector-lines vertical left up f-1 mx="-6" overflow-auto>
     <!-- each this.view(data, this.openPaths).rows as row (row.path) -->
     <accordion open="@[row.shown]">
       <accordion-content>
