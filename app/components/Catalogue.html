@@ -5,9 +5,11 @@
       <crow vertical left up g="1.5" f-1>
         <crow justify-between g-3 wrap w-full>
           <h5><a href="/@[comp.path]" secondary>@[comp.title]</a></h5>
-          <badge secondary>v@[comp.latest]</badge>
+          <crow g-2>
+            <badge secondary>@[comp.path]</badge>
+            <badge secondary>v@[comp.latest]</badge>
+          </crow>
         </crow>
-        <code>@[comp.path]</code>
         <p text-muted>@[comp.description]</p>
       </crow>
     </crow>
