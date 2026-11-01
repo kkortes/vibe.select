@@ -120,8 +120,9 @@
     bodyTop = fitTop;
     if (cramped && !wasCramped) cut(x, y);
 
-    el.style.left = `${fitLeft - x}px`;
-    el.style.top = `${fitTop - y}px`;
+    const layer = el.parentElement.getBoundingClientRect();
+    el.style.left = `${fitLeft - layer.left}px`;
+    el.style.top = `${fitTop - layer.top}px`;
 
     const pointer = el.querySelector('tooltip-pointer');
     const inset = pointer.offsetWidth || 12;
@@ -163,7 +164,7 @@
   <slot></slot>
   <!-- if this.tooltip -->
   <tooltip-layer style="left: @[this.tooltip.x]px; top: @[this.tooltip.y]px">
-    <tooltip-body @[this.tooltip.direction]>
+    <tooltip-body data-direction="@[this.tooltip.direction]">
       <tooltip-main>@[$.unsafe(this.tooltip.design)]</tooltip-main>
       <tooltip-pointer></tooltip-pointer>
     </tooltip-body>
@@ -191,10 +192,10 @@
     transition: opacity 180ms ease-out, transform 180ms ease-out;
   }
 
-  tooltip-body[up] { transform: translateY(calc(var(--unit) * -4)); }
-  tooltip-body[down] { transform: translateY(calc(var(--unit) * 4)); }
-  tooltip-body[left] { transform: translateX(calc(var(--unit) * -4)); }
-  tooltip-body[right] { transform: translateX(calc(var(--unit) * 4)); }
+  tooltip-body[data-direction="up"] { transform: translateY(calc(var(--unit) * -4)); }
+  tooltip-body[data-direction="down"] { transform: translateY(calc(var(--unit) * 4)); }
+  tooltip-body[data-direction="left"] { transform: translateX(calc(var(--unit) * -4)); }
+  tooltip-body[data-direction="right"] { transform: translateX(calc(var(--unit) * 4)); }
 
   tooltip-body[positioned] {
     opacity: 1;
@@ -214,31 +215,31 @@
     border: 1px solid var(--border);
   }
 
-  tooltip-body[up] tooltip-pointer {
+  tooltip-body[data-direction="up"] tooltip-pointer {
     bottom: 1px;
     transform: translate(-50%, 50%) rotate(45deg);
     clip-path: polygon(0% 100%, 100% 100%, 100% 0%);
   }
 
-  tooltip-body[down] tooltip-pointer {
+  tooltip-body[data-direction="down"] tooltip-pointer {
     top: 1px;
     transform: translate(-50%, -50%) rotate(45deg);
     clip-path: polygon(0% 0%, 0% 100%, 100% 0%);
   }
 
-  tooltip-body[left] tooltip-pointer {
+  tooltip-body[data-direction="left"] tooltip-pointer {
     right: 1px;
     transform: translate(50%, -50%) rotate(45deg);
     clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
   }
 
-  tooltip-body[right] tooltip-pointer {
+  tooltip-body[data-direction="right"] tooltip-pointer {
     left: 1px;
     transform: translate(-50%, -50%) rotate(45deg);
     clip-path: polygon(0% 0%, 0% 100%, 100% 100%);
   }
 
-  tooltip-body:is([none], [cramped]) tooltip-pointer {
+  tooltip-body:is([data-direction="none"], [cramped]) tooltip-pointer {
     display: none;
   }
 
