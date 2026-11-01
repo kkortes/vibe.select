@@ -94,18 +94,20 @@ blueprint {
   isolation: isolate;
 }
 
+box[hero] {
+  anchor-name: --hero;
+}
+
 blueprint:has(box[hero])::before {
   content: '';
   position: absolute;
-  inset: 0;
+  top: round(nearest, anchor(--hero center) - var(--grid-size) * 10, var(--grid-size));
+  left: round(nearest, (100% - var(--grid-size) * 39) / 2, var(--grid-size));
   z-index: -1;
+  width: calc(var(--grid-size) * 39);
+  height: calc(var(--grid-size) * 20);
   background: var(--background);
-  mask: url(fade.svg) round(nearest, 50%, var(--grid-size)) calc(var(--grid-size) * -10) / calc(var(--grid-size) * 39) calc(var(--grid-size) * 20) no-repeat;
-  transition: mask-position 250ms var(--ease-in-out);
-}
-
-blueprint:has(box[hero][intro])::before {
-  mask-position: round(nearest, 50%, var(--grid-size)) calc(round(nearest, var(--unit) * 12 + round(nearest, 100dvh - var(--unit) * 24, var(--cell)) / 2, var(--grid-size)) - var(--grid-size) * 10);
+  mask: url(fade.svg) 0 0 / 100% 100%;
 }
 
 blueprint::after,
