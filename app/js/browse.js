@@ -11,8 +11,7 @@ const tag = {
   image: 'https://www.worldseed.eu/creature/lightning/oskar-god-of-lightning.jpg',
   type: 'fullart',
   kind: 'god',
-  color: 'yellow',
-  icon: 'lightning',
+  element: 'lightning',
   text: 'I always start the game.',
   subtypes: ['lightning'],
 };
