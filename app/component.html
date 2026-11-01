@@ -62,14 +62,16 @@
           <!-- else -->
           <sections>
             <section about>
-              <button secondary sm inspect title="@[component ? 'Show data' : 'No data to display']" disabled="@[!component]" onclick="$.inspect('about')"><icon code></icon></button>
               <crow vertical left g-1 w-full>
                 <crow justify-between g-3 w-full>
                   <owner>
                     <span>Managed by</span>
                     <a href="/@[namespace]" primary><icon users></icon><!-- if root -->Vibe official<!-- else -->@[namespace]<!-- /if --></a>
                   </owner>
-                  <badge secondary>v@[$.showing()]</badge>
+                  <crow g-2>
+                    <badge secondary>v@[$.showing()]</badge>
+                    <button secondary sm title="@[component ? 'Show data' : 'No data to display']" disabled="@[!component]" onclick="$.inspect()"><icon code></icon></button>
+                  </crow>
                 </crow>
                 <!-- if user -->
                 <h1><textarea rows="1" spellcheck="false" value="@[unpublished?.title ?? component?.title]" oninput="$.edit('title', this.value)"></textarea></h1>
@@ -109,7 +111,6 @@
             </section>
             <!-- if component -->
             <section use>
-              <button secondary sm inspect title="@[component ? 'Show data' : 'No data to display']" disabled="@[!component]" onclick="$.inspect('use')"><icon code></icon></button>
               <h6>Use it</h6>
 
               <!-- if $.outdated() -->
@@ -207,7 +208,6 @@
               </props>
             </section>
             <section preview>
-              <button secondary sm inspect title="@[component ? 'Show data' : 'No data to display']" disabled="@[!component]" onclick="$.inspect('preview')"><icon code></icon></button>
               <h6>Preview</h6>
               <crow grid locked center preview p="12" sm:p="0">
                 <preview-host></preview-host>

@@ -162,8 +162,8 @@ export const state = {
   tab: 0,
   tags: [],
   styling: 'inline',
-  // What the card whose debug button was pressed is drawn from, shown in the
-  // DataInspector until its dialog closes.
+  // What the debug button beside the version badge hands the DataInspector,
+  // kept until its dialog closes.
   inspected: null,
 
   showing() {
@@ -247,12 +247,8 @@ export const state = {
     this.leave(() => this.show(version));
   },
 
-  inspect(card) {
-    this.inspected = {
-      about: { namespace, slug, url: this.url(), styling: this.styling, tags: this.tags, component: this.component },
-      use: { version: this.showing(), snippet: this.snippet(), props: this.props, values: this.values, listeners: this.listeners },
-      preview: { source: this.previewSource, values: this.values },
-    }[card];
+  inspect() {
+    this.inspected = { namespace, slug, url: this.url(), styling: this.styling, tags: this.tags, component: this.component };
     document.querySelector('dialog[inspector]').showModal();
   },
 
