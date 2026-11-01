@@ -36,14 +36,15 @@ const values = (...cells) => `(${row(...cells)})`;
 // The seeded namespaces belong to the developer's Google account. Users get a
 // fresh id at first sign-in, so the account is seeded by its Google id and the
 // namespace points at whatever id that row holds — the login upsert keeps it.
-const OWNER = { googleId: '113094163908909945020', email: 'me@korte.kim', name: 'Kim Korte' };
+// The account may own up to namespaceCount namespaces, set here on every seed.
+const OWNER = { googleId: '113094163908909945020', email: 'me@korte.kim', name: 'Kim Korte', namespaceCount: 10 };
 
 const owner = `(SELECT id FROM users WHERE googleId = ${literal(OWNER.googleId)})`;
 
 const sql = [
-  `INSERT INTO users (id, googleId, email, name, createdAt, updatedAt)
-   VALUES ${values(crypto.randomUUID(), OWNER.googleId, OWNER.email, OWNER.name, now(), now())}
-   ON CONFLICT (googleId) DO NOTHING;`,
+  `INSERT INTO users (id, googleId, email, name, namespaceCount, createdAt, updatedAt)
+   VALUES ${values(crypto.randomUUID(), OWNER.googleId, OWNER.email, OWNER.name, OWNER.namespaceCount, now(), now())}
+   ON CONFLICT (googleId) DO UPDATE SET namespaceCount = excluded.namespaceCount;`,
   ...NAMESPACES.flatMap(({ slug: namespace, title: author, official, components }) => [
     `INSERT INTO namespaces (slug, title, official, ownerId, createdAt) VALUES (${row(namespace, author, official)}, ${owner}, ${literal(now())})
      ON CONFLICT (slug) DO UPDATE SET title = excluded.title, official = excluded.official, ownerId = excluded.ownerId;`,

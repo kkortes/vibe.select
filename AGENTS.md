@@ -79,7 +79,8 @@ SQLite has no booleans or nested values: `components.defaults` and
 decoders in `server/db.js` turn rows back into the shapes the client receives.
 
 `users.namespaceCount` caps how many namespaces a user may own; it starts at 1
-and is raised by hand in the database. `auth/namespaces/create` checks it in the
+and is raised by hand in the database, except for the developer's account, which
+`server/seed.js` sets to 10 on every seed. `auth/namespaces/create` checks it in the
 insert itself, and `auth/namespaces/delete` deletes only a namespace of the
 caller's own with no component in it.
 
