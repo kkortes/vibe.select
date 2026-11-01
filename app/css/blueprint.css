@@ -497,6 +497,10 @@ section[use] {
   grid-row: span 2;
 }
 
+section:has(> props) {
+  padding-bottom: 0;
+}
+
 props,
 functions {
   display: flex;
@@ -512,6 +516,7 @@ functions {
 
 props {
   align-self: stretch;
+  max-height: 312px;
   margin-top: auto;
   margin-inline: calc(var(--pad) * -1);
   padding-inline: var(--pad);
@@ -522,9 +527,23 @@ functions + props {
   margin-top: 0;
 }
 
-props > button {
+fields {
+  align-self: stretch;
+  margin-inline: calc(var(--pad) * -1);
+  padding-inline: var(--pad) calc(var(--pad) - var(--unit) * 2);
+  overflow: hidden auto;
+  scrollbar-gutter: stable;
+}
+
+fields > :is(heading, foot) {
+  z-index: 1;
+  margin-inline: calc(var(--pad) * -1);
+  padding-inline: var(--pad);
+}
+
+heading > button {
   top: 0;
-  right: 0;
+  right: calc(var(--unit) * 2);
 }
 
 row > label {

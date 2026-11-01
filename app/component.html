@@ -195,54 +195,59 @@
               </functions>
               <!-- /if -->
 
-              <props class="sticky reverse" auto-shadow bg-card pt-6 inert="@[coding]">
-                <h6>Props</h6>
-                <!-- if props.length -->
-                <button tertiary position="absolute" onclick="$.reset()"><icon reset></icon>Reset</button>
-                <!-- /if -->
-                <!-- if props.length -->
-                <crow vertical left my="-1" w-full>
-                  <!-- if slot -->
-                  <row block position="relative" py-1 hover>
-                    <label position="relative">
-                      <name position="absolute">@[slot.name]</name>
-                      <codie markup highlight-html w-full></codie>
-                    </label>
-                    <badge bg-hollow text-primary w="18" position="absolute">@[slot.type]</badge>
-                  </row>
+              <props class="sticky reverse" auto-shadow bg-card inert="@[coding]">
+                <fields>
+                  <heading class="sticky" auto-shadow bg-card pt-6 pb-4>
+                    <h6>Props</h6>
+                    <!-- if props.length -->
+                    <button tertiary position="absolute" onclick="$.reset()"><icon reset></icon>Reset</button>
+                    <!-- /if -->
+                  </heading>
+                  <!-- if props.length -->
+                  <crow vertical left my="-1" w-full>
+                    <!-- if slot -->
+                    <row block position="relative" py-1 hover>
+                      <label position="relative">
+                        <name position="absolute">@[slot.name]</name>
+                        <codie markup highlight-html w-full></codie>
+                      </label>
+                      <badge bg-hollow text-primary w="18" position="absolute">@[slot.type]</badge>
+                    </row>
+                    <!-- /if -->
+                    <!-- each attributes as prop (prop.name) -->
+                    <row block position="relative" py-1 hover>
+                      <label sm="@[!['boolean', 'json'].includes(prop.type)]" position="relative">
+                        <name position="absolute">@[prop.name]</name>
+                        <!-- if prop.type === 'select' -->
+                        <select w-full onchange="$.values['@[prop.name]'] = this.value">
+                          <!-- each prop.options as choice -->
+                          <option value="@[choice]" selected="@[values[prop.name] === choice]">@[choice]</option>
+                          <!-- /each -->
+                        </select>
+                        <!-- else if prop.type === 'boolean' -->
+                        <input type="checkbox" role="switch" checked="@[values[prop.name]]"
+                          onchange="$.values['@[prop.name]'] = event.currentTarget.checked" />
+                        <!-- else if prop.type === 'number' -->
+                        <input type="number" w-full placeholder='Defaults to "@[prop.default]"' value="@[values[prop.name]]"
+                          oninput="$.values['@[prop.name]'] = Number(this.value)" />
+                        <!-- else if prop.type === 'json' -->
+                        <codie data-json="@[prop.name]" highlight-json w-full></codie>
+                        <!-- else -->
+                        <input type="text" w-full placeholder='Defaults to "@[prop.default]"' value="@[values[prop.name]]" oninput="$.values['@[prop.name]'] = this.value" />
+                        <!-- /if -->
+                        <!-- if invalid[prop.name] -->
+                        <p text-red>Not valid JSON yet — the preview is still on the last value that parsed.</p>
+                        <!-- /if -->
+                      </label>
+                      <badge bg-hollow text-primary w="18" position="absolute">@[prop.type]</badge>
+                    </row>
+                    <!-- /each -->
+                  </crow>
+                  <!-- else -->
+                  <p text-muted>This component takes no props.</p>
                   <!-- /if -->
-                  <!-- each attributes as prop (prop.name) -->
-                  <row block position="relative" py-1 hover>
-                    <label sm="@[!['boolean', 'json'].includes(prop.type)]" position="relative">
-                      <name position="absolute">@[prop.name]</name>
-                      <!-- if prop.type === 'select' -->
-                      <select w-full onchange="$.values['@[prop.name]'] = this.value">
-                        <!-- each prop.options as choice -->
-                        <option value="@[choice]" selected="@[values[prop.name] === choice]">@[choice]</option>
-                        <!-- /each -->
-                      </select>
-                      <!-- else if prop.type === 'boolean' -->
-                      <input type="checkbox" role="switch" checked="@[values[prop.name]]"
-                        onchange="$.values['@[prop.name]'] = event.currentTarget.checked" />
-                      <!-- else if prop.type === 'number' -->
-                      <input type="number" w-full placeholder='Defaults to "@[prop.default]"' value="@[values[prop.name]]"
-                        oninput="$.values['@[prop.name]'] = Number(this.value)" />
-                      <!-- else if prop.type === 'json' -->
-                      <codie data-json="@[prop.name]" highlight-json w-full></codie>
-                      <!-- else -->
-                      <input type="text" w-full placeholder='Defaults to "@[prop.default]"' value="@[values[prop.name]]" oninput="$.values['@[prop.name]'] = this.value" />
-                      <!-- /if -->
-                      <!-- if invalid[prop.name] -->
-                      <p text-red>Not valid JSON yet — the preview is still on the last value that parsed.</p>
-                      <!-- /if -->
-                    </label>
-                    <badge bg-hollow text-primary w="18" position="absolute">@[prop.type]</badge>
-                  </row>
-                  <!-- /each -->
-                </crow>
-                <!-- else -->
-                <p text-muted>This component takes no props.</p>
-                <!-- /if -->
+                  <foot class="sticky reverse" auto-shadow bg-card pt-6></foot>
+                </fields>
               </props>
             </section>
             <section preview>
