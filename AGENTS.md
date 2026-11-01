@@ -82,7 +82,8 @@ decoders in `server/db.js` turn rows back into the shapes the client receives.
 and is raised by hand in the database, except for the developer's account, which
 `server/seed.js` sets to 10 on every seed. `auth/namespaces/create` checks it in the
 insert itself, and `auth/namespaces/delete` deletes only a namespace of the
-caller's own with no component in it.
+caller's own with no published revision in it, taking its unpublished drafts
+with it. The Remove namespace button on `/components` is disabled otherwise.
 
 `components.styling` is `inline` or `stylecheat`: whether a component carries
 its own styles or assumes Stylecheat on the page it lands in. It is catalogue

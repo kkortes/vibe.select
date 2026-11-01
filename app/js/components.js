@@ -31,7 +31,7 @@ export const state = {
   },
 
   deletable() {
-    return this.mine.some(({ slug, components }) => slug === this.namespace && !components);
+    return !this.mine.find(({ slug }) => slug === this.namespace).published;
   },
 
   confirm() {

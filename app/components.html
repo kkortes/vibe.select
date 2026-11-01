@@ -37,6 +37,12 @@
         </tabs>
         <!-- if namespace -->
         <button tertiary onclick="$.draw()"><icon components></icon>Add component</button>
+        <removal>
+          <button tertiary disabled="@[!$.deletable()]" onclick="$.confirm()"><icon cross></icon>Remove namespace</button>
+          <!-- if !$.deletable() -->
+          <tooltip>This namespace has a published component and can't be deleted</tooltip>
+          <!-- /if -->
+        </removal>
         <!-- /if -->
       </versions>
 
@@ -115,14 +121,6 @@
               Your components here are set to <b>unlisted</b> meaning they can't be found through search, but accessible for
               anyone to use.
             </p>
-            <!-- if $.deletable() -->
-            <card w-full g-4 p-6>
-              <p text-muted>No component is published in <code>@[namespace]/</code> yet, so it can still be deleted.</p>
-              <crow right w-full>
-                <button tertiary onclick="$.confirm()">Delete namespace</button>
-              </crow>
-            </card>
-            <!-- /if -->
             <!-- else -->
             <p lead max-w-160>
               vibe.select is a marketplace of Vibe components. Every component is plain HTML at its own address — point a

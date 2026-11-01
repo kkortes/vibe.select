@@ -763,3 +763,20 @@ card[warning] {
   resize: none;
   field-sizing: content;
 }
+
+removal {
+  position: relative;
+  display: flex;
+}
+
+removal > tooltip {
+  position: absolute;
+  top: calc(100% + var(--unit) * 2);
+  right: 0;
+  z-index: 2;
+}
+
+removal:hover > tooltip {
+  opacity: 1;
+  translate: 0;
+}

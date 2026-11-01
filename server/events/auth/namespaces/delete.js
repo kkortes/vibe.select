@@ -1,14 +1,21 @@
-// Only an empty namespace goes: once a component is published in it, its
-// revisions are frozen addresses under its slug.
+// Only a namespace with nothing published goes: once a revision exists, it is
+// a frozen address under its slug. Its unpublished drafts go with it, in the
+// same batch, which is one transaction.
 export default async ({ slug }, { db, identity }) => {
-  const deleted = await db
-    .prepare(
-      'DELETE FROM namespaces WHERE slug = ?1 AND ownerId = ?2 AND NOT EXISTS (SELECT 1 FROM components WHERE namespace = ?1) RETURNING slug',
-    )
-    .bind(slug, identity.id)
-    .first();
+  const [, { results }] = await db.batch([
+    db
+      .prepare(
+        'DELETE FROM components WHERE namespace = ?1 AND EXISTS (SELECT 1 FROM namespaces WHERE slug = ?1 AND ownerId = ?2) AND NOT EXISTS (SELECT 1 FROM revisions WHERE namespace = ?1)',
+      )
+      .bind(slug, identity.id),
+    db
+      .prepare(
+        'DELETE FROM namespaces WHERE slug = ?1 AND ownerId = ?2 AND NOT EXISTS (SELECT 1 FROM components WHERE namespace = ?1) RETURNING slug',
+      )
+      .bind(slug, identity.id),
+  ]);
 
-  if (!deleted) throw Error(`${slug} is not an empty namespace of yours`);
+  if (!results.length) throw Error(`${slug} is not a namespace of yours with nothing published`);
 
-  return deleted;
+  return results[0];
 };
