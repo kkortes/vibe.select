@@ -225,6 +225,13 @@ export default await Promise.all(
           default: 'preview',
           description: 'Keeps which rows are open in localStorage under dataDisplay:<localStorageID>, so give each display on a page its own. Left empty, nothing is read from or written to localStorage.',
         },
+        {
+          name: 'notifications',
+          type: 'select',
+          options: ['top-right', 'top-left', 'bottom-right', 'bottom-left', 'center'],
+          default: 'top-right',
+          description: 'Where the notification a copied row posts renders. Below 769px wide it always sits bottom centre.',
+        },
       ],
     },
     {

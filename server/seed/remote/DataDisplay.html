@@ -130,7 +130,13 @@
   </data-display-lines>
 </card>
 
-<component src="https://vibe.select/notifications.html"></component>
+<component
+  src="https://vibe.select/notifications.html"
+  up="@[notifications?.includes('top')]"
+  down="@[notifications?.includes('bottom')]"
+  left="@[notifications?.includes('left')]"
+  right="@[notifications?.includes('right')]"
+></component>
 
 <style>
   data-display-lines {
