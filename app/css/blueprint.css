@@ -798,7 +798,7 @@ code {
   border-radius: 0;
 }
 
-:is(badge, :is(gallery, dialog, overlay-box, slide) > card, select, textarea, .button, button:not(user-menu > button, :is(autotags, usertags) > button), input:not([type='checkbox'], [type='radio'], [type='range'], [type='file'])) {
+:is(badge, :is(gallery, dialog, overlay-box > slot, slide) > card, select, textarea, .button, button:not(user-menu > button, :is(autotags, usertags) > button), input:not([type='checkbox'], [type='radio'], [type='range'], [type='file'])) {
   border-radius: var(--unit);
 }
 
