@@ -13,7 +13,7 @@ export default await Promise.all(
       notes: 'Ported from the webdev-game-stack battleborn-brawlers notifications: window.notify with its types, promise and dismiss, a stack that fans out on hover and pauses its timers, and swipe to dismiss. Call notify(title, { description, icon, duration, id }) or notify.success, .error, .warning, .info or .loading with the same arguments; each returns the id, and a second call with that id replaces the notification in place. notify.promise(promise, { loading, success, error }) turns a loading one into the outcome, and notify.dismiss(id) dismisses one, or all without an id. The game\'s crystal icon and equipment link stay with the game.',
       slug: 'notifications',
       title: 'Notifications',
-      description: 'A stack of notifications that fans out on hover and swipes away. Post into it from anywhere with window.notify or a notify event.',
+      description: 'Decide a location in your app where notifications shows up. Trigger notifications from anywhere using <code>notify()</code>-function.',
       category: 'Feedback',
       icon: 'bell',
       styling: 'stylecheat',
