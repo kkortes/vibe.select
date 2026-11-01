@@ -30,7 +30,7 @@ export const state = {
 
   // The address the namespace being typed puts its components under.
   address() {
-    return `${SOURCE_URL}/${this.slug || 'your-namespace'}`;
+    return `${SOURCE_URL}/${this.slug || '<namespace>'}`;
   },
 
   dismiss() {
