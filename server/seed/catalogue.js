@@ -238,7 +238,7 @@ export default await Promise.all(
           name: 'image',
           type: 'text',
           default: '/images/card/oskar.jpg',
-          description: 'URL of the card art. The default is served by viberary, so a page elsewhere passes its own.',
+          description: 'URL of the card art. The default is served by vibe.select, so a page elsewhere passes its own.',
         },
         {
           name: 'type',
@@ -299,7 +299,7 @@ export default await Promise.all(
           name: 'image',
           type: 'text',
           default: '/images/card/oskar.jpg',
-          description: 'URL of the image. The default is served by viberary, so a page elsewhere passes its own.',
+          description: 'URL of the image. The default is served by vibe.select, so a page elsewhere passes its own.',
         },
         { name: 'x', type: 'number', default: 47, description: 'Horizontal point of the image, in percent of its width, centred in the circle.' },
         { name: 'y', type: 'number', default: 21, description: 'Vertical point of the image, in percent of its height, centred in the circle.' },

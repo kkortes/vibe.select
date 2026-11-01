@@ -1,7 +1,7 @@
-// A Workers preview is served at `<alias>-viberary.viberary.workers.dev`;
-// production's own workers.dev host is `viberary.viberary.workers.dev`, without
+// A Workers preview is served at `<alias>-vibe-select.vibe-select.workers.dev`;
+// production's own workers.dev host is `vibe-select.vibe-select.workers.dev`, without
 // the alias, so the leading dash tells them apart.
-export const PREVIEW = window.location.hostname.endsWith('-viberary.viberary.workers.dev');
+export const PREVIEW = window.location.hostname.endsWith('-vibe-select.vibe-select.workers.dev');
 
 // One Worker serves the site, the socket and the component source, so the page's
 // own origin is all three on every host: production, a pull request's preview

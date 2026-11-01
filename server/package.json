@@ -1,10 +1,10 @@
 {
-  "name": "viberary-server",
+  "name": "vibe.select-server",
   "version": "0.1.1",
   "type": "module",
   "scripts": {
     "dev": "wrangler dev --port 1337",
-    "migrate": "wrangler d1 migrations apply viberary --local",
+    "migrate": "wrangler d1 migrations apply vibe-select --local",
     "seed": "bun seed.js"
   },
   "dependencies": {

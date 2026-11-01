@@ -12,7 +12,7 @@ Vibe and Stylecheat and nothing else.
 
 **Cloudflare, the whole stack: one Worker and one D1 database.**
 
-- The Worker is named `viberary` and `wrangler.jsonc` is its whole
+- The Worker is named `vibe-select` and `wrangler.jsonc` is its whole
   configuration. It serves the front end, built into `compiled/`
   (`bun run build`), as static assets, and runs `server/worker.js` for every
   request no asset answers: the websocket at `/ws`, the component source at
@@ -35,8 +35,8 @@ Vibe and Stylecheat and nothing else.
 
 **In Cloudflare D1, bound to the Worker as `DB`. No component is ever a file of its own.**
 
-One D1 database, `viberary`. Its schema is `server/migrations/`, applied with
-`wrangler d1 migrations apply viberary` (`--local` for `wrangler dev`,
+One D1 database, `vibe-select`. Its schema is `server/migrations/`, applied with
+`wrangler d1 migrations apply vibe-select` (`--local` for `wrangler dev`,
 `--remote` for the deployed one). D1 enforces foreign keys on its own. Four
 tables hold the catalogue; `users` and `sessions` hold Google sign-ins for
 `server/store.js`:
@@ -136,11 +136,11 @@ in the page into the version path above. The marketplace serves that resolver at
   which verifies a Google ID token and calls aaw's `authenticate`.
   `js/auth.js` holds the browser half and the client id.
 - Previews are the one exception, and a deliberate one: on a
-  `<alias>-viberary.viberary.workers.dev` host, Sign in skips Google and calls
+  `<alias>-vibe-select.vibe-select.workers.dev` host, Sign in skips Google and calls
   `login/preview`, which signs anyone in as the user `PREVIEW_SIGNIN` names.
   That var exists only in the `previews` block of `wrangler.jsonc`, so
   production refuses the event, and its user row must already be in
-  `viberary-preview`.
+  `vibe-select-preview`.
 - `server/store.js` is the session store. aaw registers its built-in
   `aaw/login`, `aaw/register` and `aaw/password/*` events whatever `providers`
   says, so the store answers for them by name with "no password login here"
@@ -198,10 +198,10 @@ alone on `1337`; the site does not need it. `wrangler dev` needs `compiled/` to
 exist, so compile once before starting it.
 
 For the deployed database, the same two steps take `--remote`:
-`bunx wrangler d1 migrations apply viberary --remote` and
+`bunx wrangler d1 migrations apply vibe-select --remote` and
 `bun run seed --remote`, both in `server/`.
 
-Pull request previews bind `viberary-preview` instead (`previews` in
+Pull request previews bind `vibe-select-preview` instead (`previews` in
 `wrangler.jsonc`), one D1 shared by every preview. `bun run seed --preview` seeds
 it. `wrangler d1 migrations` only finds databases listed at the top level of the
 config, so its migrations go through a config that names it there with the same

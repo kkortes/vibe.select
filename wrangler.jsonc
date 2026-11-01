@@ -1,5 +1,5 @@
 {
-  "name": "viberary",
+  "name": "vibe-select",
   "main": "./server/worker.js",
   "compatibility_date": "2026-10-29",
   "assets": {
@@ -10,7 +10,7 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "viberary",
+      "database_name": "vibe-select",
       "database_id": "7807d82a-59b0-4ea1-9276-98f9901a0d18",
       "migrations_dir": "./server/migrations"
     }
@@ -22,7 +22,7 @@
     "d1_databases": [
       {
         "binding": "DB",
-        "database_name": "viberary-preview",
+        "database_name": "vibe-select-preview",
         "database_id": "b5fdfc6c-05d4-4c88-9571-22f4c83092a4",
         "migrations_dir": "./server/migrations"
       }

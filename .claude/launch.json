@@ -2,7 +2,7 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "Viberary (Frontend)",
+      "name": "vibe.select (Frontend)",
       "runtimeExecutable": "bun",
       "runtimeArgs": ["run", "dev"],
       "port": 5000,

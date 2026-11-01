@@ -16,7 +16,7 @@ const readable = (value) => JSON.stringify(value, null, 2);
 // the starter in the editor already differs from.
 const UNPUBLISHED = { version: 0, html: '', props: [], events: {} };
 
-const STARTER = '<p>Hello from Viberary</p>\n';
+const STARTER = '<p>Hello from vibe.select</p>\n';
 
 const tagged = (revision, styling) => [...autoTags(revision), ...stylingTags(styling)];
 

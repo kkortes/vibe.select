@@ -5,9 +5,9 @@ import { autoTags } from '../app/js/tags.js';
 
 // `bun run seed` seeds the local D1 that `wrangler dev` reads; `bun run seed
 // --remote` seeds the deployed one; `bun run seed --preview` seeds
-// viberary-preview, the D1 every pull request's preview binds.
+// vibe-select-preview, the D1 every pull request's preview binds.
 const preview = process.argv.includes('--preview');
-const database = preview ? 'viberary-preview' : 'viberary';
+const database = preview ? 'vibe-select-preview' : 'vibe-select';
 const target = preview || process.argv.includes('--remote') ? '--remote' : '--local';
 
 // Seeded props go through the same validation a published revision does, so the
