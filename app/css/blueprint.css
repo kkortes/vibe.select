@@ -835,6 +835,14 @@ card[warning] {
   background-color: oklch(from var(--yellow) 0.4 0.08 h);
 }
 
+:is(overlay-box > slot, inspector > component) > card:not([preview] *) {
+  --card: oklch(0.984 0.006 85);
+}
+
+[stylecheat].dark :is(overlay-box > slot, inspector > component) > card:not([preview] *) {
+  --card: oklch(0.232 0.013 58);
+}
+
 :is(section[about], card[draft]) textarea {
   display: block;
   width: 100%;
