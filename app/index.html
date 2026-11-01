@@ -88,6 +88,11 @@
             oninput="$.query = this.value; $.filter()" />
         </label>
 
+        <label vertical g-1>
+          Show all
+          <input type="checkbox" role="switch" checked="@[all]" onchange="$.all = event.currentTarget.checked; $.filter()" />
+        </label>
+
         <crow>
           <span px-4>Auto tags</span>
           <autotags>
@@ -105,11 +110,6 @@
             <!-- /each -->
           </usertags>
         </crow>
-
-        <label flex g-2>
-          <input type="checkbox" role="switch" checked="@[all]" onchange="$.all = event.currentTarget.checked; $.filter()" />
-          All components
-        </label>
       </crow>
     </sticky>
 
