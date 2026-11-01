@@ -8,7 +8,7 @@ import { call } from '/js/ws.js';
 const tag = {
   src: address(SOURCE_URL, 'kortes', 'card', 1),
   name: 'Oskar',
-  image: `${SOURCE_URL}/images/card/oskar.jpg`,
+  image: '/images/card/oskar.jpg',
   layout: 'fullart',
   type: 'god',
   element: 'lightning',
