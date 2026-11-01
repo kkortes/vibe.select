@@ -18,7 +18,7 @@
     // no manifest from, so it is told where the manifest lives.
     window.__MANIFEST__ = '/vibe-hyperspeed/index.html.manifest.js';
 
-    // A visitor who has moved past the hero before gets the catalogue layout
+    // A visitor who has moved past the hero before gets the component list
     // from the first paint, the search bar's line already under it.
     localStorage.getItem('mkp-browsed') === 'true' && document.documentElement.setAttribute('browsed', '');
   </script>
@@ -120,7 +120,7 @@
       <crow w-full py="12" text-muted><icon spinner animate-spin></icon> Loading components</crow>
       <!-- else -->
       <!-- if matches.length -->
-      <component src="/components/Catalogue.html" items="@[matches]"></component>
+      <component src="/components/Gallery.html" items="@[matches]"></component>
       <!-- else -->
       <crow w-full py="12" text-muted>
         <!-- if query -->Nothing matches “@[query]”.<!-- else -->No components published here yet.<!-- /if -->

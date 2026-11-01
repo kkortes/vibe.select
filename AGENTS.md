@@ -39,15 +39,15 @@ Vibe and Stylecheat and nothing else.
 One D1 database, `vibe-select`. Its schema is `server/migrations/`, applied with
 `wrangler d1 migrations apply vibe-select` (`--local` for `wrangler dev`,
 `--remote` for the deployed one). D1 enforces foreign keys on its own. Four
-tables hold the catalogue; `users` and `sessions` hold Google sign-ins for
+tables hold the components; `users` and `sessions` hold Google sign-ins for
 `server/store.js`:
 
 | Table        | Holds | Mutable |
 |---|---|---|
 | `namespaces` | `slug`, `title`, `official`, `unlisted`, `ownerId` | yes |
-| `components` | catalogue metadata per `namespace` + `slug`: `title`, `description`, `category`, `icon`, `styling`, `latest`, `defaults`, `ownerId` | yes |
+| `components` | metadata per `namespace` + `slug`: `title`, `description`, `category`, `icon`, `styling`, `latest`, `defaults`, `ownerId` | yes |
 | `revisions`  | one row per published version | **never** |
-| `tags`       | the auto tags (`app/js/tags.js`) of each component's latest revision, one row per tag, replaced on every publish so the catalogue lists them in the same query as the components | yes |
+| `tags`       | the auto tags (`app/js/tags.js`) of each component's latest revision, one row per tag, replaced on every publish so a component list reads them in the same query as the components | yes |
 
 An unlisted namespace keeps its components off the frontpage: `components/list`
 without a namespace, and `tags/top`, leave it out. Its components still render
@@ -88,26 +88,26 @@ caller's own with no published revision in it, taking its unpublished drafts
 with it. The Remove namespace button on `/components` is disabled otherwise.
 
 `components.styling` is `inline` or `stylecheat`: whether a component carries
-its own styles or assumes Stylecheat on the page it lands in. It is catalogue
+its own styles or assumes Stylecheat on the page it lands in. It is component
 metadata, not part of a revision, so its owner changes it in place from the CSS
 Styling select on the component page (`auth/components/style`); for anyone else
 that select only previews the pick.
 
 `components.defaults` is a derived copy of the latest revision's prop defaults,
-kept so the catalogue can be listed in one call without fetching a revision per
+kept so a component list can be read in one call without fetching a revision per
 card. The frozen truth about props is `revisions.props`.
 
 The only files under `server/seed/` that look like components are inputs to the
 seed script: `server/seed/remote/*.html` hold the code of every seeded
 component, ported to Vibe from other projects, read at seed time by
-`server/seed/catalogue.js`, the one catalogue of the whole seed, and written into `revisions.html` like
+`server/seed/components.js`, the one list of every seeded component, and written into `revisions.html` like
 any other publish. They are not served from disk. An entry there names the
 namespace it is seeded under when that is not `vibe`; `server/seed.js` replaces
 each seeded namespace whole, `vibe` and `kortes`, both owned by the developer's
 account, so a component left out of the seed is gone from it after the next run.
 What a seeded component fetches by prop, such as the card's art, lives in
 `app/images/` and is served as an asset.
-`server/seed.js` turns the catalogue into SQL and runs it through
+`server/seed.js` turns that list into SQL and runs it through
 `wrangler d1 execute`.
 
 ## Addresses and pinning
@@ -128,7 +128,7 @@ and `/<slug>` are the component page, `/<namespace>` lists every component under
 of components — the frontpage, `/<namespace>` and the namespace tabs on
 `/components`, which `auth/components/mine` fills with every published
 component in the caller's own namespaces, unlisted ones included — is
-`app/components/Catalogue.html`, handed the array as `items`.
+`app/components/Gallery.html`, handed the array as `items`.
 
 The address a visitor copies is `…/<slug>.html#vN`. A URL fragment is cut from a
 request before it is sent, so no server ever sees one — `js/pin.js` resolves it
@@ -174,7 +174,7 @@ top-level `.html` file becomes a page.
 
 - `app/` — pages flat at its root (`index.html`, `component.html`,
   `components.html`, `namespace.html`), plus `components/` (the site's own
-  Layout, Topbar and Catalogue), `js/`,
+  Layout, Topbar and Gallery), `js/`,
   `css/`, `fonts/`, `images/` and `index.css`.
 - `server/` — the Worker: its websocket events, the component-source routes,
   the D1 migrations and the seed.
@@ -235,7 +235,7 @@ So `vibe-fouc` present means "runtime mode, no manifest". On a build that has
 already been stamped, that combination is fatal and silent: every `<!-- if -->`
 true branch and every `<!-- each -->` row is gone from the DOM, with no console
 error and no failed request. It looks exactly like a page whose data never
-arrived — empty catalogue, no sign-in button — while `window.$` holds all of it.
+arrived — empty component list, no sign-in button — while `window.$` holds all of it.
 
 ### Packages are served at `/modules/<name>/`, never under `@ape-egg`
 

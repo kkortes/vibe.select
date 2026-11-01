@@ -29,7 +29,7 @@ export const state = {
   // Every auto tag, and the four most common user tags, counted by the server.
   filters: { auto: TAGS, user: [] },
   tag: 'All',
-  // A visitor who has scrolled past the hero before opens on the catalogue;
+  // A visitor who has scrolled past the hero before opens on the components;
   // the wordmark in the topbar brings the hero back.
   hero: !get('mkp-browsed'),
   // Off shows the root namespace only.
@@ -90,17 +90,17 @@ export const intro = () => {
   addEventListener('scroll', () => (window.$.scrolled = true), { once: true });
 
   // The search bar sticking is the visitor moving past the hero: the hero goes,
-  // and the scroll is moved by what it took up so the catalogue stays put.
-  // It is remembered, so the next visit opens on the catalogue.
+  // and the scroll is moved by what it took up so the gallery stays put.
+  // It is remembered, so the next visit opens on the components.
   const bar = document.querySelector('sticky:has(input[type="search"])');
-  const catalogue = bar.nextElementSibling;
+  const gallery = bar.nextElementSibling;
   const watch = () => {
     if (bar.getBoundingClientRect().top > parseFloat(getComputedStyle(bar).top)) return;
     removeEventListener('scroll', watch);
-    const before = catalogue.getBoundingClientRect().top;
+    const before = gallery.getBoundingClientRect().top;
     const settle = window.$.on('afterUpdate', () => {
       settle();
-      scrollBy(0, catalogue.getBoundingClientRect().top - before);
+      scrollBy(0, gallery.getBoundingClientRect().top - before);
     });
     window.$.hero = false;
     window.$.browsed = true;
@@ -110,7 +110,7 @@ export const intro = () => {
 };
 
 // /tag/<name> opens with that tag picked; the address is lowercase, the tag is
-// matched against the ones the catalogue carries.
+// matched against the ones the listed components carry.
 const linked = () => decodeURIComponent(location.pathname.match(/^\/tag\/([^/]+)/)?.[1] || '');
 
 export const load = async () => {

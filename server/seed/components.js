@@ -1,5 +1,5 @@
-// The whole seeded catalogue. Each component's code lives in ./remote, published
-// byte for byte; only the catalogue entry around it is written here, with the
+// Every seeded component. Each component's code lives in ./remote, published
+// byte for byte; only the entry around it is written here, with the
 // namespace it is seeded under when that is not vibe, the root namespace.
 
 const read = (name) => Bun.file(`${import.meta.dir}/remote/${name}`).text();

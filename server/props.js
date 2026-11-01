@@ -5,7 +5,7 @@
 const TYPES = ['text', 'number', 'boolean', 'select', 'json', 'html'];
 
 // The frozen truth about props lives on the revision. `defaults` is the copy
-// the catalogue carries, so a card can render a live preview without fetching
+// every component list carries, so a card can render a live preview without fetching
 // a revision per card.
 export const defaults = (props = []) =>
   Object.fromEntries(props.map(({ name, default: value }) => [name, value]));

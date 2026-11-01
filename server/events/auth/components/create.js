@@ -4,7 +4,7 @@ import { slug as slugPattern } from '../../../user.js';
 import { lettered, slugify } from '../../../../app/js/naming.js';
 import { CATEGORIES } from '../../../../app/js/tags.js';
 
-// A created component has its catalogue row and nothing published: `latest` 0
+// A created component has its components row and nothing published: `latest` 0
 // keeps it out of every listing and its source unanswered until the first
 // publish bumps it to v1.
 export default async ({ namespace, title = '', description }, { db, identity }) => {

@@ -2,7 +2,7 @@ import { now } from '../../../db.js';
 
 const STYLINGS = ['inline', 'stylecheat'];
 
-// Styling is catalogue metadata, not part of a revision, so it changes in place
+// Styling belongs to the component, not to a revision, so it changes in place
 // without publishing a version.
 export default async ({ namespace, slug, styling }, { db, identity }) => {
   if (!STYLINGS.includes(styling)) throw Error(`Styling must be one of ${STYLINGS.join(', ')}`);

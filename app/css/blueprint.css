@@ -426,23 +426,23 @@ section[about] tags {
   row-gap: calc(var(--unit) * 2);
 }
 
-catalogue > card {
+gallery > card {
   position: relative;
   width: round(down, 100%, var(--unit));
 }
 
-catalogue h5 > a::after {
+gallery h5 > a::after {
   content: '';
   position: absolute;
   inset: 0;
 }
 
-catalogue tags a {
+gallery tags a {
   position: relative;
   z-index: 1;
 }
 
-catalogue tags badge:not([active]) {
+gallery tags badge:not([active]) {
   padding-inline: 0;
   background: none;
   box-shadow: none;
@@ -616,7 +616,7 @@ container {
   margin-inline: round(down, (100% - var(--frame)) / 2, var(--cell)) auto;
 }
 
-:is(catalogue, section[about]) badge {
+:is(gallery, section[about]) badge {
   background-color: var(--input);
   color: var(--primary);
   box-shadow: inset 0 0 0 1px var(--border);
@@ -643,12 +643,12 @@ container {
   word-break: break-all;
 }
 
-catalogue code {
+gallery code {
   overflow-wrap: anywhere;
   white-space: normal;
 }
 
-catalogue {
+gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(calc(var(--cell) * 10), 1fr));
   grid-auto-rows: minmax(calc(var(--cell) * 4), auto);
@@ -686,7 +686,7 @@ catalogue {
     overflow: visible;
   }
 
-  catalogue {
+  gallery {
     grid-template-columns: minmax(0, 1fr);
     grid-auto-rows: auto;
   }

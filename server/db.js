@@ -20,7 +20,7 @@ export const tagged = (row) => {
 
 // The query behind every list of components: published ones only, in the
 // shape `tagged` decodes, narrowed by the condition each list adds.
-export const catalogue = (where) =>
+export const published = (where) =>
   `SELECT components.namespace, components.slug, components.title, components.description, components.category,
      components.icon, components.styling, components.latest, components.defaults, components.updatedAt,
      (SELECT json_group_array(tag) FROM tags WHERE tags.namespace = components.namespace AND tags.slug = components.slug) AS tags

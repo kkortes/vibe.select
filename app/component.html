@@ -16,7 +16,7 @@
     // derive no manifest from, so it is told where the manifest lives.
     window.__MANIFEST__ = '/vibe-hyperspeed/component.html.manifest.js';
 
-    // The card a visitor clicked carries this name on the catalogue, so the
+    // The card a visitor clicked carries this name in the gallery, so the
     // browser morphs it into the main box. It has to be set before the first
     // paint, which is earlier than any module runs.
     document.documentElement.style.setProperty('--main', `c-${location.pathname.slice(1).replace('/', '-')}`);

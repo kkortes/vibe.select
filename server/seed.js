@@ -1,4 +1,4 @@
-import catalogue from './seed/catalogue.js';
+import components from './seed/components.js';
 import { now } from './db.js';
 import { defaults, validate } from './props.js';
 import { autoTags } from '../app/js/tags.js';
@@ -11,14 +11,14 @@ const database = preview ? 'vibe-select-preview' : 'vibe-select';
 const target = preview || process.argv.includes('--remote') ? '--remote' : '--local';
 
 // Seeded props go through the same validation a published revision does, so the
-// catalogue can never hold a schema the publish event would have refused.
+// seed can never hold a schema the publish event would have refused.
 const checked = (components) =>
   components.map((component) => ({
     ...component,
     versions: component.versions.map((version) => ({ ...version, props: validate(version.props) })),
   }));
 
-const seeded = checked(catalogue);
+const seeded = checked(components);
 
 // Each seeded namespace is replaced whole: its components are written as listed
 // and nothing else is left under it. A component names its namespace, or is the root namespace's.

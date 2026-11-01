@@ -1,5 +1,5 @@
 -- The auto tags of each component's latest revision, one row per tag. They are
--- read off the markup once, at publish time, so the catalogue can count and
+-- read off the markup once, at publish time, so component lists can count and
 -- filter them through an index instead of reading every revision.
 CREATE TABLE tags (
   namespace TEXT NOT NULL,
