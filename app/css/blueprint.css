@@ -457,8 +457,8 @@ section[preview] {
 section[preview] > h6 {
   --label: calc(var(--unit) * 2);
   position: absolute;
-  top: var(--pad);
-  left: var(--pad);
+  top: calc(var(--pad) - var(--label));
+  left: calc(var(--pad) - var(--label) * 1.5);
   z-index: 1;
   padding: var(--label) calc(var(--label) * 1.5);
   border: 1px solid var(--border);
