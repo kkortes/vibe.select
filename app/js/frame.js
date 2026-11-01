@@ -4,7 +4,9 @@ import { ORIGIN } from '/js/env.js';
 // Vibe, Stylecheat when the component or one it renders is styled by it, and
 // nothing of this site's. In this page's own document every stylesheet here,
 // and the <style> of every other component mounted on it, would reach the
-// preview too.
+// preview too. The one thing it borrows is window.notify: until a component in
+// the frame sets its own, it reads the site's, so a component that notifies
+// lands on the site's notifications the way it would on a consumer's page.
 const page = ({ tag, values, stylecheat, dark }) => `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +17,13 @@ const page = ({ tag, values, stylecheat, dark }) => `<!DOCTYPE html>
     html { height: 100%; display: grid; align-content: center; }
     body { margin: 0; padding: 8vw; display: grid; place-items: center; background: none; }
   </style>
+  <script>
+    Object.defineProperty(window, 'notify', {
+      configurable: true,
+      get: () => parent.notify,
+      set: (value) => Object.defineProperty(window, 'notify', { value, writable: true, configurable: true }),
+    });
+  </script>
   <script type="module">
     import vibe from '/modules/vibe/index.js';
 
