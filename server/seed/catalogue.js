@@ -279,7 +279,7 @@ export default await Promise.all(
           description: 'Rules text. Trusted HTML.',
         },
         { name: 'flavourText', type: 'text', default: '', description: 'Italic lore under the rules text. Trusted HTML.' },
-        { name: 'serial', type: 'text', default: '[CS] 1/137', description: 'Set and number, bottom left.' },
+        { name: 'serial', type: 'text', default: '[CS] 1/137', description: 'Set and number, bottom left. Without one there is no serial or expansion emblem.' },
         { name: 'artist', type: 'text', default: 'Wyndagger', description: 'Artist credit, bottom right. Without one there is no credit or quill.' },
       ],
     },

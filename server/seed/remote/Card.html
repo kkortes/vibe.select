@@ -145,9 +145,11 @@
       <circle-mask bottom right></circle-mask>
       <!-- /if -->
 
+      <!-- if serial -->
       <card-emblem>
         <card-icon style="--icon: var(--icon-plant)"></card-icon>
       </card-emblem>
+      <!-- /if -->
 
       <card-rarity>
         <!-- if type !== 'fullart' -->
@@ -179,9 +181,11 @@
       <!-- /if -->
 
       <card-credits>
-        <span>@[serial]</span>
+        <!-- if serial -->
+        <span serial>@[serial]</span>
+        <!-- /if -->
         <!-- if artist -->
-        <span><card-icon style="--icon: var(--icon-quill)"></card-icon>@[artist]</span>
+        <span artist><card-icon style="--icon: var(--icon-quill)"></card-icon>@[artist]</span>
         <!-- /if -->
       </card-credits>
     </card-stack>
@@ -842,7 +846,6 @@
       inset-inline: 1.5rem;
       display: flex;
       align-items: center;
-      justify-content: space-between;
       gap: 0.5rem;
       font-family: 'Viga', sans-serif;
       font-size: 9px;
@@ -854,8 +857,12 @@
         gap: 0.125rem;
       }
 
-      > span:first-child {
+      > [serial] {
         margin-left: 0.375rem;
+      }
+
+      > [artist] {
+        margin-left: auto;
       }
 
       card-icon {
