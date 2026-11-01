@@ -216,8 +216,8 @@ export default await Promise.all(
       notes: 'Ported to Vibe from the battleborn-brawlers state inspector. It inspects whatever its data prop holds rather than reading window.$, so pass it @[$] for the whole Vibe state.',
       slug: 'data-display',
       title: 'Data Display',
-      description: 'A collapsible tree of any object or array, a row per key with its value or size. Click a row to open it, Alt-click to open everything under it, and click any other row to copy its value.',
-      category: 'Interactive',
+      description: 'A simplistic way of displaying data for debugging purposes. Clicking a row copies it value or displays its children if its an object or array. Alt-click opens/closes everything under it.',
+      category: 'Debug',
       icon: 'search',
       styling: 'stylecheat',
       props: [
