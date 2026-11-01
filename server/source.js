@@ -15,14 +15,12 @@ app.use('/*', cors());
 // The one client helper this origin's URL scheme needs: a `#vN` fragment is cut
 // from a request before it is sent, so the version it names is resolved in the
 // page that wrote it. It is a static asset, routed through here only so a
-// consumer on another origin may import it.
+// consumer on another origin may import it, and it keeps the asset's own
+// revalidating cache headers so it never lags the pages that import it.
 app.get('/js/pin.js', async (c) => {
   const res = await c.env.ASSETS.fetch(c.req.raw);
 
-  c.header('Content-Type', 'application/javascript; charset=UTF-8');
-  c.header('Cache-Control', 'public, max-age=3600');
-
-  return c.body(res.body, res.status);
+  return new Response(res.body, res);
 });
 
 const revision = async (c, namespace, slug, version) => {
