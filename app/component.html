@@ -73,13 +73,13 @@
                     <button secondary sm title="@[component ? 'Show data' : 'No data to display']" disabled="@[!component]" onclick="$.inspect()"><icon code></icon></button>
                   </crow>
                 </crow>
-                <!-- if user -->
+                <!-- if user && coding -->
                 <h1><textarea rows="1" spellcheck="false" value="@[unpublished?.title ?? component?.title]" oninput="$.edit('title', this.value)"></textarea></h1>
                 <!-- else -->
                 <h1>@[component?.title]</h1>
                 <!-- /if -->
               </crow>
-              <!-- if user -->
+              <!-- if user && coding -->
               <p lead max-w-160><textarea rows="1" value="@[unpublished?.description ?? component?.description]" oninput="$.edit('description', this.value)"></textarea></p>
               <!-- else -->
               <p lead max-w-160>@[component?.description]</p>
@@ -87,12 +87,16 @@
               <tags>
                 <crow left g-2 w-full>
                   <span sm text-muted>CSS Styling</span>
+                  <!-- if user && coding -->
                   <label sm>
                     <select onchange="$.style(this.value)">
                       <option value="inline" selected="@[styling === 'inline']">Inline styles</option>
                       <option value="stylecheat" selected="@[styling === 'stylecheat']">Stylecheat</option>
                     </select>
                   </label>
+                  <!-- else -->
+                  <span sm>@[styling === 'stylecheat' ? 'Stylecheat' : 'Inline styles']</span>
+                  <!-- /if -->
                   <!-- if styling === 'stylecheat' -->
                   <a href="https://stylecheat.korte.kim" target="_blank" title="This component assumes you have Stylecheat installed in the place where it is being used" primary sm>stylecheat.korte.kim</a>
                   <!-- /if -->
