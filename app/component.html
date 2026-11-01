@@ -85,23 +85,19 @@
               <p lead max-w-160>@[component?.description]</p>
               <!-- /if -->
               <tags>
+                <!-- if user && coding -->
                 <crow left g-2 w-full>
                   <span sm text-muted>CSS Styling</span>
-                  <!-- if user && coding -->
                   <label sm>
                     <select onchange="$.style(this.value)">
                       <option value="inline" selected="@[styling === 'inline']">Inline styles</option>
                       <option value="stylecheat" selected="@[styling === 'stylecheat']">Stylecheat</option>
                     </select>
                   </label>
-                  <!-- else -->
-                  <span sm>@[styling === 'stylecheat' ? 'Stylecheat' : 'Inline styles']</span>
-                  <!-- /if -->
                   <!-- if styling === 'stylecheat' -->
                   <a href="https://stylecheat.korte.kim" target="_blank" title="This component assumes you have Stylecheat installed in the place where it is being used" primary sm>stylecheat.korte.kim</a>
                   <!-- /if -->
                 </crow>
-                <!-- if user && coding -->
                 <crow left g-2 w-full>
                   <span sm text-muted>Dependencies</span>
                   <label sm f-1>
