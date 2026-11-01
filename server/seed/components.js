@@ -217,7 +217,7 @@ export default await Promise.all(
       notes: 'Ported to Vibe from the battleborn-brawlers state inspector. It inspects whatever its data prop holds rather than reading window.$, so pass it @[$] for the whole Vibe state.',
       slug: 'data-inspector',
       title: 'Data Inspector',
-      description: 'A collapsible tree of any object or array, a row per key with its value or size. Click a row to open it, Alt-click to open everything under it, and copy the whole thing as JSON.',
+      description: 'A collapsible tree of any object or array, a row per key with its value or size. Click a row to open it, Alt-click to open everything under it.',
       category: 'Interactive',
       icon: 'search',
       styling: 'stylecheat',
