@@ -156,7 +156,7 @@ export const autoTags = ({ html, props }) =>
     state(html) && 'State',
     js(html) && 'JS',
     listeners(html).length && 'Functions',
-    !styled(html) && 'CSS',
+    styled(html) && 'CSS',
   ].filter(Boolean);
 
 // Stylecheat is a promise about the page a component lands in, not something
