@@ -52,7 +52,9 @@ tables hold the catalogue; `users` and `sessions` hold Google sign-ins for
 An unlisted namespace keeps its components off the frontpage: `components/list`
 without a namespace, and `tags/top`, leave it out. Its components still render
 at their addresses and list on `/<namespace>`, which asks `components/list` for
-that namespace alone. The New namespace modal on `/components` sets it.
+that namespace alone. The New namespace modal on `/components` sets it, and its
+owner flips it later from the Unlisted switch beside Add component
+(`auth/namespaces/unlist`).
 
 **The source bytes of a component live in `revisions.html`** — a text column on
 the revision row, holding the component's markup exactly as published.

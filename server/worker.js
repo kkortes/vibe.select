@@ -15,6 +15,7 @@ import versions from './events/auth/components/versions.js';
 import create from './events/auth/namespaces/create.js';
 import remove from './events/auth/namespaces/delete.js';
 import mine from './events/auth/namespaces/mine.js';
+import unlist from './events/auth/namespaces/unlist.js';
 import top from './events/tags/top.js';
 
 // Google is the only way to get a session here, and it is stated rather than
@@ -39,6 +40,7 @@ const socket = aaw(
     'auth/namespaces/create': create,
     'auth/namespaces/delete': remove,
     'auth/namespaces/mine': mine,
+    'auth/namespaces/unlist': unlist,
   },
   (env) => ({ db: env.DB, env }),
   ({ event, websocketKey, error }) => console.info(`${error ? '🔴' : '🟢'} ${event} | ${websocketKey}`),

@@ -30,8 +30,18 @@ export const state = {
     return this.owned.filter(({ namespace }) => !this.namespace || namespace === this.namespace);
   },
 
+  selected() {
+    return this.mine.find(({ slug }) => slug === this.namespace);
+  },
+
   deletable() {
-    return !this.mine.find(({ slug }) => slug === this.namespace).published;
+    return !this.selected().published;
+  },
+
+  async unlist(unlisted) {
+    const { slug } = await call('auth/namespaces/unlist', { slug: this.namespace, unlisted });
+
+    this.mine = this.mine.map((ns) => (ns.slug === slug ? { ...ns, unlisted } : ns));
   },
 
   confirm() {

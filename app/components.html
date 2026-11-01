@@ -36,6 +36,10 @@
           <!-- /if -->
         </tabs>
         <!-- if namespace -->
+        <label px-4>
+          <input type="checkbox" role="switch" checked="@[$.selected().unlisted]" onchange="$.unlist(event.currentTarget.checked)" />
+          Unlisted
+        </label>
         <button tertiary onclick="$.draw()"><icon components></icon>Add component</button>
         <removal>
           <button tertiary disabled="@[!$.deletable()]" onclick="$.confirm()"><icon cross></icon>Remove namespace</button>
@@ -119,8 +123,10 @@
             <!-- if namespace -->
             <p lead max-w-160>
               Currently showing your components under the namespace <code>@[namespace]</code>.
+              <!-- if $.selected().unlisted -->
               Your components here are set to <b>unlisted</b> meaning they can't be found through search, but accessible for
               anyone to use.
+              <!-- /if -->
             </p>
             <!-- else -->
             <p lead max-w-160>
