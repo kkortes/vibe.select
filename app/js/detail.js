@@ -1,6 +1,7 @@
 import codie from '/modules/codie/codie.js';
 
 import { SOURCE_URL } from '/js/env.js';
+import frame from '/js/frame.js';
 import { ROOT, address, path, place, source } from '/js/pin.js';
 import { guard, take, state as publishing } from '/js/publishing.js';
 import { CATEGORIES, KEYBOARD, autoTags, listeners, stylingTags } from '/js/tags.js';
@@ -41,22 +42,28 @@ const children = () => window.$.values[window.$.slot?.name] ?? '';
 const after = () => window.$.slot?.after ?? '';
 
 // Which props a component takes is the thing being documented, so the attribute
-// *names* on the tag are data. That is the one place the page writes markup
-// instead of templating it — every value on it stays bound to `values`, so
-// editing a prop in the docs re-renders the component and nothing else. The
-// markup between the tags is read once when the component mounts, so a change
-// to it mounts the component again.
+// *names* on the tag are data, every value on it bound to `values` in the
+// preview's frame. Editing a prop in the docs pushes it there and re-renders
+// the component and nothing else. The markup between the tags is read once when
+// the component mounts, and the styling decides what the frame loads, so a
+// change to either mounts the component again.
 let mounted;
+let sync;
 
 const mount = () => {
-  const attrs = window.$.attributes
-    .map(({ name }) => `${name}="@[values.${name}]"`)
-    .join(' ');
-
-  mounted = children();
-  document.querySelector('preview-host').innerHTML =
-    `<component src="${window.$.previewSource}" ${attrs}>${mounted}</component>${after()}`;
+  mounted = { children: children(), styling: window.$.styling };
+  sync = frame(document.querySelector('preview-host'), {
+    src: window.$.previewSource,
+    attributes: window.$.attributes.map(({ name }) => name),
+    children: mounted.children,
+    after: after(),
+    styling: mounted.styling,
+    read: () => ({ values: window.$.values, dark: window.$.darkMode }),
+  });
 };
+
+const remount = () =>
+  children() !== mounted.children || window.$.styling !== mounted.styling ? mount() : sync();
 
 let editor;
 let draft;
@@ -139,7 +146,7 @@ const attach = (html) => {
   if (!usage) {
     usage = codie('codie[usage]');
     window.$.on('afterUpdate', showUsage);
-    window.$.on('afterUpdate', () => children() !== mounted && mount());
+    window.$.on('afterUpdate', remount);
     window.$.on('afterUpdate', showMarkup);
     window.$.on('afterUpdate', showJson);
     window.$.on('afterUpdate', showInclude);
@@ -301,13 +308,14 @@ export const state = {
     }
   },
 
-  // The preview shares this page's window and document, so an event sent there
-  // reaches its listener. A key listener gets a real KeyboardEvent built from
+  // The preview listens on its frame's window and document, so an event is
+  // built and sent there. A key listener gets a real KeyboardEvent built from
   // the JSON beside the button; any other carries it as detail.
   dispatch(target, event, json) {
-    const example = json && JSON.parse(json);
-    ({ window, document })[target].dispatchEvent(
-      KEYBOARD.includes(event) ? new KeyboardEvent(event, example) : new CustomEvent(event, { detail: example }),
+    const view = document.querySelector('preview-host > iframe').contentWindow;
+    const example = json && view.JSON.parse(json);
+    ({ window: view, document: view.document })[target].dispatchEvent(
+      KEYBOARD.includes(event) ? new view.KeyboardEvent(event, example) : new view.CustomEvent(event, { detail: example }),
     );
   },
 

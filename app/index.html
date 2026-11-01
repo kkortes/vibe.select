@@ -28,12 +28,13 @@
 
     import boot from '/js/boot.js';
     import globalState from '/js/globalState.js';
-    import { load, state, edit, intro } from '/js/browse.js';
+    import { load, state, edit, intro, preview } from '/js/browse.js';
 
     boot(() => vibe({ ...globalState, ...state }), load).on('ready', () => {
       // Without the hero there is no tag to edit and nothing to collapse.
       if (!window.$.hero) return;
       edit();
+      preview();
       intro();
     });
   </script>
@@ -69,10 +70,8 @@
 
           <crow vertical g-6 f-1 overflow-hidden>
             <template codie highlight-html vibe-dehydrate></template>
-            <crow grid locked center preview px="12" sm:px="6" py="6" w-full paper>
-              <component src="@[demo.src]" name="@[demo.name]" image="@[demo.image]" layout="@[demo.layout]" type="@[demo.type]"
-                element="@[demo.element]" text="@[demo.text]"
-                subtypes="@[demo.subtypes]"></component>
+            <crow grid locked center preview w-full paper>
+              <preview-host></preview-host>
             </crow>
           </crow>
         </crow>

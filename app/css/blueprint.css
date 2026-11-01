@@ -465,6 +465,16 @@ crow[preview] {
   contain: paint;
 }
 
+crow[preview] > preview-host {
+  display: contents;
+}
+
+crow[preview] iframe {
+  flex: 1;
+  align-self: stretch;
+  border: 0;
+}
+
 section[preview] > crow {
   aspect-ratio: 3 / 2;
   width: 100%;
@@ -839,11 +849,11 @@ card[warning] {
   background-color: oklch(from var(--yellow) 0.4 0.08 h);
 }
 
-:is(overlay-box > slot, inspector > component) > card:not([preview] *) {
+:is(overlay-box > slot, inspector > component) > card {
   --card: oklch(1 0 0);
 }
 
-[stylecheat].dark :is(overlay-box > slot, inspector > component) > card:not([preview] *) {
+[stylecheat].dark :is(overlay-box > slot, inspector > component) > card {
   --card: oklch(0.232 0.013 58);
 }
 

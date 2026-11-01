@@ -1,6 +1,7 @@
 import codie from '/modules/codie/codie.js';
 
 import { SOURCE_URL } from '/js/env.js';
+import frame from '/js/frame.js';
 import { get } from '/js/localStorage.js';
 import { ROOT, address, pin } from '/js/pin.js';
 import { TAGS } from '/js/tags.js';
@@ -85,6 +86,25 @@ export const edit = () => {
       Object.fromEntries(Object.keys(tag).map((name) => [name, component.getAttribute(name) || ''])),
     );
   };
+};
+
+const props = ({ src, ...values }) => values;
+
+// The hero's card renders in a frame of its own, the page a consumer with
+// Stylecheat would have. An edit to its src mounts it again; any other pushes
+// the values into the frame. The hero never comes back once it is gone.
+export const preview = () => {
+  const { src } = window.$.demo;
+  const sync = frame(document.querySelector('preview-host'), {
+    src,
+    attributes: Object.keys(props(window.$.demo)),
+    styling: 'stylecheat',
+    read: () => ({ values: props(window.$.demo), dark: window.$.darkMode }),
+  });
+  const off = window.$.on('afterUpdate', () => {
+    if (!window.$.hero) return off();
+    window.$.demo.src === src ? sync() : (off(), preview());
+  });
 };
 
 // The hero fills the first screen until the visitor first scrolls; a page that
