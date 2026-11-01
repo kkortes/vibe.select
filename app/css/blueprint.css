@@ -693,6 +693,10 @@ tabs[namespaces] > tab[new]::before {
   border: 1px dashed var(--border);
 }
 
+tabs[namespaces] > tab[new] > icon {
+  margin-inline: 0 calc(var(--unit) * 0.5);
+}
+
 tabs[namespaces] > tab[new]:hover {
   background-color: transparent;
 }
