@@ -134,6 +134,7 @@ sticky[grid][locked] {
 
 sticky::after {
   z-index: -1;
+  background-color: oklch(from var(--background) l c h / 0.6);
 }
 
 sticky:not(sheet sticky) {
@@ -150,7 +151,6 @@ sticky:not(sheet sticky) {
 
 @container scroll-state(stuck: top) {
   sticky::after {
-    background-color: oklch(from var(--background) l c h / 0.6);
     background-image: var(--lines);
     background-position: inherit;
     background-size: inherit;
