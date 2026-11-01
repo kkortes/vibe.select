@@ -417,6 +417,11 @@ section[preview] > crow {
   width: 100%;
 }
 
+container crow[preview] {
+  aspect-ratio: 5 / 3;
+  box-shadow: var(--ring-inset);
+}
+
 section[use] {
   grid-row: span 2;
 }
