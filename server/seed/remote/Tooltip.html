@@ -188,7 +188,7 @@
     display: block;
     width: max-content;
     opacity: 0;
-    filter: drop-shadow(0 calc(var(--unit) * 0.5) var(--unit) rgb(0 0 0 / 0.2));
+    filter: drop-shadow(0 1px 3px oklch(from var(--shadow-color) l c h / 0.18));
     transition: opacity 180ms ease-out, transform 180ms ease-out;
   }
 
@@ -212,31 +212,35 @@
     width: calc(var(--unit) * 3);
     height: calc(var(--unit) * 3);
     background: var(--tooltip-surface, var(--card));
-    border: 1px solid var(--border);
+    border: 0 solid var(--border);
   }
 
   tooltip-body[data-direction="up"] tooltip-pointer {
     bottom: 1px;
+    border-width: 0 1px 1px 0;
     transform: translate(-50%, 50%) rotate(45deg);
-    clip-path: polygon(0% 100%, 100% 100%, 100% 0%);
+    clip-path: polygon(0% 75%, 0% 100%, 100% 100%, 100% 0%, 75% 0%);
   }
 
   tooltip-body[data-direction="down"] tooltip-pointer {
     top: 1px;
+    border-width: 1px 0 0 1px;
     transform: translate(-50%, -50%) rotate(45deg);
-    clip-path: polygon(0% 0%, 0% 100%, 100% 0%);
+    clip-path: polygon(0% 0%, 0% 100%, 25% 100%, 100% 25%, 100% 0%);
   }
 
   tooltip-body[data-direction="left"] tooltip-pointer {
     right: 1px;
+    border-width: 1px 1px 0 0;
     transform: translate(50%, -50%) rotate(45deg);
-    clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 75% 100%, 0% 25%);
   }
 
   tooltip-body[data-direction="right"] tooltip-pointer {
     left: 1px;
+    border-width: 0 0 1px 1px;
     transform: translate(-50%, -50%) rotate(45deg);
-    clip-path: polygon(0% 0%, 0% 100%, 100% 100%);
+    clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 75%, 25% 0%);
   }
 
   tooltip-body:is([data-direction="none"], [cramped]) tooltip-pointer {
