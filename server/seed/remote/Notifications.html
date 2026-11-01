@@ -7,6 +7,7 @@
   const SCALE_STEP = 0.05;
   const SWIPE = 60;
   const SIDES = { right: [1, 0], left: [-1, 0], down: [0, 1], up: [0, -1] };
+  const ICONS = { error: 'cross', warning: 'triangle-alert', success: 'checkmark', info: 'bell' };
 
   let count = 0;
   let paused = false;
@@ -29,7 +30,7 @@
     $[id].notifications = $[id].notifications.map((n) => (n.id === key ? { ...n, leaving: true } : n));
   };
 
-  const push = (type, title, { id: key = ++count, duration = type === 'loading' ? Infinity : DURATION, description, icon } = {}) => {
+  const push = (type, title, { id: key = ++count, duration = type === 'loading' ? Infinity : DURATION, description, icon = ICONS[type] } = {}) => {
     const text = title instanceof Error ? title.message : title;
     if (!text) return;
     const entry = { id: key, type, title: String(text), description, icon };
@@ -174,13 +175,13 @@
       <card p-3 pr-5>
         <crow left g-2>
           <!-- if notification.type === 'error' -->
-          <crow circle w-8 bg-red text-red><icon @[notification.icon || 'cross']></icon></crow>
+          <crow circle w-8 bg-red text-red><icon @[notification.icon]></icon></crow>
           <!-- else if notification.type === 'warning' -->
-          <crow circle w-8 bg-orange text-orange><icon @[notification.icon || 'triangle-alert']></icon></crow>
+          <crow circle w-8 bg-orange text-orange><icon @[notification.icon]></icon></crow>
           <!-- else if notification.type === 'success' -->
-          <crow circle w-8 bg-green text-green><icon @[notification.icon || 'checkmark']></icon></crow>
+          <crow circle w-8 bg-green text-green><icon @[notification.icon]></icon></crow>
           <!-- else if notification.type === 'info' -->
-          <crow circle w-8 bg-blue text-blue><icon @[notification.icon || 'bell']></icon></crow>
+          <crow circle w-8 bg-blue text-blue><icon @[notification.icon]></icon></crow>
           <!-- else if notification.type === 'loading' -->
           <crow circle w-8 text-muted><icon spinner animate-spin></icon></crow>
           <!-- else if notification.icon -->
