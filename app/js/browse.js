@@ -5,7 +5,16 @@ import { get } from '/js/localStorage.js';
 import { ROOT, address, pin } from '/js/pin.js';
 import { call } from '/js/ws.js';
 
-const tag = { src: address(SOURCE_URL, ROOT, 'counter', 3), label: 'Items', step: '1' };
+const tag = {
+  src: address(SOURCE_URL, 'kortes', 'card', 1),
+  name: 'Oskar',
+  image: `${SOURCE_URL}/images/card/oskar.jpg`,
+  type: 'fullart',
+  kind: 'god',
+  color: 'yellow',
+  icon: 'lightning',
+  text: 'I always start the game.',
+};
 
 export const state = {
   // The hero renders the very tag it prints, pin and all, and keeps rendering
@@ -45,8 +54,8 @@ export const state = {
   },
 };
 
-const print = ({ src, label, step }) =>
-  `<component\n  src="${src}"\n  label="${label}"\n  step="${step}"\n></component>`;
+const print = (attributes) =>
+  `<component\n${Object.entries(attributes).map(([name, value]) => `  ${name}="${value}"`).join('\n')}\n></component>`;
 
 // A template parses the edited tag without running anything in it.
 const read = (raw) => {
@@ -62,11 +71,8 @@ export const edit = () => {
   editor.onEdit = ({ raw }) => {
     const component = read(raw);
     if (!component) return;
-    window.$.demo = {
-      src: pin(component.getAttribute('src') || ''),
-      label: component.getAttribute('label') || '',
-      step: component.getAttribute('step') || '',
-    };
+    const attributes = Object.fromEntries(Object.keys(tag).map((name) => [name, component.getAttribute(name) || '']));
+    window.$.demo = { ...attributes, src: pin(attributes.src) };
   };
 };
 
