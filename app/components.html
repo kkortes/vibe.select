@@ -53,14 +53,14 @@
       <dialog namespace>
         <card w="120" g-4 p-6>
           <h6>New namespace</h6>
-          <p text-muted>
-            A namespace is your corner of vibe.select. Everything published under it is addressed by
-            <code>your-namespace/your-component.html</code>, so the slug becomes part of every address you publish.
+          <p>
+            Your account is limited to @[$.limit()]. Components under this namespace will be accessible via
+            <code>@[$.address()]/&lt;component-name&gt;.html</code>.
           </p>
-          <p>Once a component is published in a namespace, that namespace can no longer be deleted.</p>
+          <p sm text-muted>Once a component is published in a namespace, that namespace can no longer be deleted.</p>
           <crow vertical left g="1.5" w-full>
             <span sm text-muted>Slug</span>
-            <input type="text" w-full placeholder="acme" value="@[slug]" oninput="$.slug = this.value" />
+            <input type="text" w-full placeholder="Example: cool-components" value="@[slug]" oninput="$.slug = this.value" />
           </crow>
           <label>
             <input type="checkbox" role="switch" checked="@[unlisted]" onchange="$.unlisted = event.currentTarget.checked" />

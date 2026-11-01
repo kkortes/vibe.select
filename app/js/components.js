@@ -1,4 +1,5 @@
 import { lettered, slugify } from '/js/naming.js';
+import { SOURCE_URL } from '/js/env.js';
 import { path } from '/js/pin.js';
 import { call } from '/js/ws.js';
 
@@ -20,6 +21,16 @@ export const state = {
     this.unlisted = false;
     this.failure = '';
     document.querySelector('dialog[namespace]').showModal();
+  },
+
+  limit() {
+    const count = this.user.namespaceCount;
+    return `${count} namespace${count === 1 ? '' : 's'}`;
+  },
+
+  // The address the namespace being typed puts its components under.
+  address() {
+    return `${SOURCE_URL}/${this.slug || 'your-namespace'}`;
   },
 
   dismiss() {
