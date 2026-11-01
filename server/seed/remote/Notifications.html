@@ -172,8 +172,8 @@
       onpointerup="this.drop(event, notification)"
       onpointercancel="this.drop(event, notification)"
     >
-      <card py-3 px-4>
-        <crow left up g-1>
+      <card py-3>
+        <crow left up g-3>
           <!-- if notification.type === 'error' -->
           <crow circle w-8 bg-red text-red><icon @[notification.icon]></icon></crow>
           <!-- else if notification.type === 'warning' -->
@@ -326,6 +326,10 @@
       opacity 200ms ease;
     z-index: var(--z, 1);
     animation: notify-in 400ms cubic-bezier(0.21, 1.02, 0.73, 1) backwards;
+  }
+
+  notification-card card {
+    padding-inline: calc(var(--unit, 4px) * 3.5);
   }
 
   notifications-viewport[down]:not([up]) notification-card {
