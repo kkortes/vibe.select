@@ -829,3 +829,23 @@ removal:hover > tooltip {
   opacity: 1;
   translate: 0;
 }
+
+user-menu:has(card) > button {
+  --primary: var(--popover);
+  --primary-hover: var(--popover);
+  --primary-foreground: var(--popover-foreground);
+  --shadow-xs: inset 0 1px var(--border), inset 1px 0 var(--border), inset -1px 0 var(--border);
+  position: relative;
+  z-index: 1;
+}
+
+user-menu > card {
+  --surface: var(--popover);
+  position: absolute;
+  top: calc(100% - 1px);
+  right: 0;
+  overflow-wrap: anywhere;
+  box-shadow:
+    inset 0 0 0 1px var(--border),
+    0 calc(var(--unit) * 4) calc(var(--unit) * 8) oklch(from var(--shadow-color) l c h / 0.15);
+}

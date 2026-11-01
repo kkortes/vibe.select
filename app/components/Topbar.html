@@ -15,11 +15,11 @@
           <strong>@[user.name[0].toUpperCase()]</strong>
         </button>
         <!-- if userMenuOpen -->
-        <card position="absolute" t="12" r-0 w="52" p-2 g-1>
-          <strong px-2 py-1>@[user.name]</strong>
-          <span sm text-muted px-2>@[user.email]</span>
-          <hr />
-          <button primary w-full mt-1 onclick="$.signOut()">Sign out</button>
+        <card w="64" p-4 g-1>
+          <strong>@[user.name]</strong>
+          <span sm text-muted>@[user.email]</span>
+          <hr my-3 />
+          <button primary sm w-full onclick="$.signOut()">Sign out</button>
         </card>
         <!-- /if -->
       </user-menu>
