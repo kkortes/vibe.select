@@ -717,7 +717,7 @@ icon[data-tag='CSS'] {
 }
 
 icon[data-tag='Dependencies'] {
-  --icon: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20width%3D%227%22%20height%3D%227%22%20x%3D%2214%22%20y%3D%223%22%20rx%3D%221%22%2F%3E%3Cpath%20d%3D%22M10%2021V8a1%201%200%200%200-1-1H4a1%201%200%200%200-1%201v12a1%201%200%200%200%201%201h12a1%201%200%200%200%201-1v-5a1%201%200%200%200-1-1H3%22%2F%3E%3C%2Fsvg%3E');
+  --icon: var(--icon-chain);
 }
 
 icon[data-tag='Stylecheat'] {

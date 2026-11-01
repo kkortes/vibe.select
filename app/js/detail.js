@@ -3,7 +3,7 @@ import codie from '/modules/codie/codie.js';
 import { SOURCE_URL } from '/js/env.js';
 import { ROOT, address, path, place, source } from '/js/pin.js';
 import { guard, take, state as publishing } from '/js/publishing.js';
-import { KEYBOARD, autoTags, listeners, stylingTags } from '/js/tags.js';
+import { CATEGORIES, KEYBOARD, autoTags, listeners, stylingTags } from '/js/tags.js';
 import { call } from '/js/ws.js';
 
 // The Worker serves this page at the component's own address, /<namespace>/<slug>,
@@ -177,8 +177,10 @@ export const state = {
   // whatever was published last and carries no hash.
   tab: 0,
   tags: [],
+  // What the User tags field suggests; publishing takes no other.
+  categories: CATEGORIES,
   styling: 'inline',
-  // What the debug button beside the version badge hands the DataInspector,
+  // What the debug button beside the version badge hands the Data Display,
   // and whether its overlay is open.
   inspected: null,
   inspecting: false,
@@ -254,7 +256,7 @@ export const state = {
     const original = { namespace, slug, title, description, category, icon, html, props, events, dependencies: dependencies.filter(Boolean) };
     const edited = { ...original, ...this.unpublished, [key]: value };
 
-    this.unpublished = !latest || ['html', 'title', 'description', 'dependencies'].some((k) => String(edited[k]) !== String(original[k])) ? edited : null;
+    this.unpublished = !latest || ['html', 'title', 'description', 'category', 'dependencies'].some((k) => String(edited[k]) !== String(original[k])) ? edited : null;
   },
 
   // Typed as a comma separated list of `namespace/component`.

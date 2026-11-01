@@ -105,7 +105,7 @@
                   </label>
                 </crow>
                 <!-- else if $.dependencies().length -->
-                <crow left g-2 wrap>
+                <crow left g-2 wrap w-full>
                   <span sm text-muted>Dependencies</span>
                   <!-- each $.dependencies() as dependency -->
                   <!-- if dependency.path -->
@@ -124,7 +124,18 @@
                 </crow>
                 <crow left g-2 wrap>
                   <span sm text-muted>User tags</span>
-                  <a href="/tag/@[component?.category?.toLowerCase()]"><badge secondary>@[component?.category]</badge></a>
+                  <!-- if user && coding -->
+                  <label sm>
+                    <input type="text" list="categories" placeholder="Category" value="@[unpublished?.category ?? component?.category]" onchange="$.edit('category', this.value.trim())" />
+                    <datalist id="categories">
+                      <!-- each categories as category -->
+                      <option value="@[category]"></option>
+                      <!-- /each -->
+                    </datalist>
+                  </label>
+                  <!-- else -->
+                  <a href="/tag/@[(unpublished?.category ?? component?.category)?.toLowerCase()]"><badge secondary>@[unpublished?.category ?? component?.category]</badge></a>
+                  <!-- /if -->
                 </crow>
               </tags>
             </section>
@@ -243,7 +254,7 @@
 
     <component src="/overlay.html" open="@[inspecting]">
       <inspector>
-        <component src="/data-inspector.html" data="@[inspected]"></component>
+        <component src="/data-display.html" data="@[inspected]"></component>
       </inspector>
     </component>
 
