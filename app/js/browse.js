@@ -6,6 +6,10 @@ import { ROOT, address, pin } from '/js/pin.js';
 import { TAGS } from '/js/tags.js';
 import { call } from '/js/ws.js';
 
+// Dependencies stays off the frontpage's filters; a component page still links
+// to /tag/dependencies.
+const AUTO = TAGS.filter((tag) => tag !== 'Dependencies');
+
 const tag = {
   src: address(SOURCE_URL, 'kortes', 'card', 1),
   name: 'Oskar',
@@ -26,8 +30,8 @@ export const state = {
   demo: render(tag),
   components: [],
   matches: [],
-  // Every auto tag, and the four most common user tags, counted by the server.
-  filters: { auto: TAGS, user: [] },
+  // Every auto tag but Dependencies, and the four most common user tags, counted by the server.
+  filters: { auto: AUTO, user: [] },
   tag: 'All',
   // A visitor who has scrolled past the hero before opens on the components;
   // the wordmark in the topbar brings the hero back.
@@ -117,7 +121,7 @@ export const load = async () => {
   const [components, user] = await Promise.all([call('components/list'), call('tags/top')]);
 
   window.$.components = components;
-  window.$.filters = { auto: TAGS, user };
+  window.$.filters = { auto: AUTO, user };
   window.$.tag =
     components
       .flatMap(({ tags, category }) => [...tags, category])
