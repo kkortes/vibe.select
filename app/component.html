@@ -122,21 +122,24 @@
                   <a href="/tag/@[tag.toLowerCase()]"><badge secondary><icon data-tag="@[tag]"></icon>@[tag]</badge></a>
                   <!-- /each -->
                 </crow>
-                <crow left g-2 wrap>
+                <!-- if user && coding -->
+                <crow left g-2 w-full>
                   <span sm text-muted>User tags</span>
-                  <!-- if user && coding -->
-                  <label sm>
-                    <input type="text" list="categories" placeholder="Category" value="@[unpublished?.category ?? component?.category]" onchange="$.edit('category', this.value.trim())" />
+                  <label sm f-1>
+                    <input type="text" w-full list="categories" placeholder="Category" value="@[unpublished?.category ?? component?.category]" onchange="$.edit('category', this.value.trim())" />
                     <datalist id="categories">
                       <!-- each categories as category -->
                       <option value="@[category]"></option>
                       <!-- /each -->
                     </datalist>
                   </label>
-                  <!-- else -->
-                  <a href="/tag/@[(unpublished?.category ?? component?.category)?.toLowerCase()]"><badge secondary>@[unpublished?.category ?? component?.category]</badge></a>
-                  <!-- /if -->
                 </crow>
+                <!-- else -->
+                <crow left g-2 wrap>
+                  <span sm text-muted>User tags</span>
+                  <a href="/tag/@[(unpublished?.category ?? component?.category)?.toLowerCase()]"><badge secondary>@[unpublished?.category ?? component?.category]</badge></a>
+                </crow>
+                <!-- /if -->
               </tags>
             </section>
             <!-- if component -->

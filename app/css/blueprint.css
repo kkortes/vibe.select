@@ -420,6 +420,10 @@ section[about] tags {
   row-gap: calc(var(--unit) * 2);
 }
 
+section[about] tags label:has(input) {
+  --icon: var(--icon-pencil);
+}
+
 gallery > card {
   position: relative;
   width: round(down, 100%, var(--unit));
