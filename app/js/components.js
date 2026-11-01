@@ -9,12 +9,14 @@ export const state = {
   owned: [],
   // The selected tab: a namespace slug, or '' for All.
   namespace: '',
-  // The New namespace overlay is open.
+  // The New namespace, Remove namespace and Add component overlays are open.
   composing: false,
+  removing: false,
+  drafting: false,
   slug: '',
   unlisted: false,
   failure: '',
-  // The component the "Add component" dialog is creating in the selected namespace.
+  // The component the Add component overlay is creating in the selected namespace.
   draft: { title: '', description: '' },
   slugify,
 
@@ -36,8 +38,7 @@ export const state = {
   },
 
   dismiss() {
-    this.composing = false;
-    document.querySelectorAll('dialog').forEach((dialog) => dialog.close());
+    this.composing = this.removing = this.drafting = false;
   },
 
   listed() {
@@ -60,7 +61,7 @@ export const state = {
 
   confirm() {
     this.failure = '';
-    document.querySelector('dialog[removal]').showModal();
+    this.removing = true;
   },
 
   async remove() {
@@ -91,7 +92,7 @@ export const state = {
   draw() {
     this.draft = { title: '', description: '' };
     this.failure = '';
-    document.querySelector('dialog[component]').showModal();
+    this.drafting = true;
   },
 
   // Created with nothing published, the component page opens it as an

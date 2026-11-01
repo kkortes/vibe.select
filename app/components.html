@@ -76,8 +76,8 @@
         </card>
       </component>
 
-      <dialog removal>
-        <card w="120" g-4 p-6>
+      <component src="/overlay.html" open="@[removing]">
+        <card g-4 p-6>
           <h6>Delete @[namespace]</h6>
           <p>Are you sure? <code>@[namespace]/</code> is freed for anyone to take.</p>
           <!-- if failure -->
@@ -88,10 +88,10 @@
             <button primary onclick="$.remove()">Delete</button>
           </crow>
         </card>
-      </dialog>
+      </component>
 
-      <dialog component>
-        <card w="120" g-4 p-6>
+      <component src="/overlay.html" open="@[drafting]">
+        <card draft g-4 p-6>
           <h6>Add component to @[namespace]</h6>
           <crow vertical left g="1.5" w-full>
             <span sm text-muted>Name</span>
@@ -113,7 +113,7 @@
             <button primary onclick="$.add()">Create</button>
           </crow>
         </card>
-      </dialog>
+      </component>
       <!-- /if -->
       <scroll>
         <container>

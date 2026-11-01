@@ -25,8 +25,8 @@
 </publishing>
 <!-- /if -->
 
-<dialog publishing onclose="$.question = ''">
-  <card w="120" g-4 p-6>
+<component src="/overlay.html" open="@[asking]">
+  <card g-4 p-6>
     <!-- if question === 'leave' -->
     <h6>Your changes aren't published yet</h6>
     <p>Navigating will discard your recent changes, are you sure?</p>
@@ -46,4 +46,4 @@
     </crow>
     <!-- /if -->
   </card>
-</dialog>
+</component>

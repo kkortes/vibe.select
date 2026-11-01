@@ -180,8 +180,9 @@ export const state = {
   tags: [],
   styling: 'inline',
   // What the debug button beside the version badge hands the DataInspector,
-  // kept until its dialog closes.
+  // and whether its overlay is open.
   inspected: null,
+  inspecting: false,
 
   showing() {
     return this.version || this.component?.latest || 0;
@@ -267,7 +268,7 @@ export const state = {
 
   inspect() {
     this.inspected = { namespace, slug, url: this.url(), styling: this.styling, tags: this.tags, component: this.component };
-    document.querySelector('dialog[inspector]').showModal();
+    this.inspecting = true;
   },
 
   copy() {

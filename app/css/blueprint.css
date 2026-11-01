@@ -237,19 +237,14 @@ box[solid] > scroll {
   overflow-y: auto;
 }
 
-dialog {
-  margin: auto;
-  background: none;
-  color: inherit;
-}
-
-dialog[inspector][open] {
+inspector {
   display: flex;
-  border-radius: var(--unit);
+  justify-content: center;
+  height: calc(var(--unit) * 120);
 }
 
-[stylecheat]:not(.dark) dialog::backdrop {
-  background-color: oklch(1 0 0 / 0.4);
+inspector > component > card {
+  border-radius: var(--unit);
 }
 
 snippet {
@@ -798,7 +793,7 @@ code {
   border-radius: 0;
 }
 
-:is(badge, :is(gallery, dialog, overlay-box > slot, slide) > card, select, textarea, .button, button:not(user-menu > button, :is(autotags, usertags) > button, versions button), input:not([type='checkbox'], [type='radio'], [type='range'], [type='file'])) {
+:is(badge, :is(gallery, overlay-box > slot, slide) > card, select, textarea, .button, button:not(user-menu > button, :is(autotags, usertags) > button, versions button), input:not([type='checkbox'], [type='radio'], [type='range'], [type='file'])) {
   border-radius: var(--unit);
 }
 
@@ -840,7 +835,7 @@ card[warning] {
   background-color: oklch(from var(--yellow) 0.4 0.08 h);
 }
 
-:is(section[about], dialog[component]) textarea {
+:is(section[about], card[draft]) textarea {
   display: block;
   width: 100%;
   min-width: 0;

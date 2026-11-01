@@ -222,11 +222,11 @@
       </slider>
     </box>
 
-    <dialog inspector w="120" h="120" overflow-hidden onclick="event.target === this && this.close()" onclose="$.inspected = null">
-      <!-- if inspected -->
-      <component src="/data-inspector.html" data="@[inspected]"></component>
-      <!-- /if -->
-    </dialog>
+    <component src="/overlay.html" open="@[inspecting]">
+      <inspector>
+        <component src="/data-inspector.html" data="@[inspected]"></component>
+      </inspector>
+    </component>
 
     <divider></divider>
 

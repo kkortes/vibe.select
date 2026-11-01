@@ -7,8 +7,6 @@ import { call } from '/js/ws.js';
 // unpublished edit.
 const CARRIED = 'mkp-unpublished';
 
-const dialog = () => document.querySelector('dialog[publishing]');
-
 let onDiscard;
 
 // Spread into the state of every page that can hold an unpublished edit.
@@ -20,8 +18,9 @@ export const state = {
   next: 1,
   mine: [],
   picking: false,
-  // 'publish' or 'leave': which question the dialog asks.
+  // 'publish' or 'leave': which question the overlay asks while asking.
   question: '',
+  asking: false,
   failure: '',
 
   owns() {
@@ -34,23 +33,23 @@ export const state = {
 
     onDiscard = go;
     this.question = 'leave';
-    dialog().showModal();
+    this.asking = true;
   },
 
   discard() {
     this.unpublished = null;
-    dialog().close();
+    this.asking = false;
     onDiscard();
   },
 
   ask() {
     this.question = 'publish';
     this.failure = '';
-    dialog().showModal();
+    this.asking = true;
   },
 
   dismiss() {
-    dialog().close();
+    this.asking = false;
   },
 
   async publish() {
