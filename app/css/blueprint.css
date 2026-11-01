@@ -701,8 +701,12 @@ tabs[namespaces] > tab[new]:hover::before {
   background-color: oklch(from var(--foreground) l c h / 0.03);
 }
 
-:is(code, badge) {
+code {
   border-radius: 0;
+}
+
+:is(badge, select, textarea, input:not([type='checkbox'], [type='radio'], [type='range'], [type='file'])) {
+  border-radius: var(--unit);
 }
 
 :is(a, .a):is(.primary, .secondary, [primary], [secondary]):active,
