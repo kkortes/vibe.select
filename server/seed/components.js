@@ -176,7 +176,7 @@ export default await Promise.all(
       category: 'Interactive',
       icon: 'desktop',
       events: { keydown: { code: 'Digit1' }, keyup: { code: 'Digit1' } },
-      dependencies: ['data-display', 'notifications'],
+      dependencies: ['data-display'],
       props: [
         {
           name: 'keys',
@@ -207,6 +207,7 @@ export default await Promise.all(
       category: 'Interactive',
       icon: 'search',
       styling: 'stylecheat',
+      dependencies: ['notifications'],
       props: [
         {
           name: 'data',
