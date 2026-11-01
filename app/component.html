@@ -150,7 +150,7 @@
                       <name position="absolute">@[listener.event]</name>
                       <input type="text" w-full placeholder="Detail, as JSON" value="@[listener.example]" />
                     </label>
-                    <button secondary sm position="absolute" onclick="$.dispatch('@[listener.target]', '@[listener.event]', this.previousElementSibling.querySelector('input').value)">Invoke</button>
+                    <button primary sm position="absolute" onclick="$.dispatch('@[listener.target]', '@[listener.event]', this.previousElementSibling.querySelector('input').value)">Invoke</button>
                   </row>
                   <!-- /each -->
                 </crow>
