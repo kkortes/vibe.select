@@ -8,7 +8,7 @@ import { autoTags } from '../../../../app/js/tags.js';
 // Publishing only ever inserts. A revision that exists is frozen — the way to
 // change a component is to publish the next version of it.
 export default async (
-  { namespace, slug, title, description = null, category = '', icon = null, html, props = [], events = {}, dependencies = [], notes = '' },
+  { namespace, slug, title, description = '', category = '', icon = null, html, props = [], events = {}, dependencies = [], notes = '' },
   { db, identity },
 ) => {
   if (!slugPattern.test(String(slug))) throw Error('A slug is lowercase words joined by dashes');

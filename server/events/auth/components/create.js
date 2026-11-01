@@ -27,7 +27,7 @@ export default async ({ namespace, title = '', description }, { db, identity }) 
       `INSERT INTO components (id, namespace, slug, title, description, category, icon, latest, defaults, ownerId, createdAt, updatedAt)
        VALUES (${ID}, ?1, ?2, ?3, ?4, '', NULL, 0, '{}', ?5, ?6, ?6)`,
     )
-    .bind(namespace, slug, title.trim(), description?.trim() || null, identity.id, now())
+    .bind(namespace, slug, title.trim(), description?.trim() ?? '', identity.id, now())
     .run();
 
   return { namespace, slug };
