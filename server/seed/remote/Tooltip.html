@@ -54,8 +54,6 @@
     $[id].tooltip = null;
   };
 
-  // Every mounted tooltip shares the one pair of globals. showTooltip shows the
-  // first one mounted, or the one inside the element passed as `from`.
   const tooltips = (window.tooltips ??= new Map());
   tooltips.set(instance, { show, hide });
 
@@ -136,9 +134,6 @@
   const resize = new ResizeObserver(position);
   let observed = null;
 
-  // A removed element never fires mouseleave, so an anchor that leaves the DOM
-  // would orphan its tooltip. Every removal in Vibe happens through a flush, so
-  // the anchor is checked right after each one.
   const update = () => {
     if (anchored && !anchored.isConnected) hide();
     if (body() !== observed) {

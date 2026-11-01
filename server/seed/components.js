@@ -1,7 +1,3 @@
-// Every seeded component. Each component's code lives in ./remote, published
-// byte for byte; only the entry around it is written here, with the
-// namespace it is seeded under when that is not vibe, the root namespace.
-
 const read = (name) => Bun.file(`${import.meta.dir}/remote/${name}`).text();
 
 const one = async ({ file, namespace = 'vibe', notes, props = [], events = {}, ...rest }) => ({
@@ -173,8 +169,6 @@ export default await Promise.all(
       description: 'Tracks which keyboard keys are pressed in realtime.',
       category: 'Interactive',
       icon: 'desktop',
-      // The keys it tracks come from its keys prop, which no example read off its
-      // code can know, so its examples press one of the default keys.
       events: { keydown: { code: 'Digit1' }, keyup: { code: 'Digit1' } },
       props: [
         {
@@ -219,9 +213,6 @@ export default await Promise.all(
         },
       ],
     },
-    // The game card from ws-card-game (src/components/Card.svelte), rewritten
-    // from Tailwind into plain CSS. Its fonts load from Google Fonts and its
-    // icons and paper grain are inlined; the art is the one thing it fetches by prop.
     {
       file: 'Card.html',
       namespace: 'kortes',
@@ -277,8 +268,6 @@ export default await Promise.all(
         { name: 'artist', type: 'text', default: 'Wyndagger', description: 'Artist credit, bottom right. Without one there is no credit or quill.' },
       ],
     },
-    // The round portrait frame from battleborn-brawlers, cropping its image to a
-    // focal point.
     {
       file: 'Avatar.html',
       notes: 'Ported to Vibe from the battleborn-brawlers CardDisc and the Mugshot crop inside it. The image is a whole URL rather than a path under the game’s own races folder.',
@@ -301,8 +290,6 @@ export default await Promise.all(
         { name: 'alt', type: 'text', default: 'Oskar', description: 'Alt text of the image.' },
       ],
     },
-    // Its cards are whatever sits between its tags; the default holds two
-    // kortes/card, Erat Herba and Steel Sword as ws-card-game's CARDS.ts has them.
     {
       file: 'CardHand.html',
       namespace: 'kortes',

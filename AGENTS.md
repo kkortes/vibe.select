@@ -110,6 +110,10 @@ What a seeded component fetches by prop, such as the card's art, lives in
 `server/seed.js` turns that list into SQL and runs it through
 `wrangler d1 execute`.
 
+A new component never holds a comment: no HTML, CSS or JS comment in its
+source, nor in its entry in `server/seed/components.js`. Vibe's own
+`<!-- if -->` and `<!-- each -->` blocks are markup, not comments.
+
 ## Addresses and pinning
 
 - `GET /<namespace>/<slug>.html` — the latest revision. Short cache; it moves.
