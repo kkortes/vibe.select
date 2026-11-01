@@ -108,14 +108,14 @@
     <h6 text-muted>Data (@[this.view(data, this.openPaths).shallow] | @[this.view(data, this.openPaths).total])</h6>
     <button tertiary sm onclick="this.toggleAll()">@[this.view(data, this.openPaths).label]</button>
   </crow>
-  <hr />
+  <hr my="4" />
   <data-inspector-lines vertical left up f-1 mx="-6" overflow-auto>
     <!-- each this.view(data, this.openPaths).rows as row (row.path) -->
     <accordion open="@[row.shown]">
       <accordion-content>
-        <data-inspector-row flex w-full g="3" py="0.75" px="2" hover="@[row.expandable]" onclick="this.toggle(event, row)">
-          <data-inspector-key f-0 pl="@[row.depth]ch" text-cyan>@[row.key]</data-inspector-key>
-          <data-inspector-value flex right f-1 overflow-hidden text-blue="@[row.expandable]" text-orange="@[!row.expandable]">@[row.summary]</data-inspector-value>
+        <data-inspector-row flex w-full g="3" py="0.75" px="6" hover="@[row.expandable]" onclick="this.toggle(event, row)">
+          <data-inspector-key f-0 pl="@[row.depth]ch">@[row.key]</data-inspector-key>
+          <data-inspector-value flex right f-1 overflow-hidden text-blue="@[row.expandable]">@[row.summary]</data-inspector-value>
         </data-inspector-row>
       </accordion-content>
     </accordion>
