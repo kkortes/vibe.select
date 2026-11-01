@@ -20,10 +20,12 @@
         <a href="@[$.tagged(name)]" onclick="event.preventDefault(); $.pick('@[name]')"><badge secondary active="@[tag === name]"><icon data-tag="@[name]"></icon>@[name]</badge></a>
         <!-- /each -->
       </crow>
+      <!-- if comp.category -->
       <crow left g-2 wrap>
         <span sm text-muted>User tags</span>
         <a href="@[$.tagged(comp.category)]" onclick="event.preventDefault(); $.pick('@[comp.category]')"><badge secondary active="@[tag === comp.category]">@[comp.category]</badge></a>
       </crow>
+      <!-- /if -->
     </tags>
   </card>
   <!-- /each -->

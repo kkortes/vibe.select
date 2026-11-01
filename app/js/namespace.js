@@ -46,7 +46,7 @@ export const load = async () => {
   const components = await call('components/list', { namespace });
 
   window.$.components = components;
-  window.$.filters = { auto: top(components.flatMap(({ tags }) => tags)), user: top(components.map(({ category }) => category)) };
+  window.$.filters = { auto: top(components.flatMap(({ tags }) => tags)), user: top(components.map(({ category }) => category).filter(Boolean)) };
   window.$.tag = components.flatMap(({ tags, category }) => [...tags, category]).find((name) => name.toLowerCase() === linked) || 'All';
   window.$.loading = false;
   window.$.filter();

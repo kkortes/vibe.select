@@ -147,9 +147,6 @@ const styled = (html) => /<style[\s>]|\sstyle=/.test(html);
 
 export const TAGS = ['Props', 'State', 'JS', 'Functions', 'CSS', 'Dependencies', 'Stylecheat'];
 
-// User tags: the category an author files a component under.
-export const CATEGORIES = ['Interactive', 'Forms', 'Layout', 'Navigation', 'Feedback', 'Presentation', 'Game'];
-
 // Dependencies are named by the author rather than read off the markup: a
 // `<component src>` may point anywhere, and only the author knows which of them
 // are vibe.select components.

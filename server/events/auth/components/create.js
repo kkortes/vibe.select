@@ -3,7 +3,6 @@ import { ID } from '../../../dependencies.js';
 import { claim } from '../../../names.js';
 import { slug as slugPattern } from '../../../user.js';
 import { lettered, slugify } from '../../../../app/js/naming.js';
-import { CATEGORIES } from '../../../../app/js/tags.js';
 
 // A created component has its components row and nothing published: `latest` 0
 // keeps it out of every listing and its source unanswered until the first
@@ -26,9 +25,9 @@ export default async ({ namespace, title = '', description }, { db, identity }) 
   await db
     .prepare(
       `INSERT INTO components (id, namespace, slug, title, description, category, icon, latest, defaults, ownerId, createdAt, updatedAt)
-       VALUES (${ID}, ?1, ?2, ?3, ?4, ?5, NULL, 0, '{}', ?6, ?7, ?7)`,
+       VALUES (${ID}, ?1, ?2, ?3, ?4, '', NULL, 0, '{}', ?5, ?6, ?6)`,
     )
-    .bind(namespace, slug, title.trim(), description?.trim() || null, CATEGORIES[0], identity.id, now())
+    .bind(namespace, slug, title.trim(), description?.trim() || null, identity.id, now())
     .run();
 
   return { namespace, slug };

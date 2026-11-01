@@ -3,19 +3,19 @@ import { ID, resolve } from '../../../dependencies.js';
 import { claim } from '../../../names.js';
 import { defaults, validate } from '../../../props.js';
 import { slug as slugPattern } from '../../../user.js';
-import { CATEGORIES, autoTags } from '../../../../app/js/tags.js';
+import { autoTags } from '../../../../app/js/tags.js';
 
 // Publishing only ever inserts. A revision that exists is frozen — the way to
 // change a component is to publish the next version of it.
 export default async (
-  { namespace, slug, title, description = null, category, icon = null, html, props = [], events = {}, dependencies = [], notes = '' },
+  { namespace, slug, title, description = null, category = '', icon = null, html, props = [], events = {}, dependencies = [], notes = '' },
   { db, identity },
 ) => {
   if (!slugPattern.test(String(slug))) throw Error('A slug is lowercase words joined by dashes');
   await claim(db, namespace, slug);
   if (!String(title).trim()) throw Error('A component needs a title');
   if (!String(html).trim()) throw Error('A component needs markup');
-  if (!CATEGORIES.includes(category)) throw Error(`Category must be one of ${CATEGORIES.join(', ')}`);
+  if (String(category).split(', ').filter(Boolean).some((tag) => /\P{L}/u.test(tag))) throw Error('User tags are letters only, comma separated');
 
   const schema = validate(props);
 
