@@ -162,9 +162,6 @@ export const state = {
   tab: 0,
   tags: [],
   styling: 'inline',
-  // What the debug button beside the version badge hands the DataInspector,
-  // kept until its dialog closes.
-  inspected: null,
 
   showing() {
     return this.version || this.component?.latest || 0;
@@ -172,12 +169,6 @@ export const state = {
 
   outdated() {
     return this.component && this.showing() < this.component.latest;
-  },
-
-  // The bytes behind the selected tab. A tab opened on the #v<n> form would
-  // show the latest, since the fragment never reaches the server.
-  url() {
-    return source(SOURCE_URL, this.namespace, this.slug, this.tab);
   },
 
   // A boolean prop is carried the way HTML carries one — the attribute is there
@@ -245,11 +236,6 @@ export const state = {
   // Another tab replaces the code in the editor.
   open(version) {
     this.leave(() => this.show(version));
-  },
-
-  inspect() {
-    this.inspected = { namespace, slug, url: this.url(), styling: this.styling, tags: this.tags, component: this.component };
-    document.querySelector('dialog[inspector]').showModal();
   },
 
   copy() {
