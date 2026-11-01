@@ -51,7 +51,7 @@ export default async (
          SELECT namespace, slug, latest, ?3, ?4, ?5, ?6, ?7, ?8, ?9 FROM components WHERE namespace = ?1 AND slug = ?2`,
       )
       .bind(namespace, slug, html, JSON.stringify(schema), JSON.stringify(events), notes, identity.id, identity.name, now()),
-    // The catalogue counts and filters by the latest revision's tags, so they
+    // The catalogue lists and filters by the latest revision's tags, so they
     // are replaced with every publish.
     db.prepare('DELETE FROM tags WHERE namespace = ? AND slug = ?').bind(namespace, slug),
     ...autoTags({ html, props: schema }).map((tag) =>

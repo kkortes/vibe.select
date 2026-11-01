@@ -90,9 +90,11 @@
 
         <crow wrap>
           <span text-muted>Auto tags</span>
-          <!-- each filters.auto as name -->
-          <button tertiary active="@[tag === name]" onclick="$.pick('@[name]')">@[name]</button>
-          <!-- /each -->
+          <autotags>
+            <!-- each filters.auto as name -->
+            <button tertiary active="@[tag === name]" onclick="$.pick('@[name]')"><icon tag="@[name]"></icon>@[name]</button>
+            <!-- /each -->
+          </autotags>
           <span text-muted>User tags</span>
           <!-- each filters.user as name -->
           <button tertiary active="@[tag === name]" onclick="$.pick('@[name]')">@[name]</button>

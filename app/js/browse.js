@@ -3,6 +3,7 @@ import codie from '/modules/codie/codie.js';
 import { SOURCE_URL } from '/js/env.js';
 import { get } from '/js/localStorage.js';
 import { ROOT, address, pin } from '/js/pin.js';
+import { TAGS } from '/js/tags.js';
 import { call } from '/js/ws.js';
 
 const tag = {
@@ -25,8 +26,8 @@ export const state = {
   demo: render(tag),
   components: [],
   matches: [],
-  // The four most common of each kind, counted by the server.
-  filters: { auto: [], user: [] },
+  // Every auto tag, and the four most common user tags, counted by the server.
+  filters: { auto: TAGS, user: [] },
   tag: 'All',
   // A visitor who has scrolled past the hero before opens on the catalogue;
   // the wordmark in the topbar brings the hero back.
@@ -113,10 +114,10 @@ export const intro = () => {
 const linked = () => decodeURIComponent(location.pathname.match(/^\/tag\/([^/]+)/)?.[1] || '');
 
 export const load = async () => {
-  const [components, filters] = await Promise.all([call('components/list'), call('tags/top')]);
+  const [components, user] = await Promise.all([call('components/list'), call('tags/top')]);
 
   window.$.components = components;
-  window.$.filters = filters;
+  window.$.filters = { auto: TAGS, user };
   window.$.tag =
     components
       .flatMap(({ tags, category }) => [...tags, category])

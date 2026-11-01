@@ -47,7 +47,7 @@ tables hold the catalogue; `users` and `sessions` hold Google sign-ins for
 | `namespaces` | `slug`, `title`, `official`, `unlisted`, `ownerId` | yes |
 | `components` | catalogue metadata per `namespace` + `slug`: `title`, `description`, `category`, `icon`, `styling`, `latest`, `defaults`, `ownerId` | yes |
 | `revisions`  | one row per published version | **never** |
-| `tags`       | the auto tags (`app/js/tags.js`) of each component's latest revision, one row per tag, replaced on every publish so the frontpage can count them with `GROUP BY` | yes |
+| `tags`       | the auto tags (`app/js/tags.js`) of each component's latest revision, one row per tag, replaced on every publish so the catalogue lists them in the same query as the components | yes |
 
 An unlisted namespace keeps its components off the frontpage: `components/list`
 without a namespace, and `tags/top`, leave it out. Its components still render
