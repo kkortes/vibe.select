@@ -291,7 +291,7 @@ export default await Promise.all(
       slug: 'avatar',
       title: 'Avatar',
       description: 'A round frame with an inset ring and drop shadow that crops an image to whatever point you aim it at, zoomed in.',
-      category: 'Game',
+      category: 'Presentation',
       icon: 'user',
       props: [
         {
