@@ -48,9 +48,9 @@
     let expandable = false;
     let allOpen = true;
 
-    const walk = (value, depth, path, key, visible) => {
+    const walk = (value, depth, path, key, shown) => {
       const open = isObject(value) && !!openPaths[path];
-      if (visible) rows.push({ path, key, depth, expandable: isObject(value), summary: summarize(value) });
+      rows.push({ path, key, depth, shown, expandable: isObject(value), summary: summarize(value) });
       if (!isObject(value)) return total++;
 
       expandable = true;
@@ -59,8 +59,8 @@
       ancestors.add(value);
       const entries = Array.isArray(value)
         ? value.map((child, i) => [i, child, `#${i + 1}`])
-        : (visible && open ? sorted(value) : Object.entries(value)).map(([name, child]) => [name, child, name]);
-      entries.forEach(([name, child, label]) => walk(child, depth + 1, childPath(path, name), label, visible && open));
+        : sorted(value).map(([name, child]) => [name, child, name]);
+      entries.forEach(([name, child, label]) => walk(child, depth + 1, childPath(path, name), label, shown && open));
       ancestors.delete(value);
     };
 
@@ -103,18 +103,22 @@
   });
 </script>
 
-<data-inspector sm vertical left f-1 w-full overflow-hidden bg-background>
-  <crow justify-between w-full g="6" py="3.75" px="4.5" bg-card>
-    <h6 sm text-muted>Data (@[this.view(data, this.openPaths).shallow] | @[this.view(data, this.openPaths).total])</h6>
-    <button secondary sm onclick="this.toggleAll()">@[this.view(data, this.openPaths).label]</button>
+<card inspector w="120" max-w-full overflow-hidden>
+  <crow justify-between w-full g="6">
+    <h6 text-muted>Data (@[this.view(data, this.openPaths).shallow] | @[this.view(data, this.openPaths).total])</h6>
+    <button tertiary sm onclick="this.toggleAll()">@[this.view(data, this.openPaths).label]</button>
   </crow>
   <hr />
   <data-inspector-lines vertical left up f-1 w-full overflow-auto>
     <!-- each this.view(data, this.openPaths).rows as row (row.path) -->
-    <data-inspector-row flex w-full g="3" py="0.75" px="4.5" hover="@[row.expandable]" onclick="this.toggle(event, row)">
-      <data-inspector-key f-0 pl="@[row.depth]ch" text-cyan>@[row.key]</data-inspector-key>
-      <data-inspector-value flex right f-1 overflow-hidden text-blue="@[row.expandable]" text-orange="@[!row.expandable]">@[row.summary]</data-inspector-value>
-    </data-inspector-row>
+    <accordion open="@[row.shown]">
+      <accordion-content>
+        <data-inspector-row flex w-full g="3" py="0.75" px="2" hover="@[row.expandable]" onclick="this.toggle(event, row)">
+          <data-inspector-key f-0 pl="@[row.depth]ch" text-cyan>@[row.key]</data-inspector-key>
+          <data-inspector-value flex right f-1 overflow-hidden text-blue="@[row.expandable]" text-orange="@[!row.expandable]">@[row.summary]</data-inspector-value>
+        </data-inspector-row>
+      </accordion-content>
+    </accordion>
     <!-- /each -->
   </data-inspector-lines>
-</data-inspector>
+</card>
