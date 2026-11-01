@@ -457,10 +457,10 @@ section[preview] {
 section[preview] > h6 {
   --label: calc(var(--unit) * 2);
   position: absolute;
-  top: calc(var(--pad) - var(--label));
-  left: calc(var(--pad) - var(--label) * 1.5);
+  top: var(--pad);
+  left: var(--pad);
   z-index: 1;
-  padding: var(--pad) calc(var(--label) * 1.5) var(--label) var(--pad);
+  padding: var(--label) calc(var(--label) * 1.5);
   border: 1px solid var(--border);
   background-color: var(--card);
 }
