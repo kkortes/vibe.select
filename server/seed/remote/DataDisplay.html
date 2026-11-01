@@ -80,8 +80,13 @@
     storage && localStorage.setItem(storage, JSON.stringify(openPaths));
   };
 
-  const toggle = (event, { expandable, path }) => {
-    if (!expandable) return;
+  const copy = async (key, summary) => {
+    await navigator.clipboard.writeText(summary);
+    dispatchEvent(new CustomEvent('notify', { detail: { type: 'success', title: `Copied ${key}`, description: summary } }));
+  };
+
+  const toggle = (event, { expandable, path, key, summary }) => {
+    if (!expandable) return copy(key, summary);
     const open = !opened()[path];
     const paths = event.altKey
       ? [path, ...expandablePaths(last).filter((descendant) => descendant.startsWith(`${path}/`))]
@@ -115,8 +120,8 @@
     <!-- each this.view(data, this.openPaths, localStorageID).rows as row (row.path) -->
     <accordion open="@[row.shown]">
       <accordion-content>
-        <data-display-row flex w-full g="3" py="0.75" px="6" hover="@[row.expandable]" onclick="this.toggle(event, row)">
-          <data-display-key f-0 pl="@[row.depth]ch">@[row.key]</data-display-key>
+        <data-display-row flex w-full g="3" py="0.75" px="6" hover onclick="this.toggle(event, row)">
+          <data-display-key f-0 pl="@[row.depth]ch"><code>@[row.key]</code></data-display-key>
           <data-display-value flex right f-1 overflow-hidden text-blue="@[row.expandable && !row.list]" text-purple="@[row.list]">@[row.summary]</data-display-value>
         </data-display-row>
       </accordion-content>
@@ -128,9 +133,5 @@
 <style>
   data-display-lines {
     overflow-y: scroll;
-  }
-
-  data-display-key::first-letter {
-    text-transform: uppercase;
   }
 </style>
