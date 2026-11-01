@@ -40,8 +40,8 @@
     grid-template-rows: 80px 1fr 80px;
     place-items: center;
     overflow: hidden auto;
-    background: radial-gradient(in oklab, oklch(from var(--background) round(l) 0 0 / 0.35), oklch(from var(--background) round(l) 0 0 / 0.7));
-    backdrop-filter: blur(12px) saturate(1.4);
+    background: radial-gradient(in oklab, oklch(from var(--background) round(l, 1) 0 0 / 0.15), oklch(from var(--background) round(l, 1) 0 0 / 0.4));
+    backdrop-filter: blur(4px) saturate(1.4);
     transition: opacity 200ms 75ms, scale 200ms 75ms;
 
     @starting-style {
