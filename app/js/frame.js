@@ -31,7 +31,10 @@ ${tag}
 // as they are now; the returned sync pushes them into the frame, each value
 // only once it changed, so an unchanged json prop never remounts the component.
 // A frame has no height of its own content, so it takes its body's as its
-// minimum and grows its preview box to fit, as the component inline did.
+// minimum and grows its preview box to fit, as the component inline did. Its
+// viewport is whole pixels, so that height is rounded up: offsetHeight rounds
+// to nearest, and a body a fraction taller than its frame scrolls it whenever
+// the frame sits between pixels, as it does while the hero shrinks.
 export default (host, { src, attributes, children = '', after = '', styling, read }) => {
   const attrs = attributes.map((name) => `${name}="@[values.${name}]"`).join(' ');
   const frame = document.createElement('iframe');
@@ -56,7 +59,7 @@ export default (host, { src, attributes, children = '', after = '', styling, rea
   frame.addEventListener('ready', () => {
     URL.revokeObjectURL(frame.src);
     view = frame.contentWindow;
-    new view.ResizeObserver(() => (frame.style.minHeight = `${view.document.body.offsetHeight}px`)).observe(view.document.body);
+    new view.ResizeObserver(([{ borderBoxSize }]) => (frame.style.minHeight = `${Math.ceil(borderBoxSize[0].blockSize)}px`)).observe(view.document.body);
     sync();
   }, { once: true });
   host.replaceChildren(frame);
