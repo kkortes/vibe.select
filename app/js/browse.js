@@ -13,7 +13,6 @@ const tag = {
   kind: 'god',
   element: 'lightning',
   text: 'I always start the game.',
-  subtypes: ['lightning'],
 };
 
 export const state = {
