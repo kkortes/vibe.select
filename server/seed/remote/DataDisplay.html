@@ -82,7 +82,7 @@
 
   const copy = async (key, summary) => {
     await navigator.clipboard.writeText(summary);
-    dispatchEvent(new CustomEvent('notify', { detail: { type: 'success', title: `Copied ${key}`, description: summary } }));
+    window.notify?.success(`Copied ${key}`, { description: summary });
   };
 
   const toggle = (event, { expandable, path, key, summary }) => {
@@ -129,14 +129,6 @@
     <!-- /each -->
   </data-display-lines>
 </card>
-
-<component
-  src="https://vibe.select/notifications.html"
-  up="@[notifications?.includes('top')]"
-  down="@[notifications?.includes('bottom')]"
-  left="@[notifications?.includes('left')]"
-  right="@[notifications?.includes('right')]"
-></component>
 
 <style>
   data-display-lines {
