@@ -9,10 +9,9 @@
   const clamp = (value, low, high) => Math.min(Math.max(value, low), high);
 
   let anchored = null;
-  let leave = null;
 
   const detach = () => {
-    anchored?.removeEventListener('mouseleave', leave);
+    anchored?.removeEventListener('mouseleave', hide);
     anchored = null;
   };
 
@@ -32,33 +31,44 @@
 
   const isOptions = (value) => value && !(value instanceof Element) && !('x' in value) && !('clientX' in value);
 
-  window.showTooltip = (props, second, third) => {
-    detach();
-    const [options = {}, given] = isOptions(second) ? [second, third] : [third, second];
-    const anchor = given ?? window.event?.currentTarget;
-    const { direction = 'none', lock, persist } = options;
+  const show = (anchor, { direction = 'none', lock, persist }) => {
     const target = anchorPoint(anchor, direction);
     const follow = !lock && anchor?.clientX !== undefined;
 
     $[id].tooltip = {
       x: follow ? anchor.clientX : target.x,
       y: follow ? anchor.clientY : target.y,
-      props: props ?? {},
+      design: root().querySelector(':scope > slot > *').outerHTML,
       direction,
       lock: !!lock,
     };
 
     if (anchor instanceof Element && !persist) {
       anchored = anchor;
-      leave = window.hideTooltip;
-      anchor.addEventListener('mouseleave', leave);
+      anchor.addEventListener('mouseleave', hide);
     }
   };
 
-  window.hideTooltip = () => {
+  const hide = () => {
     detach();
     $[id].tooltip = null;
   };
+
+  // Every mounted tooltip shares the one pair of globals. showTooltip shows the
+  // first one mounted, or the one inside the element passed as `from`.
+  const tooltips = (window.tooltips ??= new Map());
+  tooltips.set(instance, { show, hide });
+
+  window.showTooltip = (first, second) => {
+    const [given, options = {}] = isOptions(first) ? [undefined, first] : [first, second];
+    const owner = options.from
+      ? tooltips.get(options.from.querySelector('tooltip-root').dataset.instance)
+      : tooltips.values().next().value;
+    window.hideTooltip();
+    owner.show(given ?? window.event?.currentTarget, options);
+  };
+
+  window.hideTooltip = () => tooltips.forEach((tooltip) => tooltip.hide());
 
   let bodyLeft = 0;
   let bodyTop = 0;
@@ -130,7 +140,7 @@
   // would orphan its tooltip. Every removal in Vibe happens through a flush, so
   // the anchor is checked right after each one.
   const update = () => {
-    if (anchored && !anchored.isConnected) window.hideTooltip();
+    if (anchored && !anchored.isConnected) hide();
     if (body() !== observed) {
       resize.disconnect();
       observed = body();
@@ -146,6 +156,9 @@
     removeEventListener('mousemove', move);
     resize.disconnect();
     detach();
+    tooltips.delete(instance);
+    if (tooltips.size) return;
+    delete window.tooltips;
     delete window.showTooltip;
     delete window.hideTooltip;
   });
@@ -156,16 +169,7 @@
   <!-- if this.tooltip -->
   <tooltip-layer style="left: @[this.tooltip.x]px; top: @[this.tooltip.y]px">
     <tooltip-body @[this.tooltip.direction]>
-      <tooltip-main>
-        <card text-sm tooltip-card>
-          <!-- if this.tooltip.props.name -->
-          <strong>@[this.tooltip.props.name]</strong>
-          <!-- /if -->
-          <!-- if this.tooltip.props.description -->
-          <p m-0 text-muted>@[$.unsafe(this.tooltip.props.description)]</p>
-          <!-- /if -->
-        </card>
-      </tooltip-main>
+      <tooltip-main>@[$.unsafe(this.tooltip.design)]</tooltip-main>
       <tooltip-pointer></tooltip-pointer>
     </tooltip-body>
   </tooltip-layer>
@@ -173,6 +177,10 @@
 </tooltip-root>
 
 <style>
+  tooltip-root > slot > :first-child {
+    display: none;
+  }
+
   tooltip-layer {
     position: fixed;
     z-index: var(--z-tooltip, 100);
@@ -198,16 +206,9 @@
     transform: none;
   }
 
-  [tooltip-card] {
+  tooltip-main {
     display: block;
     max-width: calc(var(--unit) * 76);
-    padding: calc(var(--unit) * 3);
-    background: var(--tooltip-surface, var(--card));
-  }
-
-  [tooltip-card] p {
-    margin-top: calc(var(--unit) * 2);
-    text-wrap: pretty;
   }
 
   tooltip-pointer {
@@ -246,7 +247,7 @@
     display: none;
   }
 
-  tooltip-body[cramped] [tooltip-card] {
+  tooltip-body[cramped] tooltip-main {
     mask: radial-gradient(
       circle calc(var(--unit) * 10) at var(--cut-x, 50%) var(--cut-y, 50%),
       rgb(0 0 0 / 0.65) 55%,
