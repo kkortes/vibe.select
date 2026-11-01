@@ -3,7 +3,7 @@ import { PREVIEW } from '/js/env.js';
 import { set } from '/js/localStorage.js';
 
 const GOOGLE_CLIENT_ID =
-  '818843980176-15qn16b9k8b0gfv2q518bf4dbb159vg7.apps.googleusercontent.com';
+  '615897294940-j7pp91r1bdn8j3v9l5k7rifrrhgodt5i.apps.googleusercontent.com';
 
 const startSession = async (event, payload) => {
   try {

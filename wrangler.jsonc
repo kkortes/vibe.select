@@ -16,7 +16,7 @@
     }
   ],
   "vars": {
-    "GOOGLE_CLIENT_ID": "818843980176-15qn16b9k8b0gfv2q518bf4dbb159vg7.apps.googleusercontent.com"
+    "GOOGLE_CLIENT_ID": "615897294940-j7pp91r1bdn8j3v9l5k7rifrrhgodt5i.apps.googleusercontent.com"
   },
   "previews": {
     "d1_databases": [
@@ -28,7 +28,7 @@
       }
     ],
     "vars": {
-      "GOOGLE_CLIENT_ID": "818843980176-15qn16b9k8b0gfv2q518bf4dbb159vg7.apps.googleusercontent.com",
+      "GOOGLE_CLIENT_ID": "615897294940-j7pp91r1bdn8j3v9l5k7rifrrhgodt5i.apps.googleusercontent.com",
       "PREVIEW_SIGNIN": "me@korte.kim"
     }
   }
