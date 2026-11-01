@@ -16,7 +16,7 @@
     "@ape-egg/vibe": "^4.3.23"
   },
   "devDependencies": {
-    "@ape-egg/vibe-compiler": "^4.3.27",
+    "@ape-egg/vibe-compiler": "^4.3.28",
     "hono": "^4.12.3",
     "wrangler": "^4.155.0"
   },
