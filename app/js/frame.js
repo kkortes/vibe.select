@@ -11,7 +11,7 @@ const page = ({ tag, values, stylecheat, dark }) => `<!DOCTYPE html>
   <base href="${ORIGIN}/" />
   ${stylecheat ? '<link rel="stylesheet" href="/css/stylecheat.css" />' : ''}
   <style>
-    body { box-sizing: border-box; min-height: 100vh; margin: 0; padding: 12vmin; display: grid; place-items: center; }
+    body { box-sizing: border-box; min-height: 100vh; margin: 0; padding: 12vmin; display: grid; place-items: center; background: none; }
   </style>
   <script type="module">
     import vibe from '/modules/vibe/index.js';
