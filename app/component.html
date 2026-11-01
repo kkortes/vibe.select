@@ -62,6 +62,7 @@
           <!-- else -->
           <sections>
             <section about>
+              <button secondary sm inspect title="@[component ? 'Show data' : 'No data to display']" disabled="@[!component]" onclick="$.inspect('about')"><icon code></icon></button>
               <crow vertical left g-1 w-full>
                 <crow justify-between g-3 w-full>
                   <owner>
@@ -94,10 +95,6 @@
                   <a href="https://stylecheat.korte.kim" target="_blank" title="This component assumes you have Stylecheat installed in the place where it is being used" primary sm>stylecheat.korte.kim</a>
                   <!-- /if -->
                 </crow>
-                <crow left g-2 w-full>
-                  <span sm text-muted>URL</span>
-                  <a href="@[$.url()]" target="_blank" primary sm>@[$.url()]</a>
-                </crow>
                 <crow left g-2 wrap>
                   <span sm text-muted>Auto tags</span>
                   <!-- each tags as tag -->
@@ -112,6 +109,7 @@
             </section>
             <!-- if component -->
             <section use>
+              <button secondary sm inspect title="@[component ? 'Show data' : 'No data to display']" disabled="@[!component]" onclick="$.inspect('use')"><icon code></icon></button>
               <h6>Use it</h6>
 
               <!-- if $.outdated() -->
@@ -209,6 +207,7 @@
               </props>
             </section>
             <section preview>
+              <button secondary sm inspect title="@[component ? 'Show data' : 'No data to display']" disabled="@[!component]" onclick="$.inspect('preview')"><icon code></icon></button>
               <h6>Preview</h6>
               <crow grid locked center preview p="12" sm:p="0">
                 <preview-host></preview-host>
@@ -222,6 +221,14 @@
         </pane>
       </slider>
     </box>
+
+    <dialog inspector onclick="event.target === this && this.close()" onclose="$.inspected = null">
+      <card w="120" h="120" p-0 overflow-hidden>
+        <!-- if inspected -->
+        <component src="/data-inspector.html" data="@[inspected]"></component>
+        <!-- /if -->
+      </card>
+    </dialog>
 
     <divider></divider>
 

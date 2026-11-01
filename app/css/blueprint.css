@@ -320,6 +320,7 @@ sections {
 }
 
 section {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -329,6 +330,10 @@ section {
   overflow: hidden auto;
   scrollbar-width: none;
   box-shadow: 0 0 0 1px var(--border);
+}
+
+crow:has(> owner) {
+  padding-right: var(--pad);
 }
 
 owner {
@@ -442,8 +447,14 @@ catalogue tags badge:not([active]) {
 }
 
 section[preview] {
-  position: relative;
   padding: 0;
+}
+
+section > button[inspect] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
 }
 
 section[preview] > h6 {
@@ -675,6 +686,10 @@ catalogue {
     grid-template-columns: minmax(0, 1fr);
     grid-auto-rows: auto;
   }
+}
+
+icon[code] {
+  --icon: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m16%2018%206-6-6-6%22%2F%3E%3Cpath%20d%3D%22m8%206-6%206%206%206%22%2F%3E%3C%2Fsvg%3E');
 }
 
 icon[copy] {

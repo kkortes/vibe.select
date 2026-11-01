@@ -162,6 +162,9 @@ export const state = {
   tab: 0,
   tags: [],
   styling: 'inline',
+  // What the card whose debug button was pressed is drawn from, shown in the
+  // DataInspector until its dialog closes.
+  inspected: null,
 
   showing() {
     return this.version || this.component?.latest || 0;
@@ -242,6 +245,15 @@ export const state = {
   // Another tab replaces the code in the editor.
   open(version) {
     this.leave(() => this.show(version));
+  },
+
+  inspect(card) {
+    this.inspected = {
+      about: { namespace, slug, url: this.url(), styling: this.styling, tags: this.tags, component: this.component },
+      use: { version: this.showing(), snippet: this.snippet(), props: this.props, values: this.values, listeners: this.listeners },
+      preview: { source: this.previewSource, values: this.values },
+    }[card];
+    document.querySelector('dialog[inspector]').showModal();
   },
 
   copy() {
