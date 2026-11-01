@@ -97,14 +97,14 @@ const showMarkup = () => {
 const jsons = new WeakMap();
 
 const showJson = () =>
-  document.querySelectorAll('codie[json]').forEach((el) => {
-    const draft = window.$.drafts[el.getAttribute('json')];
+  document.querySelectorAll('codie[data-json]').forEach((el) => {
+    const draft = window.$.drafts[el.dataset.json];
 
     if (!jsons.has(el)) {
       const json = codie(el);
       json.code = draft;
       json.editable = true;
-      json.onEdit = ({ raw }) => window.$.setJson(el.getAttribute('json'), raw);
+      json.onEdit = ({ raw }) => window.$.setJson(el.dataset.json, raw);
       jsons.set(el, json);
     }
 

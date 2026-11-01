@@ -191,7 +191,7 @@
                       <input type="number" w-full placeholder='Defaults to "@[prop.default]"' value="@[values[prop.name]]"
                         oninput="$.values['@[prop.name]'] = Number(this.value)" />
                       <!-- else if prop.type === 'json' -->
-                      <codie json="@[prop.name]" highlight-json w-full></codie>
+                      <codie data-json="@[prop.name]" highlight-json w-full></codie>
                       <!-- else -->
                       <input type="text" w-full placeholder='Defaults to "@[prop.default]"' value="@[values[prop.name]]" oninput="$.values['@[prop.name]'] = this.value" />
                       <!-- /if -->
