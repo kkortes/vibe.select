@@ -49,7 +49,7 @@
   }
 
   overlay-slider > carousel {
-    --slide: min(320px, 90cqi);
+    --slide: 60cqi;
     grid-row: 2;
   }
 
@@ -60,7 +60,7 @@
 
   overlay-slider slides > slide {
     min-width: var(--slide);
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
     scroll-snap-align: center;
     filter: drop-shadow(1px 1px 1px oklch(from var(--shadow-color) l c h / .1));
@@ -68,6 +68,5 @@
 
   @media (max-width: 768px) {
     overlay-slider { grid-template-rows: calc(var(--unit) * 8) 1fr calc(var(--unit) * 8); }
-    overlay-slider > carousel { --slide: 70cqi; }
   }
 </style>
