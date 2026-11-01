@@ -116,11 +116,18 @@
           <crow vertical left g-3 w-full>
             <h1>Components</h1>
             <!-- if user -->
+            <!-- if namespace -->
             <p lead max-w-160>
               Currently showing your components under the namespace <code>@[namespace]</code>.
               Your components here are set to <b>unlisted</b> meaning they can't be found through search, but accessible for
               anyone to use.
             </p>
+            <!-- else -->
+            <p lead max-w-160>
+              Currently showing every component across all your namespaces. Pick a namespace above to see only its
+              components.
+            </p>
+            <!-- /if -->
             <!-- else -->
             <p lead max-w-160>
               vibe.select is a marketplace of Vibe components. Every component is plain HTML at its own address — point a
