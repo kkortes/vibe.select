@@ -584,7 +584,7 @@
     }
 
     card-pill {
-      filter: drop-shadow(1px 1px 1.5px rgb(0 0 0 / 0.1));
+      filter: drop-shadow(1px 1px 1px oklch(from var(--shadow-color) l c h / .1));
     }
 
     pill-text {
@@ -606,7 +606,7 @@
     }
 
     card-pill[type] pill-text {
-      filter: drop-shadow(0 4px 4px rgb(0 0 0 / 0.15));
+      filter: drop-shadow(1px 1px 1px oklch(from var(--shadow-color) l c h / .1));
     }
 
     card-pill[subtype] pill-text {
