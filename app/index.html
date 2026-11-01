@@ -80,40 +80,12 @@
     </box>
     <!-- /if -->
 
-    <sticky grid locked auto-shadow>
-      <divider></divider>
-      <crow filters left wrap w-full>
-        <crow f-1>
-          <label f-1>
-            <input type="search" placeholder="Search components" value="@[query]" w-full
-              oninput="$.query = this.value; $.filter()" />
-          </label>
-        </crow>
-
-        <label flex g-2>
-          <input type="checkbox" role="switch" checked="@[all]" onchange="$.all = event.currentTarget.checked; $.filter()" />
-          Show all
-        </label>
-
-        <crow>
-          <span px-4>Auto tags</span>
-          <autotags>
-            <!-- each filters.auto as name -->
-            <button tertiary="@[tag !== name]" secondary="@[tag === name]" onclick="$.pick('@[name]')"><icon data-tag="@[name]"></icon>@[name]</button>
-            <!-- /each -->
-          </autotags>
-        </crow>
-
-        <crow>
-          <span px-4>User tags</span>
-          <usertags>
-            <!-- each filters.user as name -->
-            <button tertiary="@[tag !== name]" secondary="@[tag === name]" onclick="$.pick('@[name]')">@[name]</button>
-            <!-- /each -->
-          </usertags>
-        </crow>
-      </crow>
-    </sticky>
+    <component src="/components/Filters.html">
+      <label flex g-2>
+        <input type="checkbox" role="switch" checked="@[all]" onchange="$.all = event.currentTarget.checked; $.filter()" />
+        Show all
+      </label>
+    </component>
 
     <box>
       <!-- if loading -->

@@ -29,49 +29,30 @@
 
 <body stylecheat vibe-fouc>
   <component src="/components/Layout.html">
-    <box main solid paper>
-      <scroll>
-        <container>
-          <crow vertical left g-3 w-full>
-            <h1>@[namespace]</h1>
-            <p lead max-w-160>Every component published under <code>@[namespace]/</code>.</p>
-            <crow left g-6 wrap w-full>
-              <label f-1>
-                <input type="search" placeholder="Search components" value="@[query]"
-                  oninput="$.query = this.value; $.filter()" />
-              </label>
-
-              <crow wrap>
-                <span text-muted>Auto tags</span>
-                <!-- each filters.auto as name -->
-                <button tertiary active="@[tag === name]" onclick="$.pick('@[name]')">@[name]</button>
-                <!-- /each -->
-                <span text-muted>User tags</span>
-                <!-- each filters.user as name -->
-                <button tertiary active="@[tag === name]" onclick="$.pick('@[name]')">@[name]</button>
-                <!-- /each -->
-              </crow>
-            </crow>
-          </crow>
-        </container>
-
-        <crow vertical left g-4 w-full>
-          <!-- if loading -->
-          <p text-muted>Loading the namespace…</p>
-          <!-- else -->
-          <!-- if matches.length -->
-          <component src="/components/Gallery.html" items="@[matches]"></component>
-          <!-- else -->
-          <p text-muted>
-            <!-- if query -->Nothing matches “@[query]”.<!-- else -->No components published in @[namespace] yet.<!-- /if -->
-          </p>
-          <!-- /if -->
-          <!-- /if -->
+    <box main>
+      <container>
+        <crow vertical left g-3 w-full>
+          <h1>@[namespace]</h1>
+          <p lead max-w-160>Every component published under <code>@[namespace]/</code>.</p>
         </crow>
-      </scroll>
+      </container>
     </box>
 
-    <divider></divider>
+    <component src="/components/Filters.html"></component>
+
+    <box>
+      <!-- if loading -->
+      <crow g-2 w-full py="12" text-muted><icon spinner animate-spin></icon> Loading the namespace</crow>
+      <!-- else -->
+      <!-- if matches.length -->
+      <component src="/components/Gallery.html" items="@[matches]"></component>
+      <!-- else -->
+      <crow w-full py="12" text-muted>
+        <!-- if query -->Nothing matches “@[query]”.<!-- else -->No components published in @[namespace] yet.<!-- /if -->
+      </crow>
+      <!-- /if -->
+      <!-- /if -->
+    </box>
   </component>
 </body>
 

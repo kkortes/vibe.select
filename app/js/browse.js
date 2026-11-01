@@ -97,7 +97,7 @@ export const intro = () => {
   // and the scroll is moved by what it took up so the gallery stays put.
   // It is remembered, so the next visit opens on the components.
   const bar = document.querySelector('sticky:has(input[type="search"])');
-  const gallery = bar.nextElementSibling;
+  const gallery = bar.parentElement.nextElementSibling;
   const watch = () => {
     if (bar.getBoundingClientRect().top > parseFloat(getComputedStyle(bar).top)) return;
     removeEventListener('scroll', watch);

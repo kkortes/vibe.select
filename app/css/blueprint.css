@@ -554,7 +554,7 @@ row > button {
 }
 
 box[main] + divider,
-box[main] + sticky > divider {
+box[main] + component > sticky > divider {
   view-transition-name: second-line;
 }
 
