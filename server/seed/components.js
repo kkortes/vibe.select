@@ -186,7 +186,7 @@ export default await Promise.all(
       slug: 'keystrokes',
       title: 'Keystrokes',
       description: 'Tracks which keyboard keys are pressed in realtime. Bind keys to state of your own and read it: a single press is one key turning true, as in <!-- if keys.escape -->, and a combo is several held at once, as in <!-- if keys.shiftleft && keys.keyw -->. Meta and Ctrl let go of every key, so a combo is built from tracked keys such as Shift, never from them.',
-      category: 'Interactive',
+      category: 'Global',
       icon: 'desktop',
       events: { keydown: { code: 'Digit1' }, keyup: { code: 'Digit1' } },
       dependencies: ['data-display'],
