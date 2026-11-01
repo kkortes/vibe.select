@@ -56,7 +56,7 @@ export default await Promise.all(
             `  <button onmouseenter="showTooltip(event.currentTarget, { direction: 'right', lock: true })">Right</button>`,
             `  <button onmouseenter="showTooltip(event.currentTarget, { direction: 'up' })">Follow</button>`,
             '  <component src="/tooltip.html"><card>A tooltip</card></component>',
-            `  <badge onmouseenter="showTooltip(this, { direction: 'up', lock: true, from: this.previousElementSibling })">Hover me</badge>`,
+            `  <card onmouseenter="showTooltip(this, { direction: 'up', lock: true, from: this.previousElementSibling })">Hover me</card>`,
             '</crow>',
           ].join('\n'),
           description: 'The markup between the tags. Its first element is the tooltip, drawn as it is written; the rest renders in place, and mounted once in a layout it can be the tooltip alone. Call showTooltip(anchor, { direction, lock, persist, from }) from anywhere: anchor is an element, a mouse event or { x, y }, direction is up, down, left, right or none, lock pins it to the anchor instead of the cursor, persist keeps it past mouseleave until hideTooltip() runs, and from, an element holding another tooltip, shows that one instead of the first mounted.',
