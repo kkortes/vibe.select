@@ -14,6 +14,7 @@ const tag = {
   color: 'yellow',
   icon: 'lightning',
   text: 'I always start the game.',
+  subtypes: ['lightning'],
 };
 
 export const state = {
@@ -54,8 +55,12 @@ export const state = {
   },
 };
 
+// An array has no literal form an attribute can hold, so it is shown bound,
+// as the component page shows it, and the edited tag leaves it as it was.
 const print = (attributes) =>
-  `<component\n${Object.entries(attributes).map(([name, value]) => `  ${name}="${value}"`).join('\n')}\n></component>`;
+  `<component\n${Object.entries(attributes)
+    .map(([name, value]) => `  ${name}="${Array.isArray(value) ? `@[${name}]` : value}"`)
+    .join('\n')}\n></component>`;
 
 // A template parses the edited tag without running anything in it.
 const read = (raw) => {
@@ -71,8 +76,12 @@ export const edit = () => {
   editor.onEdit = ({ raw }) => {
     const component = read(raw);
     if (!component) return;
-    const attributes = Object.fromEntries(Object.keys(tag).map((name) => [name, component.getAttribute(name) || '']));
-    window.$.demo = { ...attributes, src: pin(attributes.src) };
+    const attributes = Object.fromEntries(
+      Object.keys(tag)
+        .filter((name) => !Array.isArray(tag[name]))
+        .map((name) => [name, component.getAttribute(name) || '']),
+    );
+    window.$.demo = { ...tag, ...attributes, src: pin(attributes.src) };
   };
 };
 
