@@ -32,7 +32,7 @@
           <tab active="@[ns.slug === namespace]" onclick="$.namespace = '@[ns.slug]'">@[ns.slug]</tab>
           <!-- /each -->
           <!-- if mine.length < user.namespaceCount -->
-          <tab new onclick="$.compose()">New namespace</tab>
+          <tab new onclick="$.compose()"><icon plus></icon>New namespace</tab>
           <!-- /if -->
         </tabs>
         <!-- if namespace -->
@@ -40,7 +40,7 @@
           <input type="checkbox" role="switch" checked="@[$.selected().unlisted]" onchange="$.unlist(event.currentTarget.checked)" />
           Unlisted
         </label>
-        <button tertiary onclick="$.draw()"><icon components></icon>Add component</button>
+        <button tertiary onclick="$.draw()"><icon plus></icon>Add component</button>
         <removal>
           <button tertiary disabled="@[!$.deletable()]" onclick="$.confirm()"><icon cross></icon>Remove namespace</button>
           <!-- if !$.deletable() -->
