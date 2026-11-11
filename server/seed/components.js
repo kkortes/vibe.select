@@ -10,7 +10,7 @@ export default await Promise.all(
   [
     {
       file: 'Notifications.html',
-      notes: 'Ported from the webdev-game-stack battleborn-brawlers notifications: window.notify with its types, promise and dismiss, a stack that fans out on hover and pauses its timers, and swipe to dismiss. Call notify(title, { description, icon, duration, id }) or notify.success, .error, .warning, .info or .loading with the same arguments; each returns the id, and a second call with that id replaces the notification in place. notify.promise(promise, { loading, success, error }) turns a loading one into the outcome, and notify.dismiss(id) dismisses one, or all without an id. The game\'s crystal icon and equipment link stay with the game.',
+      notes: 'Ported from the webdev-game-stack battleborn-brawlers notifications: window.notify with its types, promise and dismiss, a stack that fans out on hover and pauses its timers, and swipe to dismiss. Call notify(title, { description, icon, duration, id }) or notify.success, .error, .warning, .info or .loading with the same arguments; each returns the id, and a second call with that id replaces the notification in place. notify.promise(promise, { loading, success, error }) turns a loading one into the outcome, and notify.dismiss(id) dismisses one, or all without an id; every dismissal, swiped or timed out, fires a dismissed event on the window carrying its id. The game\'s crystal icon and equipment link stay with the game.',
       slug: 'notifications',
       title: 'Notifications',
       description: 'Decide a location in your app where notifications shows up. Trigger notifications from anywhere using <code>notify()</code>-function.',
@@ -25,6 +25,7 @@ export default await Promise.all(
         { name: 'right', type: 'boolean', default: true, description: 'Pins the stack to the right edge, and a card swipes away to the right.' },
         { name: 'x', type: 'number', default: 16, description: 'Pixels between the stack and the side it is pinned to.' },
         { name: 'y', type: 'number', default: 16, description: 'Pixels between the stack and the top or bottom it is pinned to.' },
+        { name: 'copy', type: 'boolean', default: false, description: 'A click on a notification copies its title and description, and says so with a notification of its own.' },
       ],
     },
     {

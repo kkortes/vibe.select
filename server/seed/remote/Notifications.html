@@ -14,6 +14,7 @@
   const timers = new Map();
   const leaving = new Set();
   const drags = new Map();
+  const moved = new WeakSet();
 
   const instance = Math.random().toString(36).slice(2);
   const root = () => document.querySelector(`notifications-viewport[data-instance="${instance}"]`);
@@ -28,6 +29,7 @@
     clearTimeout(timers.get(key)?.handle);
     timers.delete(key);
     $[id].notifications = $[id].notifications.map((n) => (n.id === key ? { ...n, leaving: true } : n));
+    dispatchEvent(new CustomEvent('dismissed', { detail: { id: key } }));
   };
 
   const push = (type, title, { id: key = ++count, duration = type === 'loading' ? Infinity : DURATION, description, icon = ICONS[type] } = {}) => {
@@ -108,6 +110,7 @@
       if (event.button || event.target.closest('button, a, input, textarea, select')) return;
       const card = event.currentTarget;
       card.setPointerCapture(event.pointerId);
+      moved.delete(card);
       drags.set(card, { x: event.clientX, y: event.clientY, dx: 0, dy: 0 });
       card.toggleAttribute('dragging', true);
     },
@@ -129,11 +132,17 @@
       drags.delete(card);
       const [ax, ay] = axis(root());
       const distance = !ax && !ay ? Math.hypot(start.dx, start.dy) : start.dx * ax + start.dy * ay;
+      if (Math.hypot(start.dx, start.dy) > 5) moved.add(card);
       if (distance > SWIPE) return dismiss(notification.id);
       card.toggleAttribute('dragging', false);
       card.style.removeProperty('--drag-x');
       card.style.removeProperty('--drag-y');
     },
+    // A click that ends a drag is no request to copy.
+    copy: (event, { title, description }) =>
+      root().hasAttribute('copy') &&
+      !moved.has(event.currentTarget) &&
+      navigator.clipboard.writeText([title, description].filter(Boolean).join('\n')).then(() => push('success', 'Copied to clipboard!')),
   });
 
   const update = () => {
@@ -160,6 +169,7 @@
   down="@[down]"
   left="@[left]"
   right="@[right]"
+  copy="@[copy]"
   style="--offset-x: @[x || 0]px; --offset-y: @[y || 0]px"
 >
   <notification-hit onmouseenter="this.hover(true)" onmouseleave="this.hover(false)">
@@ -167,6 +177,7 @@
     <notification-card
       leaving="@[notification.leaving]"
       onanimationend="this.ended(notification)"
+      onclick="this.copy(event, notification)"
       onpointerdown="this.grab(event)"
       onpointermove="this.drag(event)"
       onpointerup="this.drop(event, notification)"
